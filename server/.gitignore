@@ -38,3 +38,5 @@ dist/
 
 # Gin
 gin-bin
+
+config/production.yaml

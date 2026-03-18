@@ -1,0 +1,14 @@
+SERVER:
+  PORT: 8080
+  ENV: development
+  LOG_LEVEL: debug
+DATABASE:
+  HOST: localhost
+  PORT: 5432
+  USER: postgres
+  PASSWORD: postgres
+  NAME: tudo_db
+  SSL_MODE: disable
+JWT:
+  SECRET_KEY: your_secret_key
+  EXPIRATION_TIME: 24h
