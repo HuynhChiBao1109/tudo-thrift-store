@@ -1,11 +1,7 @@
 package main
 
-import (
-	"server-gin/internal/router"
-)
+import "server-gin/initialize"
 
 func main() {
-	router := router.NewRouter()
-	router.Init()
-	router.Run(":8080")
+	initialize.Init()
 }

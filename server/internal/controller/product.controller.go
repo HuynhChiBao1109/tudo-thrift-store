@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"server-gin/package/response"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,8 +11,6 @@ func NewProductController() *ProductController {
 }
 
 func (pc *ProductController) GetList(c *gin.Context) {
-
-	return response.SuccessResponse(c, 200, "product list")
 }
 
 func (pc *ProductController) GetDetail(c *gin.Context) {}
