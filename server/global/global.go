@@ -8,5 +8,5 @@ import (
 
 var (
 	Config setting.Config
-	DB     *gorm.DB
+	PostgresDB     *gorm.DB
 )

@@ -30,7 +30,7 @@ func InitPostgres() {
 		return
 	}
 
-	global.DB = db
+	global.PostgresDB = db
 	fmt.Println("Connected to PostgreSQL successfully")
 
 }
