@@ -4,7 +4,7 @@ import "server-gin/global"
 
 func Init() {
 	InitConfig()
-	InitMySQL()
+	InitPostgres()
 	InitRedis()
 
 	r := InitRouter()

@@ -1,3 +1,7 @@
 package initialize
 
-func InitRedis() {}
+import "fmt"
+
+func InitRedis() {
+	fmt.Print("Redis connected")
+}

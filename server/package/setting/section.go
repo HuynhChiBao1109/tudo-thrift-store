@@ -1,9 +1,9 @@
 package setting
 
 type Config struct {
-	MYSQL  MySQLSetting  `mapstructure:"MYSQL"`
-	REDIS  RedisSetting  `mapstructure:"REDIS"`
-	SERVER ServerSetting `mapstructure:"SERVER"`
+	POSTGRES PostgresSetting `mapstructure:"POSTGRES"`
+	REDIS    RedisSetting    `mapstructure:"REDIS"`
+	SERVER   ServerSetting   `mapstructure:"SERVER"`
 }
 
 type ServerSetting struct {
@@ -12,9 +12,9 @@ type ServerSetting struct {
 	LOG_LEVEL string `mapstructure:"LOG_LEVEL"`
 }
 
-type MySQLSetting struct {
+type PostgresSetting struct {
 	HOST     string `mapstructure:"HOST"`
-	PORT     string `mapstructure:"PORT"`
+	PORT     int    `mapstructure:"PORT"`
 	USER     string `mapstructure:"USER"`
 	PASSWORD string `mapstructure:"PASSWORD"`
 	DB_NAME  string `mapstructure:"DB_NAME"`
@@ -22,6 +22,6 @@ type MySQLSetting struct {
 
 type RedisSetting struct {
 	HOST     string `mapstructure:"HOST"`
-	PORT     string `mapstructure:"PORT"`
+	PORT     int    `mapstructure:"PORT"`
 	PASSWORD string `mapstructure:"PASSWORD"`
 }

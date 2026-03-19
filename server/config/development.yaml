@@ -3,7 +3,7 @@ SERVER:
   PORT: 8080
   ENV: development
   LOG_LEVEL: debug
-MYSQL:
+POSTGRES:
   HOST: localhost
   PORT: 5432
   USER: postgres
