@@ -37,17 +37,14 @@ export const mockProducts: Product[] = [
   {
     id: "2",
     name: "Floral Midi Dress",
-    description:
-      "Beautiful floral print midi dress. Perfect for summer occasions. Light and airy fabric.",
+    description: "Beautiful floral print midi dress. Perfect for summer occasions. Light and airy fabric.",
     price: 28,
     originalPrice: 89,
     category: "dresses",
     condition: "like-new",
     size: "S",
     brand: "Zara",
-    images: [
-      "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=80",
-    ],
+    images: ["https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=80"],
     stock: 1,
     featured: true,
     tags: ["floral", "summer", "feminine"],
@@ -57,17 +54,14 @@ export const mockProducts: Product[] = [
   {
     id: "3",
     name: "Oversized Wool Blazer",
-    description:
-      "Chic oversized blazer in deep navy. Perfect for layering. Minimal wear, excellent quality.",
+    description: "Chic oversized blazer in deep navy. Perfect for layering. Minimal wear, excellent quality.",
     price: 65,
     originalPrice: 220,
     category: "outerwear",
     condition: "good",
     size: "L",
     brand: "H&M Studio",
-    images: [
-      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80",
-    ],
+    images: ["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80"],
     stock: 1,
     featured: true,
     tags: ["blazer", "work", "elegant"],
@@ -77,17 +71,14 @@ export const mockProducts: Product[] = [
   {
     id: "4",
     name: "Nike Air Force 1 - White",
-    description:
-      "Classic white Nike Air Force 1s. Some minor scuffs but overall great condition.",
+    description: "Classic white Nike Air Force 1s. Some minor scuffs but overall great condition.",
     price: 55,
     originalPrice: 110,
     category: "shoes",
     condition: "good",
     size: "M",
     brand: "Nike",
-    images: [
-      "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80",
-    ],
+    images: ["https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80"],
     stock: 2,
     featured: false,
     tags: ["sneakers", "classic", "white"],
@@ -97,17 +88,14 @@ export const mockProducts: Product[] = [
   {
     id: "5",
     name: "Cashmere Crewneck Sweater",
-    description:
-      "Luxurious cashmere sweater in camel color. Barely worn. Incredibly soft.",
+    description: "Luxurious cashmere sweater in camel color. Barely worn. Incredibly soft.",
     price: 80,
     originalPrice: 340,
     category: "tops",
     condition: "like-new",
     size: "M",
     brand: "Everlane",
-    images: [
-      "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&q=80",
-    ],
+    images: ["https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&q=80"],
     stock: 1,
     featured: true,
     tags: ["cashmere", "luxury", "winter"],
@@ -117,17 +105,14 @@ export const mockProducts: Product[] = [
   {
     id: "6",
     name: "Vintage Band Tee - The Cure",
-    description:
-      "Authentic vintage The Cure band tee. Minor fading adds to the authentic vintage feel.",
+    description: "Authentic vintage The Cure band tee. Minor fading adds to the authentic vintage feel.",
     price: 35,
     originalPrice: 0,
     category: "tops",
     condition: "fair",
     size: "L",
     brand: "Vintage",
-    images: [
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80",
-    ],
+    images: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80"],
     stock: 1,
     featured: false,
     tags: ["vintage", "band-tee", "music"],
@@ -137,17 +122,14 @@ export const mockProducts: Product[] = [
   {
     id: "7",
     name: "Leather Crossbody Bag",
-    description:
-      "Genuine leather crossbody bag. Minimal signs of use. Adjustable strap.",
+    description: "Genuine leather crossbody bag. Minimal signs of use. Adjustable strap.",
     price: 42,
     originalPrice: 180,
     category: "bags",
     condition: "good",
     size: "One Size",
     brand: "Coach",
-    images: [
-      "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80",
-    ],
+    images: ["https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80"],
     stock: 1,
     featured: false,
     tags: ["leather", "bag", "classic"],
@@ -157,17 +139,14 @@ export const mockProducts: Product[] = [
   {
     id: "8",
     name: "Silk Slip Dress",
-    description:
-      "Elegant silk slip dress in champagne. Perfect for special occasions.",
+    description: "Elegant silk slip dress in champagne. Perfect for special occasions.",
     price: 50,
     originalPrice: 195,
     category: "dresses",
     condition: "like-new",
     size: "XS",
     brand: "ASOS",
-    images: [
-      "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&q=80",
-    ],
+    images: ["https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&q=80"],
     stock: 1,
     featured: true,
     tags: ["silk", "elegant", "party"],
@@ -177,17 +156,14 @@ export const mockProducts: Product[] = [
   {
     id: "9",
     name: "Trench Coat - Camel",
-    description:
-      "Timeless camel trench coat. Classic silhouette, excellent condition.",
+    description: "Timeless camel trench coat. Classic silhouette, excellent condition.",
     price: 95,
     originalPrice: 380,
     category: "outerwear",
     condition: "good",
     size: "S",
     brand: "Burberry",
-    images: [
-      "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600&q=80",
-    ],
+    images: ["https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600&q=80"],
     stock: 1,
     featured: true,
     tags: ["trench", "classic", "luxury"],
@@ -197,17 +173,14 @@ export const mockProducts: Product[] = [
   {
     id: "10",
     name: "Mom Jeans - High Rise",
-    description:
-      "Trendy high-rise mom jeans in light wash. Super comfortable and stylish.",
+    description: "Trendy high-rise mom jeans in light wash. Super comfortable and stylish.",
     price: 32,
     originalPrice: 79,
     category: "bottoms",
     condition: "good",
     size: "S",
     brand: "Topshop",
-    images: [
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600&q=80",
-    ],
+    images: ["https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600&q=80"],
     stock: 3,
     featured: false,
     tags: ["mom jeans", "high rise", "casual"],
@@ -217,17 +190,14 @@ export const mockProducts: Product[] = [
   {
     id: "11",
     name: "Chunky Gold Chain Necklace",
-    description:
-      "Bold statement gold chain necklace. Perfect for layering or wearing solo.",
+    description: "Bold statement gold chain necklace. Perfect for layering or wearing solo.",
     price: 18,
     originalPrice: 45,
     category: "accessories",
     condition: "like-new",
     size: "One Size",
     brand: "Unknown",
-    images: [
-      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80",
-    ],
+    images: ["https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80"],
     stock: 1,
     featured: false,
     tags: ["jewelry", "gold", "statement"],
@@ -237,17 +207,14 @@ export const mockProducts: Product[] = [
   {
     id: "12",
     name: "Denim Jacket - Cropped",
-    description:
-      "Cute cropped denim jacket. Great for spring and autumn layering.",
+    description: "Cute cropped denim jacket. Great for spring and autumn layering.",
     price: 38,
     originalPrice: 95,
     category: "outerwear",
     condition: "good",
     size: "M",
     brand: "Mango",
-    images: [
-      "https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?w=600&q=80",
-    ],
+    images: ["https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?w=600&q=80"],
     stock: 1,
     featured: false,
     tags: ["denim", "casual", "cropped"],
@@ -371,10 +338,8 @@ export const mockOrders: Order[] = [
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api";
-const DEFAULT_PRODUCT_IMAGE =
-  "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api";
+const DEFAULT_PRODUCT_IMAGE = "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80";
 
 interface ServerResponse<T> {
   code: number;
@@ -401,10 +366,7 @@ const getAuthToken = () => {
   return localStorage.getItem("admin_token") || "";
 };
 
-async function apiRequest<T>(
-  path: string,
-  options: RequestInit = {},
-): Promise<T> {
+async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = getAuthToken();
   const isFormData = options.body instanceof FormData;
   const defaultHeaders: Record<string, string> = {
@@ -435,12 +397,8 @@ async function apiRequest<T>(
 }
 
 function mapProduct(raw: RawProduct): Product {
-  const mappedBrandId =
-    raw.brandId ??
-    (typeof raw.brand === "object" ? raw.brand?.id : undefined) ??
-    "";
-  const mappedBrandName =
-    typeof raw.brand === "string" ? raw.brand : raw.brand?.name || "Unknown";
+  const mappedBrandId = raw.brandId ?? (typeof raw.brand === "object" ? raw.brand?.id : undefined) ?? "";
+  const mappedBrandName = typeof raw.brand === "string" ? raw.brand : raw.brand?.name || "Unknown";
 
   return {
     id: String(raw.id),
@@ -454,10 +412,7 @@ function mapProduct(raw: RawProduct): Product {
     brand: mappedBrandName,
     condition: "good",
     size: "M",
-    images:
-      raw.images && raw.images.length > 0
-        ? raw.images
-        : [DEFAULT_PRODUCT_IMAGE],
+    images: raw.images && raw.images.length > 0 ? raw.images : [DEFAULT_PRODUCT_IMAGE],
     stock: 1,
     featured: false,
     tags: [],
@@ -475,23 +430,15 @@ export const productsApi = {
     if (filters?.category) query.set("category", filters.category);
     if (filters?.brandId) query.set("brandId", filters.brandId);
 
-    const data = await apiRequest<{ items: RawProduct[]; total: number }>(
-      `/products?${query.toString()}`,
-    );
+    const data = await apiRequest<{ items: RawProduct[]; total: number }>(`/products?${query.toString()}`);
     let products = data.items.map(mapProduct);
 
-    if (filters?.sortBy === "price-asc")
-      products = [...products].sort((a, b) => a.price - b.price);
-    if (filters?.sortBy === "price-desc")
-      products = [...products].sort((a, b) => b.price - a.price);
+    if (filters?.sortBy === "price-asc") products = [...products].sort((a, b) => a.price - b.price);
+    if (filters?.sortBy === "price-desc") products = [...products].sort((a, b) => b.price - a.price);
     if (filters?.sortBy === "newest")
-      products = [...products].sort(
-        (a, b) => +new Date(b.createdAt) - +new Date(a.createdAt),
-      );
+      products = [...products].sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
     if (filters?.sortBy === "oldest")
-      products = [...products].sort(
-        (a, b) => +new Date(a.createdAt) - +new Date(b.createdAt),
-      );
+      products = [...products].sort((a, b) => +new Date(a.createdAt) - +new Date(b.createdAt));
 
     const page = filters?.page || 1;
     const pageSize = filters?.pageSize || 12;
@@ -522,10 +469,7 @@ export const productsApi = {
     return mapProduct(created);
   },
 
-  update: async (
-    id: string,
-    data: Partial<ProductPayload>,
-  ): Promise<Product> => {
+  update: async (id: string, data: Partial<ProductPayload>): Promise<Product> => {
     const updated = await apiRequest<RawProduct>(`/products/${id}`, {
       method: "PUT",
       body: JSON.stringify({
@@ -613,36 +557,25 @@ export const brandsApi = {
 };
 
 export const uploadsApi = {
-  uploadProductImages: async (
-    files: File[],
-  ): Promise<{ directory: string; urls: string[] }> => {
+  uploadProductImages: async (files: File[]): Promise<{ directory: string; urls: string[] }> => {
     const formData = new FormData();
     files.forEach((file) => formData.append("images", file));
 
-    const data = await apiRequest<{ directory: string; urls: string[] }>(
-      "/uploads/products/images",
-      {
-        method: "POST",
-        body: formData,
-      },
-    );
+    const data = await apiRequest<{ directory: string; urls: string[] }>("/uploads/products/images", {
+      method: "POST",
+      body: formData,
+    });
 
     return data;
   },
 };
 
 export const authApi = {
-  login: async (
-    username: string,
-    password: string,
-  ): Promise<{ token: string; user: AuthUser }> => {
-    const data = await apiRequest<{ token: string; user: AuthUser }>(
-      "/auth/login",
-      {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-      },
-    );
+  login: async (username: string, password: string): Promise<{ token: string; user: AuthUser }> => {
+    const data = await apiRequest<{ token: string; user: AuthUser }>("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+    });
     return data;
   },
 };
