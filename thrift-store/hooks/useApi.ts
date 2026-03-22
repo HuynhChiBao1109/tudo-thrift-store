@@ -1,17 +1,26 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { productsApi, ordersApi, customersApi, dashboardApi } from '@/lib/api';
-import { Product, ProductFilters, Order } from '@/types';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  productsApi,
+  ordersApi,
+  customersApi,
+  dashboardApi,
+  brandsApi,
+  authApi,
+  uploadsApi,
+} from "@/lib/api";
+import { Product, ProductFilters, Order, ProductPayload } from "@/types";
 
 // ─── Query Keys ───────────────────────────────────────────────────────────────
 
 export const queryKeys = {
-  products: (filters?: ProductFilters) => ['products', filters] as const,
-  product: (id: string) => ['product', id] as const,
-  orders: () => ['orders'] as const,
-  order: (id: string) => ['order', id] as const,
-  customers: () => ['customers'] as const,
-  customer: (id: string) => ['customer', id] as const,
-  dashboard: () => ['dashboard'] as const,
+  products: (filters?: ProductFilters) => ["products", filters] as const,
+  product: (id: string) => ["product", id] as const,
+  orders: () => ["orders"] as const,
+  order: (id: string) => ["order", id] as const,
+  customers: () => ["customers"] as const,
+  customer: (id: string) => ["customer", id] as const,
+  dashboard: () => ["dashboard"] as const,
+  brands: () => ["brands"] as const,
 };
 
 // ─── Product Hooks ────────────────────────────────────────────────────────────
@@ -34,9 +43,9 @@ export function useProduct(id: string) {
 export function useCreateProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>) => productsApi.create(data),
+    mutationFn: (data: ProductPayload) => productsApi.create(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
 }
@@ -44,9 +53,10 @@ export function useCreateProduct() {
 export function useUpdateProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<Product> }) => productsApi.update(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Partial<ProductPayload> }) =>
+      productsApi.update(id, data),
     onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
       queryClient.invalidateQueries({ queryKey: queryKeys.product(id) });
     },
   });
@@ -57,7 +67,7 @@ export function useDeleteProduct() {
   return useMutation({
     mutationFn: (id: string) => productsApi.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
 }
@@ -82,7 +92,7 @@ export function useOrder(id: string) {
 export function useUpdateOrderStatus() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, status }: { id: string; status: Order['status'] }) =>
+    mutationFn: ({ id, status }: { id: string; status: Order["status"] }) =>
       ordersApi.updateStatus(id, status),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.orders() });
@@ -96,6 +106,62 @@ export function useCustomers() {
   return useQuery({
     queryKey: queryKeys.customers(),
     queryFn: () => customersApi.getAll(),
+  });
+}
+
+export function useBrands() {
+  return useQuery({
+    queryKey: queryKeys.brands(),
+    queryFn: () => brandsApi.getAll(),
+  });
+}
+
+export function useCreateBrand() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (name: string) => brandsApi.create(name),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.brands() });
+    },
+  });
+}
+
+export function useUpdateBrand() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, name }: { id: string; name: string }) =>
+      brandsApi.update(id, name),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.brands() });
+    },
+  });
+}
+
+export function useDeleteBrand() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => brandsApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.brands() });
+    },
+  });
+}
+
+export function useAdminLogin() {
+  return useMutation({
+    mutationFn: ({
+      username,
+      password,
+    }: {
+      username: string;
+      password: string;
+    }) => authApi.login(username, password),
+  });
+}
+
+export function useUploadProductImages() {
+  return useMutation({
+    mutationFn: (files: File[]) => uploadsApi.uploadProductImages(files),
   });
 }
 

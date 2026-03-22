@@ -2,10 +2,10 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -19,23 +19,23 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#06365b",
+          DEFAULT: "#003966",
           foreground: "#ffffff",
-          50: "#e6f0f8",
-          100: "#cce1f1",
-          200: "#99c3e3",
-          300: "#66a5d5",
-          400: "#3387c7",
-          500: "#06365b",
-          600: "#052e4e",
-          700: "#042641",
-          800: "#031e34",
-          900: "#021627",
+          50: "#e6eef5",
+          100: "#c0d4e5",
+          200: "#99bbd4",
+          300: "#669ab8",
+          400: "#336c93",
+          500: "#003966",
+          600: "#00325a",
+          700: "#002a4b",
+          800: "#00223d",
+          900: "#001a30",
         },
-        brand: "#06365b",
+        brand: "#003966",
         border: "hsl(214.3 31.8% 91.4%)",
         input: "hsl(214.3 31.8% 91.4%)",
-        ring: "#06365b",
+        ring: "#003966",
         background: "#ffffff",
         foreground: "hsl(222.2 84% 4.9%)",
         secondary: {
@@ -96,4 +96,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

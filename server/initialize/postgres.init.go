@@ -3,6 +3,8 @@ package initialize
 import (
 	"fmt"
 	"server-gin/global"
+	"server-gin/internal/model"
+	"server-gin/internal/utils"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -33,4 +35,43 @@ func InitPostgres() {
 	global.PostgresDB = db
 	fmt.Println("Connected to PostgreSQL successfully")
 
+	if err := db.AutoMigrate(&model.User{}, &model.Brand{}, &model.Product{}); err != nil {
+		fmt.Println("Failed to migrate models:", err)
+		return
+	}
+
+	seedAdminUser()
+
+}
+
+func seedAdminUser() {
+	var count int64
+	if err := global.PostgresDB.Model(&model.User{}).Where("username = ?", "admin").Count(&count).Error; err != nil {
+		fmt.Println("Failed to count admin user:", err)
+		return
+	}
+
+	if count > 0 {
+		return
+	}
+
+	salt, err := utils.GenerateSalt()
+	if err != nil {
+		fmt.Println("Failed to generate salt:", err)
+		return
+	}
+
+	admin := model.User{
+		Username:     "admin",
+		PasswordSalt: salt,
+		PasswordHash: utils.HashPassword("admin123", salt),
+		Role:         "admin",
+	}
+
+	if err := global.PostgresDB.Create(&admin).Error; err != nil {
+		fmt.Println("Failed to create admin user:", err)
+		return
+	}
+
+	fmt.Println("Seeded default admin account: admin / admin123")
 }

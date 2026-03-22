@@ -7,6 +7,6 @@ import (
 )
 
 var (
-	Config setting.Config
-	PostgresDB     *gorm.DB
+	Config     setting.Config
+	PostgresDB *gorm.DB
 )

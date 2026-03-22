@@ -4,25 +4,25 @@
 
 :root {
   --radius: 0.5rem;
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 207 95% 19%;
+  --background: 38 45% 95%;
+  --foreground: 206 100% 20%;
+  --card: 40 55% 97%;
+  --card-foreground: 206 100% 20%;
+  --popover: 40 55% 97%;
+  --popover-foreground: 206 100% 20%;
+  --primary: 206 100% 20%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
+  --secondary: 40 38% 91%;
+  --secondary-foreground: 206 90% 22%;
+  --muted: 42 30% 90%;
+  --muted-foreground: 207 35% 38%;
+  --accent: 44 52% 84%;
+  --accent-foreground: 206 90% 22%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 207 95% 19%;
+  --border: 35 30% 82%;
+  --input: 35 30% 82%;
+  --ring: 206 100% 20%;
 }
 
 * {
@@ -32,39 +32,100 @@
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(0, 57, 102, 0.05) 1px,
+    transparent 0
+  );
+  background-size: 18px 18px;
 }
 
-.bg-background { background-color: hsl(var(--background)); }
-.text-foreground { color: hsl(var(--foreground)); }
-.bg-card { background-color: hsl(var(--card)); }
-.text-card-foreground { color: hsl(var(--card-foreground)); }
-.bg-popover { background-color: hsl(var(--popover)); }
-.text-popover-foreground { color: hsl(var(--popover-foreground)); }
-.bg-primary { background-color: #06365b; }
-.text-primary { color: #06365b; }
-.border-primary { border-color: #06365b; }
-.bg-secondary { background-color: hsl(var(--secondary)); }
-.text-secondary-foreground { color: hsl(var(--secondary-foreground)); }
-.bg-muted { background-color: hsl(var(--muted)); }
-.text-muted-foreground { color: hsl(var(--muted-foreground)); }
-.bg-accent { background-color: hsl(var(--accent)); }
-.text-accent-foreground { color: hsl(var(--accent-foreground)); }
-.bg-destructive { background-color: hsl(var(--destructive)); }
-.text-destructive-foreground { color: hsl(var(--destructive-foreground)); }
-.border-input { border-color: hsl(var(--input)); }
-.ring-ring { --tw-ring-color: hsl(var(--ring)); }
-.ring-offset-background { --tw-ring-offset-color: hsl(var(--background)); }
+.bg-background {
+  background-color: hsl(var(--background));
+}
+.text-foreground {
+  color: hsl(var(--foreground));
+}
+.bg-card {
+  background-color: hsl(var(--card));
+}
+.text-card-foreground {
+  color: hsl(var(--card-foreground));
+}
+.bg-popover {
+  background-color: hsl(var(--popover));
+}
+.text-popover-foreground {
+  color: hsl(var(--popover-foreground));
+}
+.bg-primary {
+  background-color: #003966;
+}
+.text-primary {
+  color: #003966;
+}
+.border-primary {
+  border-color: #003966;
+}
+.bg-secondary {
+  background-color: hsl(var(--secondary));
+}
+.text-secondary-foreground {
+  color: hsl(var(--secondary-foreground));
+}
+.bg-muted {
+  background-color: hsl(var(--muted));
+}
+.text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+.bg-accent {
+  background-color: hsl(var(--accent));
+}
+.text-accent-foreground {
+  color: hsl(var(--accent-foreground));
+}
+.bg-destructive {
+  background-color: hsl(var(--destructive));
+}
+.text-destructive-foreground {
+  color: hsl(var(--destructive-foreground));
+}
+.border-input {
+  border-color: hsl(var(--input));
+}
+.ring-ring {
+  --tw-ring-color: hsl(var(--ring));
+}
+.ring-offset-background {
+  --tw-ring-offset-color: hsl(var(--background));
+}
+
+.vintage-surface {
+  background: #fffaf1;
+  border: 1px solid #dfd2bd;
+}
 
 @layer utilities {
   .animate-in {
     animation: animateIn 0.3s ease-out;
   }
   @keyframes animateIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
-  .fade-in-0 { animation-name: fadeIn0; }
+  .fade-in-0 {
+    animation-name: fadeIn0;
+  }
   @keyframes fadeIn0 {
-    from { opacity: 0; }
+    from {
+      opacity: 0;
+    }
   }
 }

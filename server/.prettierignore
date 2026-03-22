@@ -1,0 +1,12 @@
+# Go source files are formatted by gofmt / goimports, not Prettier
+**/*.go
+
+# Build output
+bin/
+tmp/
+
+# Vendor
+vendor/
+
+# Uploaded files
+uploads/

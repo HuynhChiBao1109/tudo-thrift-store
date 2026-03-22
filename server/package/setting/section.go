@@ -4,6 +4,7 @@ type Config struct {
 	POSTGRES PostgresSetting `mapstructure:"POSTGRES"`
 	REDIS    RedisSetting    `mapstructure:"REDIS"`
 	SERVER   ServerSetting   `mapstructure:"SERVER"`
+	JWT      JWTSetting      `mapstructure:"JWT"`
 }
 
 type ServerSetting struct {
@@ -24,4 +25,9 @@ type RedisSetting struct {
 	HOST     string `mapstructure:"HOST"`
 	PORT     int    `mapstructure:"PORT"`
 	PASSWORD string `mapstructure:"PASSWORD"`
+}
+
+type JWTSetting struct {
+	SECRET_KEY      string `mapstructure:"SECRET_KEY"`
+	EXPIRATION_TIME string `mapstructure:"EXPIRATION_TIME"`
 }

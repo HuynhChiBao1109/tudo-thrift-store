@@ -5,6 +5,8 @@ const (
 	StatusBadRequest   = 400
 	StatusUnauthorized = 401
 	StatusForbidden    = 403
+	StatusNotFound     = 404
+	StatusServerError  = 500
 )
 
 var msg = map[int]string{
@@ -12,4 +14,6 @@ var msg = map[int]string{
 	StatusBadRequest:   "Bad Request",
 	StatusUnauthorized: "Unauthorized",
 	StatusForbidden:    "Forbidden",
+	StatusNotFound:     "Not Found",
+	StatusServerError:  "Internal Server Error",
 }

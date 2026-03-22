@@ -1,15 +1,29 @@
-export type ProductCondition = 'like-new' | 'good' | 'fair' | 'worn';
-export type ProductCategory = 'tops' | 'bottoms' | 'dresses' | 'outerwear' | 'shoes' | 'accessories' | 'bags';
-export type OrderStatus = 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
-export type ProductSize = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'One Size';
+export type ProductCondition = "like-new" | "good" | "fair" | "worn";
+export type ProductCategory =
+  | "tops"
+  | "bottoms"
+  | "dresses"
+  | "outerwear"
+  | "shoes"
+  | "accessories"
+  | "bags";
+export type OrderStatus =
+  | "pending"
+  | "confirmed"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
+export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "One Size";
 
 export interface Product {
   id: string;
   name: string;
   description: string;
   price: number;
+  sale?: number;
   originalPrice?: number;
   category: ProductCategory;
+  brandId?: string;
   condition: ProductCondition;
   size: ProductSize;
   brand: string;
@@ -19,6 +33,23 @@ export interface Product {
   tags: string[];
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Brand {
+  id: string;
+  name: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ProductPayload {
+  name: string;
+  description: string;
+  price: number;
+  sale: number;
+  category: ProductCategory;
+  brandId: string;
+  images: string[];
 }
 
 export interface CartItem {
@@ -77,6 +108,7 @@ export interface ApiResponse<T> {
 
 export interface ProductFilters {
   category?: ProductCategory;
+  brandId?: string;
   condition?: ProductCondition;
   size?: ProductSize;
   minPrice?: number;
@@ -85,5 +117,11 @@ export interface ProductFilters {
   featured?: boolean;
   page?: number;
   pageSize?: number;
-  sortBy?: 'price-asc' | 'price-desc' | 'newest' | 'oldest';
+  sortBy?: "price-asc" | "price-desc" | "newest" | "oldest";
+}
+
+export interface AuthUser {
+  id: number;
+  username: string;
+  role: string;
 }

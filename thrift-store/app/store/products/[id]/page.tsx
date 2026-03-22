@@ -1,14 +1,19 @@
-'use client';
+"use client";
 
-import { useProduct } from '@/hooks/useApi';
-import { useCart } from '@/hooks/useCart';
-import { formatPrice, getConditionLabel, getConditionColor, calculateDiscount } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { ShoppingBag, ArrowLeft, Tag, Ruler, Star } from 'lucide-react';
-import Link from 'next/link';
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { toast } from 'sonner';
+import { useProduct } from "@/hooks/useApi";
+import { useCart } from "@/hooks/useCart";
+import {
+  formatPrice,
+  getConditionLabel,
+  getConditionColor,
+  calculateDiscount,
+} from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ShoppingBag, ArrowLeft, Tag, Ruler, Star } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const { data: product, isLoading } = useProduct(params.id);
@@ -41,7 +46,10 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-      <Link href="/store" className="inline-flex items-center gap-2 text-gray-500 hover:text-[#06365b] text-sm mb-8 transition-colors">
+      <Link
+        href="/store"
+        className="inline-flex items-center gap-2 text-gray-500 hover:text-[#003966] text-sm mb-8 transition-colors"
+      >
         <ArrowLeft size={16} />
         Back to store
       </Link>
@@ -63,11 +71,17 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   key={i}
                   onClick={() => setSelectedImage(i)}
                   className={cn(
-                    'w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors',
-                    selectedImage === i ? 'border-[#06365b]' : 'border-transparent'
+                    "w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors",
+                    selectedImage === i
+                      ? "border-[#003966]"
+                      : "border-transparent",
                   )}
                 >
-                  <img src={img} alt="" className="w-full h-full object-cover" />
+                  <img
+                    src={img}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
                 </button>
               ))}
             </div>
@@ -76,7 +90,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
         {/* Info */}
         <div>
-          <p className="text-sm text-gray-400 uppercase tracking-wide">{product.brand}</p>
+          <p className="text-sm text-gray-400 uppercase tracking-wide">
+            {product.brand}
+          </p>
           <h1
             className="text-3xl font-bold text-gray-900 mt-1 mb-4"
             style={{ fontFamily: "'Playfair Display', serif" }}
@@ -86,11 +102,20 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
           {/* Price */}
           <div className="flex items-end gap-3 mb-5">
-            <span className="text-3xl font-bold text-[#06365b]">{formatPrice(product.price)}</span>
+            <span className="text-3xl font-bold text-[#003966]">
+              {formatPrice(product.price)}
+            </span>
+            {(product.sale || 0) > 0 && (
+              <span className="bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded-full mb-0.5">
+                Sale {product.sale}%
+              </span>
+            )}
             {product.originalPrice && product.originalPrice > product.price && (
               <>
-                <span className="text-gray-400 text-lg line-through mb-0.5">{formatPrice(product.originalPrice)}</span>
-                <span className="bg-[#06365b] text-white text-xs font-bold px-2 py-1 rounded-full mb-0.5">
+                <span className="text-gray-400 text-lg line-through mb-0.5">
+                  {formatPrice(product.originalPrice)}
+                </span>
+                <span className="bg-[#003966] text-white text-xs font-bold px-2 py-1 rounded-full mb-0.5">
                   Save {discount}%
                 </span>
               </>
@@ -99,7 +124,12 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
           {/* Badges */}
           <div className="flex flex-wrap gap-2 mb-6">
-            <span className={cn('text-xs px-3 py-1.5 rounded-full font-medium', getConditionColor(product.condition))}>
+            <span
+              className={cn(
+                "text-xs px-3 py-1.5 rounded-full font-medium",
+                getConditionColor(product.condition),
+              )}
+            >
               {getConditionLabel(product.condition)}
             </span>
             <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-medium bg-gray-100 text-gray-700">
@@ -112,13 +142,18 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             </span>
           </div>
 
-          <p className="text-gray-600 leading-relaxed mb-8">{product.description}</p>
+          <p className="text-gray-600 leading-relaxed mb-8">
+            {product.description}
+          </p>
 
           {/* Tags */}
           {product.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-8">
-              {product.tags.map(tag => (
-                <span key={tag} className="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded">
+              {product.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded"
+                >
                   #{tag}
                 </span>
               ))}
@@ -139,7 +174,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             className="w-full h-12 text-base"
           >
             <ShoppingBag size={18} className="mr-2" />
-            {product.stock === 0 ? 'Out of Stock' : 'Add to Bag'}
+            {product.stock === 0 ? "Out of Stock" : "Add to Bag"}
           </Button>
 
           <p className="text-xs text-gray-400 text-center mt-3">

@@ -1,15 +1,31 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useCreateProduct, useUpdateProduct } from '@/hooks/useApi';
-import { Product, ProductCategory, ProductCondition, ProductSize } from '@/types';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { toast } from 'sonner';
+import { useEffect, useState } from "react";
+import {
+  useCreateProduct,
+  useUpdateProduct,
+  useBrands,
+  useUploadProductImages,
+} from "@/hooks/useApi";
+import { Product, ProductCategory, ProductPayload } from "@/types";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { toast } from "sonner";
 
 interface ProductFormProps {
   product?: Product;
@@ -18,65 +34,117 @@ interface ProductFormProps {
 }
 
 const defaultForm = {
-  name: '',
-  description: '',
+  name: "",
+  description: "",
   price: 0,
-  originalPrice: 0,
-  category: 'tops' as ProductCategory,
-  condition: 'good' as ProductCondition,
-  size: 'M' as ProductSize,
-  brand: '',
-  images: ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80'],
-  stock: 1,
-  featured: false,
-  tags: [] as string[],
+  sale: 0,
+  category: "tops" as ProductCategory,
+  brandId: "",
+  images: [] as string[],
 };
 
 export function ProductForm({ product, open, onClose }: ProductFormProps) {
-  const [form, setForm] = useState(product ? {
-    name: product.name,
-    description: product.description,
-    price: product.price,
-    originalPrice: product.originalPrice || 0,
-    category: product.category,
-    condition: product.condition,
-    size: product.size,
-    brand: product.brand,
-    images: product.images,
-    stock: product.stock,
-    featured: product.featured,
-    tags: product.tags,
-  } : defaultForm);
+  const [form, setForm] = useState(defaultForm);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const create = useCreateProduct();
   const update = useUpdateProduct();
+  const uploadImages = useUploadProductImages();
+  const { data: brandsResponse } = useBrands();
+  const brands = brandsResponse?.data || [];
 
   const isEditing = !!product;
-  const isPending = create.isPending || update.isPending;
+  const isPending =
+    create.isPending || update.isPending || uploadImages.isPending;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (!open) return;
+
+    if (product) {
+      setForm({
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        sale: product.sale || 0,
+        category: product.category,
+        brandId: product.brandId || "",
+        images: product.images || [],
+      });
+      return;
+    }
+
+    setForm(defaultForm);
+    setSelectedFiles([]);
+  }, [product, open]);
+
+  const set = (key: string, value: unknown) =>
+    setForm((prev) => ({ ...prev, [key]: value }));
+
+  const handleUploadImages = async () => {
+    if (selectedFiles.length === 0) {
+      toast.error("Please choose image files first");
+      return;
+    }
+
     try {
-      if (isEditing) {
-        await update.mutateAsync({ id: product.id, data: form });
-        toast.success('Product updated!');
-      } else {
-        await create.mutateAsync(form);
-        toast.success('Product created!');
-      }
-      onClose();
+      const uploaded = await uploadImages.mutateAsync(selectedFiles);
+      setForm((prev) => ({
+        ...prev,
+        images: [...prev.images, ...(uploaded.urls || [])],
+      }));
+      setSelectedFiles([]);
+      toast.success("Images uploaded successfully");
     } catch {
-      toast.error('Something went wrong');
+      toast.error("Failed to upload images");
     }
   };
 
-  const set = (key: string, value: unknown) => setForm(prev => ({ ...prev, [key]: value }));
+  const removeImage = (index: number) => {
+    setForm((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, imageIndex) => imageIndex !== index),
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!form.brandId) {
+      toast.error("Please select a brand");
+      return;
+    }
+
+    const payload: ProductPayload = {
+      name: form.name,
+      description: form.description,
+      price: form.price,
+      sale: form.sale,
+      category: form.category,
+      brandId: form.brandId,
+      images: form.images,
+    };
+
+    try {
+      if (isEditing && product) {
+        await update.mutateAsync({ id: product.id, data: payload });
+        toast.success("Product updated!");
+      } else {
+        await create.mutateAsync(payload);
+        toast.success("Product created!");
+      }
+      onClose();
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
 
   return (
-    <Dialog open={open} onOpenChange={v => !v && onClose()}>
+    <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{isEditing ? 'Edit Product' : 'Add New Product'}</DialogTitle>
+          <DialogTitle>
+            {isEditing ? "Edit Product" : "Add New Product"}
+          </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
@@ -85,7 +153,7 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
               <Label>Product Name</Label>
               <Input
                 value={form.name}
-                onChange={e => set('name', e.target.value)}
+                onChange={(e) => set("name", e.target.value)}
                 placeholder="e.g. Vintage Levi's 501 Jeans"
                 required
               />
@@ -93,108 +161,142 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
 
             <div>
               <Label>Brand</Label>
-              <Input value={form.brand} onChange={e => set('brand', e.target.value)} placeholder="Brand name" required />
-            </div>
-
-            <div>
-              <Label>Stock</Label>
-              <Input type="number" min={0} value={form.stock} onChange={e => set('stock', Number(e.target.value))} required />
+              <Select
+                value={form.brandId}
+                onValueChange={(v) => set("brandId", v)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select brand" />
+                </SelectTrigger>
+                <SelectContent>
+                  {brands.map((brand) => (
+                    <SelectItem key={brand.id} value={brand.id}>
+                      {brand.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
               <Label>Price ($)</Label>
-              <Input type="number" min={0} step={0.01} value={form.price} onChange={e => set('price', Number(e.target.value))} required />
+              <Input
+                type="number"
+                min={0}
+                step={0.01}
+                value={form.price}
+                onChange={(e) => set("price", Number(e.target.value))}
+                required
+              />
             </div>
 
             <div>
-              <Label>Original Price ($) <span className="text-gray-400 text-xs">(optional)</span></Label>
-              <Input type="number" min={0} step={0.01} value={form.originalPrice} onChange={e => set('originalPrice', Number(e.target.value))} />
+              <Label>Sale (%)</Label>
+              <Input
+                type="number"
+                min={0}
+                step={0.01}
+                value={form.sale}
+                onChange={(e) => set("sale", Number(e.target.value))}
+              />
             </div>
 
             <div>
               <Label>Category</Label>
-              <Select value={form.category} onValueChange={v => set('category', v)}>
+              <Select
+                value={form.category}
+                onValueChange={(v) => set("category", v)}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {(['tops','bottoms','dresses','outerwear','shoes','bags','accessories'] as ProductCategory[]).map(c => (
-                    <SelectItem key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</SelectItem>
+                  {(
+                    [
+                      "tops",
+                      "bottoms",
+                      "dresses",
+                      "outerwear",
+                      "shoes",
+                      "bags",
+                      "accessories",
+                    ] as ProductCategory[]
+                  ).map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {c.charAt(0).toUpperCase() + c.slice(1)}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
-            <div>
-              <Label>Condition</Label>
-              <Select value={form.condition} onValueChange={v => set('condition', v)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="like-new">Like New</SelectItem>
-                  <SelectItem value="good">Good</SelectItem>
-                  <SelectItem value="fair">Fair</SelectItem>
-                  <SelectItem value="worn">Well Worn</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label>Size</Label>
-              <Select value={form.size} onValueChange={v => set('size', v)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {(['XS','S','M','L','XL','XXL','One Size'] as ProductSize[]).map(s => (
-                    <SelectItem key={s} value={s}>{s}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex items-center gap-2 pt-6">
-              <input
-                type="checkbox"
-                id="featured"
-                checked={form.featured}
-                onChange={e => set('featured', e.target.checked)}
-                className="w-4 h-4 accent-[#06365b]"
+            <div className="col-span-2 space-y-2">
+              <Label>Images</Label>
+              <Input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) =>
+                  setSelectedFiles(Array.from(e.target.files || []))
+                }
               />
-              <Label htmlFor="featured">Featured product</Label>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleUploadImages}
+                disabled={uploadImages.isPending || selectedFiles.length === 0}
+              >
+                {uploadImages.isPending ? "Uploading..." : "Upload Images"}
+              </Button>
+              {form.images.length > 0 && (
+                <div className="grid grid-cols-4 gap-2">
+                  {form.images.map((image, index) => (
+                    <div key={`${image}-${index}`} className="relative group">
+                      <img
+                        src={image}
+                        alt={`Product ${index + 1}`}
+                        className="h-20 w-full rounded-md object-cover border"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute top-1 right-1 rounded bg-black/60 px-1.5 py-0.5 text-xs text-white opacity-0 group-hover:opacity-100"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="col-span-2">
               <Label>Description</Label>
               <Textarea
                 value={form.description}
-                onChange={e => set('description', e.target.value)}
+                onChange={(e) => set("description", e.target.value)}
                 rows={3}
                 placeholder="Describe the item..."
                 required
               />
             </div>
-
-            <div className="col-span-2">
-              <Label>Image URL</Label>
-              <Input
-                value={form.images[0]}
-                onChange={e => set('images', [e.target.value])}
-                placeholder="https://..."
-              />
-              {form.images[0] && (
-                <img src={form.images[0]} alt="Preview" className="mt-2 h-24 w-20 object-cover rounded-lg" />
-              )}
-            </div>
           </div>
 
           <div className="flex gap-3 pt-2">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              className="flex-1"
+            >
               Cancel
             </Button>
             <Button type="submit" disabled={isPending} className="flex-1">
-              {isPending ? 'Saving...' : isEditing ? 'Update Product' : 'Create Product'}
+              {isPending
+                ? "Saving..."
+                : isEditing
+                  ? "Update Product"
+                  : "Create Product"}
             </Button>
           </div>
         </form>
