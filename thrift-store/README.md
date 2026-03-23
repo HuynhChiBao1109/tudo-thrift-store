@@ -1,4 +1,4 @@
-# Tudo Thrift Store – Second Hand Clothes Store
+# Tudo4Noreason – Second Hand Clothes Store
 
 A full-featured Next.js 14 e-commerce app for a second-hand clothing store, with a complete admin panel.
 

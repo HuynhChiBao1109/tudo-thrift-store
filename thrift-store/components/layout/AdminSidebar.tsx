@@ -49,7 +49,7 @@ export function AdminSidebar() {
               className="text-white font-bold text-lg leading-none"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              Tudo Thrift Store
+              Tudo4Noreason
             </p>
             <p className="text-blue-200 text-xs mt-0.5">Admin Panel</p>
           </div>

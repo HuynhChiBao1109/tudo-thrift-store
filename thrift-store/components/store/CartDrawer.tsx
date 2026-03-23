@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { X, ShoppingBag, Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { formatPrice, resolveImageUrl } from "@/lib/utils";
@@ -11,7 +12,13 @@ interface CartDrawerProps {
 }
 
 export function CartDrawer({ open, onClose }: CartDrawerProps) {
+  const router = useRouter();
   const { items, removeItem, updateQuantity, total, count } = useCart();
+
+  const handleCheckout = () => {
+    onClose();
+    router.push("/store/checkout");
+  };
 
   return (
     <>
@@ -92,7 +99,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               <span className="text-gray-600">Subtotal</span>
               <span className="font-bold text-[#003966] text-lg">{formatPrice(total)}</span>
             </div>
-            <Button className="w-full h-12 text-base bg-[#003966] hover:bg-[#003966]/90">Checkout</Button>
+            <Button onClick={handleCheckout} className="w-full h-12 text-base bg-[#003966] hover:bg-[#003966]/90">
+              Checkout
+            </Button>
             <button onClick={onClose} className="w-full text-sm text-gray-500 hover:text-gray-700 transition-colors">
               Continue Shopping
             </button>

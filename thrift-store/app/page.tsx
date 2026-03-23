@@ -1,42 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, Leaf, RefreshCw, Star, Heart } from "lucide-react";
+import { ArrowRight, Leaf, RefreshCw, Star } from "lucide-react";
+import { StoreNav } from "@/components/layout/StoreNav";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Nav */}
-      <header className="px-6 py-4 flex items-center justify-between border-b border-gray-100">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#003966] rounded-full flex items-center justify-center">
-            <Heart size={14} className="text-white fill-white" />
-          </div>
-          <span className="text-xl font-bold text-[#003966]" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Tudo Thrift Store
-          </span>
-        </div>
-        <nav className="hidden md:flex items-center gap-6 text-sm text-gray-600">
-          <Link href="/store" className="hover:text-[#003966] transition-colors">
-            Shop
-          </Link>
-          <Link href="/store?featured=true" className="hover:text-[#003966] transition-colors">
-            Featured
-          </Link>
-        </nav>
-        <div className="flex items-center gap-3">
-          <Link
-            href="/store"
-            className="text-sm px-4 py-2 bg-[#003966] text-white rounded-lg hover:bg-[#003966]/90 transition-colors"
-          >
-            Shop Now
-          </Link>
-          <Link
-            href="/admin"
-            className="text-sm px-3 py-2 border border-[#003966] text-[#003966] rounded-lg hover:bg-[#003966]/5 transition-colors"
-          >
-            Admin
-          </Link>
-        </div>
-      </header>
+      <StoreNav />
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-[#003966] text-white">
@@ -141,7 +110,7 @@ export default function HomePage() {
       </section>
 
       <footer className="border-t border-gray-100 py-8 text-center text-gray-400 text-sm">
-        <p>© 2024 Tudo Thrift Store. Sustainable fashion for everyone.</p>
+        <p>© 2024 Tudo4Noreason. Sustainable fashion for everyone.</p>
       </footer>
     </div>
   );
