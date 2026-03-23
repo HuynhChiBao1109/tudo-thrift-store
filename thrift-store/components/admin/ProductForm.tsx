@@ -1,30 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  useCreateProduct,
-  useUpdateProduct,
-  useBrands,
-  useUploadProductImages,
-} from "@/hooks/useApi";
+import { useCreateProduct, useUpdateProduct, useBrands, useUploadProductImages } from "@/hooks/useApi";
 import { Product, ProductCategory, ProductPayload } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { resolveImageUrl } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface ProductFormProps {
@@ -54,8 +39,7 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
   const brands = brandsResponse?.data || [];
 
   const isEditing = !!product;
-  const isPending =
-    create.isPending || update.isPending || uploadImages.isPending;
+  const isPending = create.isPending || update.isPending || uploadImages.isPending;
 
   useEffect(() => {
     if (!open) return;
@@ -77,8 +61,7 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
     setSelectedFiles([]);
   }, [product, open]);
 
-  const set = (key: string, value: unknown) =>
-    setForm((prev) => ({ ...prev, [key]: value }));
+  const set = (key: string, value: unknown) => setForm((prev) => ({ ...prev, [key]: value }));
 
   const handleUploadImages = async () => {
     if (selectedFiles.length === 0) {
@@ -142,9 +125,7 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>
-            {isEditing ? "Edit Product" : "Add New Product"}
-          </DialogTitle>
+          <DialogTitle>{isEditing ? "Edit Product" : "Add New Product"}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
@@ -161,10 +142,7 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
 
             <div>
               <Label>Brand</Label>
-              <Select
-                value={form.brandId}
-                onValueChange={(v) => set("brandId", v)}
-              >
+              <Select value={form.brandId} onValueChange={(v) => set("brandId", v)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select brand" />
                 </SelectTrigger>
@@ -203,24 +181,13 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
 
             <div>
               <Label>Category</Label>
-              <Select
-                value={form.category}
-                onValueChange={(v) => set("category", v)}
-              >
+              <Select value={form.category} onValueChange={(v) => set("category", v)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {(
-                    [
-                      "tops",
-                      "bottoms",
-                      "dresses",
-                      "outerwear",
-                      "shoes",
-                      "bags",
-                      "accessories",
-                    ] as ProductCategory[]
+                    ["tops", "bottoms", "dresses", "outerwear", "shoes", "bags", "accessories"] as ProductCategory[]
                   ).map((c) => (
                     <SelectItem key={c} value={c}>
                       {c.charAt(0).toUpperCase() + c.slice(1)}
@@ -236,9 +203,7 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
                 type="file"
                 accept="image/*"
                 multiple
-                onChange={(e) =>
-                  setSelectedFiles(Array.from(e.target.files || []))
-                }
+                onChange={(e) => setSelectedFiles(Array.from(e.target.files || []))}
               />
               <Button
                 type="button"
@@ -253,7 +218,7 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
                   {form.images.map((image, index) => (
                     <div key={`${image}-${index}`} className="relative group">
                       <img
-                        src={image}
+                        src={resolveImageUrl(image)}
                         alt={`Product ${index + 1}`}
                         className="h-20 w-full rounded-md object-cover border"
                       />
@@ -283,20 +248,11 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
           </div>
 
           <div className="flex gap-3 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              className="flex-1"
-            >
+            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
               Cancel
             </Button>
             <Button type="submit" disabled={isPending} className="flex-1">
-              {isPending
-                ? "Saving..."
-                : isEditing
-                  ? "Update Product"
-                  : "Create Product"}
+              {isPending ? "Saving..." : isEditing ? "Update Product" : "Create Product"}
             </Button>
           </div>
         </form>

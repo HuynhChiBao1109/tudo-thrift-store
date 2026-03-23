@@ -2,12 +2,7 @@
 
 import { useProduct } from "@/hooks/useApi";
 import { useCart } from "@/hooks/useCart";
-import {
-  formatPrice,
-  getConditionLabel,
-  getConditionColor,
-  calculateDiscount,
-} from "@/lib/utils";
+import { formatPrice, getConditionLabel, getConditionColor, calculateDiscount, resolveImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, ArrowLeft, Tag, Ruler, Star } from "lucide-react";
 import Link from "next/link";
@@ -59,7 +54,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         <div>
           <div className="aspect-square rounded-2xl overflow-hidden bg-gray-50 mb-3">
             <img
-              src={product.images[selectedImage]}
+              src={resolveImageUrl(product.images[selectedImage])}
               alt={product.name}
               className="w-full h-full object-cover"
             />
@@ -72,16 +67,10 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   onClick={() => setSelectedImage(i)}
                   className={cn(
                     "w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors",
-                    selectedImage === i
-                      ? "border-[#003966]"
-                      : "border-transparent",
+                    selectedImage === i ? "border-[#003966]" : "border-transparent",
                   )}
                 >
-                  <img
-                    src={img}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={resolveImageUrl(img)} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
@@ -90,9 +79,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
         {/* Info */}
         <div>
-          <p className="text-sm text-gray-400 uppercase tracking-wide">
-            {product.brand}
-          </p>
+          <p className="text-sm text-gray-400 uppercase tracking-wide">{product.brand}</p>
           <h1
             className="text-3xl font-bold text-gray-900 mt-1 mb-4"
             style={{ fontFamily: "'Playfair Display', serif" }}
@@ -102,9 +89,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
           {/* Price */}
           <div className="flex items-end gap-3 mb-5">
-            <span className="text-3xl font-bold text-[#003966]">
-              {formatPrice(product.price)}
-            </span>
+            <span className="text-3xl font-bold text-[#003966]">{formatPrice(product.price)}</span>
             {(product.sale || 0) > 0 && (
               <span className="bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded-full mb-0.5">
                 Sale {product.sale}%
@@ -112,9 +97,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             )}
             {product.originalPrice && product.originalPrice > product.price && (
               <>
-                <span className="text-gray-400 text-lg line-through mb-0.5">
-                  {formatPrice(product.originalPrice)}
-                </span>
+                <span className="text-gray-400 text-lg line-through mb-0.5">{formatPrice(product.originalPrice)}</span>
                 <span className="bg-[#003966] text-white text-xs font-bold px-2 py-1 rounded-full mb-0.5">
                   Save {discount}%
                 </span>
@@ -124,12 +107,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
           {/* Badges */}
           <div className="flex flex-wrap gap-2 mb-6">
-            <span
-              className={cn(
-                "text-xs px-3 py-1.5 rounded-full font-medium",
-                getConditionColor(product.condition),
-              )}
-            >
+            <span className={cn("text-xs px-3 py-1.5 rounded-full font-medium", getConditionColor(product.condition))}>
               {getConditionLabel(product.condition)}
             </span>
             <span className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-medium bg-gray-100 text-gray-700">
@@ -142,18 +120,13 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             </span>
           </div>
 
-          <p className="text-gray-600 leading-relaxed mb-8">
-            {product.description}
-          </p>
+          <p className="text-gray-600 leading-relaxed mb-8">{product.description}</p>
 
           {/* Tags */}
           {product.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-8">
               {product.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded"
-                >
+                <span key={tag} className="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded">
                   #{tag}
                 </span>
               ))}
@@ -168,11 +141,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             </p>
           )}
 
-          <Button
-            onClick={handleAdd}
-            disabled={product.stock === 0}
-            className="w-full h-12 text-base"
-          >
+          <Button onClick={handleAdd} disabled={product.stock === 0} className="w-full h-12 text-base">
             <ShoppingBag size={18} className="mr-2" />
             {product.stock === 0 ? "Out of Stock" : "Add to Bag"}
           </Button>

@@ -24,6 +24,7 @@ func InitPostgres() {
 	sqlDB, err := db.DB()
 	if err != nil {
 		fmt.Println("Failed to get SQL DB instance:", err)
+		panic("Crashing because database cannot connected")
 		return
 	}
 

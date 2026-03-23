@@ -1,6 +1,7 @@
 package service
 
 import (
+	"net/url"
 	"strings"
 
 	"server-gin/global"
@@ -12,6 +13,42 @@ type ProductService struct{}
 
 func NewProductService() *ProductService {
 	return &ProductService{}
+}
+
+func normalizeImagePath(image string) string {
+	value := strings.TrimSpace(image)
+	if value == "" {
+		return ""
+	}
+
+	if parsed, err := url.Parse(value); err == nil && (parsed.Scheme == "http" || parsed.Scheme == "https") {
+		value = parsed.Path
+	}
+
+	value = strings.ReplaceAll(value, "\\", "/")
+	if strings.HasPrefix(value, "/uploads/") {
+		value = strings.TrimPrefix(value, "/uploads")
+	} else if strings.HasPrefix(value, "uploads/") {
+		value = strings.TrimPrefix(value, "uploads")
+	}
+
+	if !strings.HasPrefix(value, "/") {
+		value = "/" + value
+	}
+
+	return value
+}
+
+func normalizeImagePaths(images []string) []string {
+	normalized := make([]string, 0, len(images))
+	for _, image := range images {
+		path := normalizeImagePath(image)
+		if path == "" {
+			continue
+		}
+		normalized = append(normalized, path)
+	}
+	return normalized
 }
 
 func (ps *ProductService) GetProducts(search, category string, brandID uint) ([]model.Product, error) {
@@ -54,7 +91,7 @@ func (ps *ProductService) CreateProduct(req dto.CreateProductRequest) (*model.Pr
 		Sale:        req.Sale,
 		Category:    req.Category,
 		BrandID:     req.BrandID,
-		Images:      req.Images,
+		Images:      normalizeImagePaths(req.Images),
 	}
 
 	if err := global.PostgresDB.Create(&product).Error; err != nil {
@@ -93,7 +130,7 @@ func (ps *ProductService) UpdateProduct(id uint, req dto.UpdateProductRequest) (
 		product.BrandID = req.BrandID
 	}
 	if req.Images != nil {
-		product.Images = *req.Images
+		product.Images = normalizeImagePaths(*req.Images)
 	}
 
 	if err := global.PostgresDB.Save(product).Error; err != nil {

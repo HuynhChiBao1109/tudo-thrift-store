@@ -38,19 +38,14 @@ func (uc *UploadController) UploadProductImages(c *gin.Context) {
 		return
 	}
 
-	scheme := "http"
-	if c.Request.TLS != nil || strings.EqualFold(c.GetHeader("X-Forwarded-Proto"), "https") {
-		scheme = "https"
-	}
-
-	directory := fmt.Sprintf("/uploads/products/%s", dateDir)
+	directory := fmt.Sprintf("/products/%s", dateDir)
 	items := make([]gin.H, 0, len(files))
 	urls := make([]string, 0, len(files))
 
 	for index, file := range files {
 		ext := strings.ToLower(filepath.Ext(file.Filename))
 		fileName := fmt.Sprintf("%d_%d%s", time.Now().UnixNano(), index, ext)
-		relativePath := fmt.Sprintf("/uploads/products/%s/%s", dateDir, fileName)
+		relativePath := fmt.Sprintf("/products/%s/%s", dateDir, fileName)
 		absolutePath := filepath.Join(uploadDir, fileName)
 
 		if err := c.SaveUploadedFile(file, absolutePath); err != nil {
@@ -58,13 +53,12 @@ func (uc *UploadController) UploadProductImages(c *gin.Context) {
 			return
 		}
 
-		fileURL := fmt.Sprintf("%s://%s%s", scheme, c.Request.Host, relativePath)
-		urls = append(urls, fileURL)
+		urls = append(urls, relativePath)
 		items = append(items, gin.H{
 			"filename":  fileName,
 			"directory": directory,
 			"path":      relativePath,
-			"url":       fileURL,
+			"url":       relativePath,
 		})
 	}
 
