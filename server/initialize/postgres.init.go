@@ -25,12 +25,11 @@ func InitPostgres() {
 	if err != nil {
 		fmt.Println("Failed to get SQL DB instance:", err)
 		panic("Crashing because database cannot connected")
-		return
 	}
 
 	if err := sqlDB.Ping(); err != nil {
 		fmt.Println("Failed to ping PostgreSQL:", err)
-		return
+		panic("Crashing because database cannot ping")
 	}
 
 	global.PostgresDB = db
