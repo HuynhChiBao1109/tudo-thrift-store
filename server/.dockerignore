@@ -1,0 +1,13 @@
+bin
+tmp
+vendor
+
+.git
+.gitignore
+.dockerignore
+Dockerfile
+
+*.log
+*.out
+
+uploads

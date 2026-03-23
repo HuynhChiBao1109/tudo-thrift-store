@@ -4,23 +4,21 @@ import Link from "next/link";
 import { ShoppingBag, Search, Menu, X, Heart } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/hooks/useCart";
-import { Button } from "@/components/ui/button";
+import { useCategories } from "@/hooks/useApi";
 import { CartDrawer } from "@/components/store/CartDrawer";
 
 export function StoreNav() {
   const { count } = useCart();
+  const { data: categoriesResponse } = useCategories();
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
-  const categories = [
+  const categoryLinks = [
     { label: "All", href: "/store" },
-    { label: "Tops", href: "/store?category=tops" },
-    { label: "Bottoms", href: "/store?category=bottoms" },
-    { label: "Dresses", href: "/store?category=dresses" },
-    { label: "Outerwear", href: "/store?category=outerwear" },
-    { label: "Shoes", href: "/store?category=shoes" },
-    { label: "Bags", href: "/store?category=bags" },
-    { label: "Accessories", href: "/store?category=accessories" },
+    ...(categoriesResponse?.data || []).map((category) => ({
+      label: category.name,
+      href: `/store?category=${encodeURIComponent(category.name)}`,
+    })),
   ];
 
   return (
@@ -49,13 +47,13 @@ export function StoreNav() {
 
             {/* Desktop nav */}
             <nav className="hidden lg:flex items-center gap-6">
-              {categories.map((c) => (
+              {categoryLinks.map((category) => (
                 <Link
-                  key={c.label}
-                  href={c.href}
+                  key={category.href}
+                  href={category.href}
                   className="text-sm text-gray-600 hover:text-[#003966] font-medium transition-colors"
                 >
-                  {c.label}
+                  {category.label}
                 </Link>
               ))}
             </nav>
@@ -83,14 +81,14 @@ export function StoreNav() {
         {/* Mobile menu */}
         {menuOpen && (
           <div className="lg:hidden border-t border-[#dfd2bd] bg-[#ffffff] px-4 py-3">
-            {categories.map((c) => (
+            {categoryLinks.map((category) => (
               <Link
-                key={c.label}
-                href={c.href}
+                key={category.href}
+                href={category.href}
                 className="block py-2 text-sm text-gray-600 hover:text-[#003966] font-medium"
                 onClick={() => setMenuOpen(false)}
               >
-                {c.label}
+                {category.label}
               </Link>
             ))}
           </div>
