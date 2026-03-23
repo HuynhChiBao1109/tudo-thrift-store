@@ -25,15 +25,12 @@ export function StoreNav() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-[#fffaf1] border-b border-[#dfd2bd] shadow-sm">
+      <header className="sticky top-0 z-40 bg-[#ffffff] border-b border-[#dfd2bd] shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           {/* Top bar */}
           <div className="flex items-center justify-between h-16">
             {/* Mobile menu button */}
-            <button
-              className="lg:hidden p-2 text-[#003966]"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
+            <button className="lg:hidden p-2 text-[#003966]" onClick={() => setMenuOpen(!menuOpen)}>
               {menuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
 
@@ -65,10 +62,7 @@ export function StoreNav() {
 
             {/* Actions */}
             <div className="flex items-center gap-1">
-              <Link
-                href="/store"
-                className="p-2 text-gray-600 hover:text-[#003966]"
-              >
+              <Link href="/store" className="p-2 text-gray-600 hover:text-[#003966]">
                 <Search size={20} />
               </Link>
               <button
@@ -88,7 +82,7 @@ export function StoreNav() {
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="lg:hidden border-t border-[#dfd2bd] bg-[#fffaf1] px-4 py-3">
+          <div className="lg:hidden border-t border-[#dfd2bd] bg-[#ffffff] px-4 py-3">
             {categories.map((c) => (
               <Link
                 key={c.label}

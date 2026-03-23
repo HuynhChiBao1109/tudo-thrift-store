@@ -4,11 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { AdminSidebar } from "@/components/layout/AdminSidebar";
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [ready, setReady] = useState(false);
@@ -35,7 +31,7 @@ export default function AdminLayout({
   }, [pathname, router]);
 
   if (!ready) {
-    return <div className="min-h-screen bg-[#f8f2e8]" />;
+    return <div className="min-h-screen bg-[#ffffff]" />;
   }
 
   if (pathname === "/admin") {
@@ -43,7 +39,7 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-[#f8f2e8]">
+    <div className="flex min-h-screen bg-[#ffffff]">
       <AdminSidebar />
       <main className="flex-1 overflow-auto">{children}</main>
     </div>

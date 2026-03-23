@@ -35,28 +35,20 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f8f2e8] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#ffffff] px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle
-            className="text-2xl text-[#003966]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <CardTitle className="text-2xl text-[#003966]" style={{ fontFamily: "'Playfair Display', serif" }}>
             Admin Login
           </CardTitle>
-          <p className="text-sm text-gray-500">
-            Sign in to access product management
-          </p>
+          <p className="text-sm text-gray-500">Sign in to access product management</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="username">Username</Label>
               <div className="relative mt-1">
-                <User
-                  size={16}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                />
+                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 " />
                 <Input
                   id="username"
                   value={username}
@@ -70,10 +62,7 @@ export default function AdminLoginPage() {
             <div>
               <Label htmlFor="password">Password</Label>
               <div className="relative mt-1">
-                <Lock
-                  size={16}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                />
+                <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <Input
                   id="password"
                   type="password"

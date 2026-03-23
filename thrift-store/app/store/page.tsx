@@ -8,13 +8,7 @@ import { ProductCard } from "@/components/store/ProductCard";
 import { FilterSidebar } from "@/components/store/FilterSidebar";
 import { ProductCardSkeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ProductFilters } from "@/types";
 export default function StorePage() {
   const [filters, setFilters] = useState<ProductFilters>({});
@@ -24,8 +18,7 @@ export default function StorePage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     setFilters({
-      category:
-        (params.get("category") as ProductFilters["category"]) || undefined,
+      category: (params.get("category") as ProductFilters["category"]) || undefined,
       featured: params.get("featured") === "true" ? true : undefined,
     });
   }, []);
@@ -43,31 +36,22 @@ export default function StorePage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       {/* Page header */}
       <div className="mb-6">
-        <h1
-          className="text-3xl font-bold text-[#003966]"
-          style={{ fontFamily: "'Playfair Display', serif" }}
-        >
+        <h1 className="text-3xl font-bold text-[#003966]" style={{ fontFamily: "'Playfair Display', serif" }}>
           {filters.category
-            ? filters.category.charAt(0).toUpperCase() +
-              filters.category.slice(1)
+            ? filters.category.charAt(0).toUpperCase() + filters.category.slice(1)
             : filters.featured
               ? "Featured Picks"
               : "All Items"}
         </h1>
         <p className="text-gray-500 text-sm mt-1">
-          {isLoading
-            ? "Loading..."
-            : `${total} item${total !== 1 ? "s" : ""} found`}
+          {isLoading ? "Loading..." : `${total} item${total !== 1 ? "s" : ""} found`}
         </p>
       </div>
 
       {/* Search + Sort bar */}
       <div className="flex gap-3 mb-6">
         <div className="relative flex-1">
-          <Search
-            size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-          />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -107,11 +91,7 @@ export default function StorePage() {
       <div className="flex gap-8">
         {/* Filters - desktop always visible */}
         <div className={`${showFilters ? "block" : "hidden"} lg:block`}>
-          <FilterSidebar
-            filters={filters}
-            onChange={setFilters}
-            brands={brands}
-          />
+          <FilterSidebar filters={filters} onChange={setFilters} brands={brands} />
         </div>
 
         {/* Grid */}
