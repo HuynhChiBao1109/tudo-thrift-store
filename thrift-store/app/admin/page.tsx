@@ -48,7 +48,7 @@ export default function AdminLoginPage() {
             <div>
               <Label htmlFor="username">Username</Label>
               <div className="relative mt-1">
-                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 " />
+                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <Input
                   id="username"
                   value={username}
