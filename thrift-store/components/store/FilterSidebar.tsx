@@ -1,29 +1,14 @@
 "use client";
 
-import {
-  Brand,
-  ProductFilters,
-  ProductCategory,
-  ProductCondition,
-  ProductSize,
-} from "@/types";
+import { Category, Brand, ProductFilters, ProductCondition, ProductSize } from "@/types";
 import { cn } from "@/lib/utils";
 
 interface FilterSidebarProps {
   filters: ProductFilters;
   onChange: (filters: ProductFilters) => void;
   brands: Brand[];
+  categories: Category[];
 }
-
-const categories: { label: string; value: ProductCategory }[] = [
-  { label: "Tops", value: "tops" },
-  { label: "Bottoms", value: "bottoms" },
-  { label: "Dresses", value: "dresses" },
-  { label: "Outerwear", value: "outerwear" },
-  { label: "Shoes", value: "shoes" },
-  { label: "Bags", value: "bags" },
-  { label: "Accessories", value: "accessories" },
-];
 
 const conditions: { label: string; value: ProductCondition }[] = [
   { label: "Like New", value: "like-new" },
@@ -34,15 +19,8 @@ const conditions: { label: string; value: ProductCondition }[] = [
 
 const sizes: ProductSize[] = ["XS", "S", "M", "L", "XL", "XXL", "One Size"];
 
-export function FilterSidebar({
-  filters,
-  onChange,
-  brands,
-}: FilterSidebarProps) {
-  const toggle = <K extends keyof ProductFilters>(
-    key: K,
-    value: ProductFilters[K],
-  ) => {
+export function FilterSidebar({ filters, onChange, brands, categories }: FilterSidebarProps) {
+  const toggle = <K extends keyof ProductFilters>(key: K, value: ProductFilters[K]) => {
     onChange({
       ...filters,
       [key]: filters[key] === value ? undefined : value,
@@ -53,53 +31,41 @@ export function FilterSidebar({
   const reset = () => onChange({});
 
   const hasFilters =
-    filters.category ||
-    filters.brandId ||
-    filters.condition ||
-    filters.size ||
-    filters.minPrice ||
-    filters.maxPrice;
+    filters.category || filters.brandId || filters.condition || filters.size || filters.minPrice || filters.maxPrice;
 
   return (
     <aside className="w-52 shrink-0">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-[#003966]">Filters</h3>
         {hasFilters && (
-          <button
-            onClick={reset}
-            className="text-xs text-gray-500 hover:text-gray-700"
-          >
+          <button onClick={reset} className="text-xs text-gray-500 hover:text-gray-700">
             Clear all
           </button>
         )}
       </div>
 
       <div className="mb-6">
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
-          Category
-        </h4>
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Category</h4>
         <div className="space-y-1">
           {categories.map((item) => (
             <button
-              key={item.value}
-              onClick={() => toggle("category", item.value)}
+              key={item.id}
+              onClick={() => toggle("category", item.name)}
               className={cn(
                 "w-full text-left px-2 py-1.5 rounded-md text-sm transition-colors",
-                filters.category === item.value
+                filters.category === item.name
                   ? "bg-[#003966] text-white font-medium"
                   : "text-gray-700 hover:bg-amber-50",
               )}
             >
-              {item.label}
+              {item.name}
             </button>
           ))}
         </div>
       </div>
 
       <div className="mb-6">
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
-          Brand
-        </h4>
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Brand</h4>
         <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
           {brands.map((brand) => (
             <button
@@ -119,9 +85,7 @@ export function FilterSidebar({
       </div>
 
       <div className="mb-6">
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
-          Condition
-        </h4>
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Condition</h4>
         <div className="space-y-1">
           {conditions.map((item) => (
             <button
@@ -141,9 +105,7 @@ export function FilterSidebar({
       </div>
 
       <div className="mb-6">
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
-          Size
-        </h4>
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Size</h4>
         <div className="grid grid-cols-3 gap-1">
           {sizes.map((size) => (
             <button
@@ -163,9 +125,7 @@ export function FilterSidebar({
       </div>
 
       <div className="mb-6">
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
-          Price
-        </h4>
+        <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Price</h4>
         <div className="space-y-1">
           {[
             { label: "Under $30", min: 0, max: 30 },
@@ -178,10 +138,8 @@ export function FilterSidebar({
               onClick={() =>
                 onChange({
                   ...filters,
-                  minPrice:
-                    filters.minPrice === range.min ? undefined : range.min,
-                  maxPrice:
-                    filters.maxPrice === range.max ? undefined : range.max,
+                  minPrice: filters.minPrice === range.min ? undefined : range.min,
+                  maxPrice: filters.maxPrice === range.max ? undefined : range.max,
                   page: 1,
                 })
               }

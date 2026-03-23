@@ -6,7 +6,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
       <StoreNav />
       <main>{children}</main>
       <footer className="border-t border-[#dfd2bd] mt-16 py-8 text-center text-gray-500 text-sm bg-[#ffffff]">
-        <p>© 2024 ReThread. Sustainable fashion for everyone.</p>
+        <p>© 2024 Tudo Thrift Store. Sustainable fashion for everyone.</p>
       </footer>
     </div>
   );

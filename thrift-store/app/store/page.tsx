@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useEffect } from "react";
-import { useProducts, useBrands } from "@/hooks/useApi";
+import { useProducts, useBrands, useCategories } from "@/hooks/useApi";
 import { ProductCard } from "@/components/store/ProductCard";
 import { FilterSidebar } from "@/components/store/FilterSidebar";
 import { ProductCardSkeleton } from "@/components/ui/skeleton";
@@ -28,7 +28,9 @@ export default function StorePage() {
     search: search || undefined,
   });
   const { data: brandsResponse } = useBrands();
+  const { data: categoriesResponse } = useCategories();
   const brands = brandsResponse?.data || [];
+  const categories = categoriesResponse?.data || [];
   const products = data?.data || [];
   const total = data?.total || 0;
 
@@ -91,7 +93,7 @@ export default function StorePage() {
       <div className="flex gap-8">
         {/* Filters - desktop always visible */}
         <div className={`${showFilters ? "block" : "hidden"} lg:block`}>
-          <FilterSidebar filters={filters} onChange={setFilters} brands={brands} />
+          <FilterSidebar filters={filters} onChange={setFilters} brands={brands} categories={categories} />
         </div>
 
         {/* Grid */}

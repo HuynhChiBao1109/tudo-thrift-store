@@ -1,18 +1,6 @@
 export type ProductCondition = "like-new" | "good" | "fair" | "worn";
-export type ProductCategory =
-  | "tops"
-  | "bottoms"
-  | "dresses"
-  | "outerwear"
-  | "shoes"
-  | "accessories"
-  | "bags";
-export type OrderStatus =
-  | "pending"
-  | "confirmed"
-  | "shipped"
-  | "delivered"
-  | "cancelled";
+export type ProductCategory = string;
+export type OrderStatus = "pending" | "confirmed" | "shipped" | "delivered" | "cancelled";
 export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "One Size";
 
 export interface Product {
@@ -36,6 +24,13 @@ export interface Product {
 }
 
 export interface Brand {
+  id: string;
+  name: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface Category {
   id: string;
   name: string;
   createdAt?: string;

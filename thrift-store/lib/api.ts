@@ -6,6 +6,7 @@ import {
   ProductFilters,
   ApiResponse,
   Brand,
+  Category,
   ProductPayload,
   AuthUser,
 } from "@/types";
@@ -551,6 +552,72 @@ export const brandsApi = {
 
   delete: async (id: string): Promise<void> => {
     await apiRequest(`/brands/${id}`, {
+      method: "DELETE",
+    });
+  },
+};
+
+export const categoriesApi = {
+  getAll: async (): Promise<ApiResponse<Category[]>> => {
+    const data = await apiRequest<
+      Array<{
+        id: number | string;
+        name: string;
+        createdAt?: string;
+        updatedAt?: string;
+      }>
+    >("/categories");
+
+    const mapped = data.map((category) => ({
+      id: String(category.id),
+      name: category.name,
+      createdAt: category.createdAt,
+      updatedAt: category.updatedAt,
+    }));
+
+    return { data: mapped, total: mapped.length };
+  },
+
+  create: async (name: string): Promise<Category> => {
+    const data = await apiRequest<{
+      id: number | string;
+      name: string;
+      createdAt?: string;
+      updatedAt?: string;
+    }>("/categories", {
+      method: "POST",
+      body: JSON.stringify({ name }),
+    });
+
+    return {
+      id: String(data.id),
+      name: data.name,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+    };
+  },
+
+  update: async (id: string, name: string): Promise<Category> => {
+    const data = await apiRequest<{
+      id: number | string;
+      name: string;
+      createdAt?: string;
+      updatedAt?: string;
+    }>(`/categories/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ name }),
+    });
+
+    return {
+      id: String(data.id),
+      name: data.name,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+    };
+  },
+
+  delete: async (id: string): Promise<void> => {
+    await apiRequest(`/categories/${id}`, {
       method: "DELETE",
     });
   },

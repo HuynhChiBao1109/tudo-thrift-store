@@ -12,6 +12,7 @@ import {
   ExternalLink,
   TrendingUp,
   Tag,
+  FolderTree,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +20,7 @@ const navItems = [
   { label: "Dashboard", href: "/admin/analytics", icon: LayoutDashboard },
   { label: "Products", href: "/admin/products", icon: Package },
   { label: "Brands", href: "/admin/brands", icon: Tag },
+  { label: "Categories", href: "/admin/categories", icon: FolderTree },
   { label: "Orders", href: "/admin/orders", icon: ShoppingCart },
   { label: "Customers", href: "/admin/customers", icon: Users },
   { label: "Analytics", href: "/admin/analytics", icon: TrendingUp },
@@ -47,7 +49,7 @@ export function AdminSidebar() {
               className="text-white font-bold text-lg leading-none"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              ReThread
+              Tudo Thrift Store
             </p>
             <p className="text-blue-200 text-xs mt-0.5">Admin Panel</p>
           </div>
@@ -57,18 +59,14 @@ export function AdminSidebar() {
       {/* Nav */}
       <nav className="flex-1 p-4 space-y-1">
         {navItems.map((item) => {
-          const active =
-            pathname === item.href ||
-            (item.href !== "/admin" && pathname.startsWith(item.href));
+          const active = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
           return (
             <Link
               key={item.label}
               href={item.href}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
-                active
-                  ? "bg-white text-[#003966]"
-                  : "text-blue-100 hover:bg-white/10 hover:text-white",
+                active ? "bg-white text-[#003966]" : "text-blue-100 hover:bg-white/10 hover:text-white",
               )}
             >
               <item.icon size={18} />

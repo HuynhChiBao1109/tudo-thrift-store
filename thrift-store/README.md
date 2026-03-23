@@ -1,4 +1,4 @@
-# ReThread – Second Hand Clothes Store
+# Tudo Thrift Store – Second Hand Clothes Store
 
 A full-featured Next.js 14 e-commerce app for a second-hand clothing store, with a complete admin panel.
 
@@ -15,12 +15,14 @@ A full-featured Next.js 14 e-commerce app for a second-hand clothing store, with
 ## Features
 
 ### Store (Customer-facing)
+
 - 🏠 **Landing page** – hero, features, CTA
 - 🛍️ **Product listing** – filter by category, condition, size, price; search; sort
 - 📦 **Product detail** – images, condition badge, add to cart
 - 🛒 **Cart drawer** – slide-in cart with quantity controls
 
 ### Admin Panel
+
 - 📊 **Dashboard** – revenue stats, revenue chart, top products, recent orders
 - 📦 **Products** – table with search, add/edit/delete with form dialog
 - 🛒 **Orders** – status overview cards, inline status update dropdown
@@ -79,26 +81,26 @@ All fake API calls are in `lib/api.ts`. Each function follows this pattern:
 // Current (fake)
 export const productsApi = {
   getAll: async (filters?) => {
-    await delay(600);  // simulate latency
+    await delay(600); // simulate latency
     return { data: mockProducts, total: mockProducts.length };
-  }
-}
+  },
+};
 
 // Replace with (real)
 export const productsApi = {
   getAll: async (filters?) => {
     const res = await fetch(`/api/products?${new URLSearchParams(filters)}`);
     return res.json();
-  }
-}
+  },
+};
 ```
 
 The React Query hooks in `hooks/useApi.ts` don't need any changes.
 
 ## Colors
 
-| Name | Hex |
-|------|-----|
+| Name            | Hex       |
+| --------------- | --------- |
 | Primary (brand) | `#06365b` |
-| White | `#ffffff` |
-| Primary Light | `#3387c7` |
+| White           | `#ffffff` |
+| Primary Light   | `#3387c7` |

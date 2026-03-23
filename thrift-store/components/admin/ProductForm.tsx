@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useCreateProduct, useUpdateProduct, useBrands, useUploadProductImages } from "@/hooks/useApi";
-import { Product, ProductCategory, ProductPayload } from "@/types";
+import { useCreateProduct, useUpdateProduct, useBrands, useCategories, useUploadProductImages } from "@/hooks/useApi";
+import { Product, ProductPayload } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,7 +23,7 @@ const defaultForm = {
   description: "",
   price: 0,
   sale: 0,
-  category: "tops" as ProductCategory,
+  category: "",
   brandId: "",
   images: [] as string[],
 };
@@ -36,7 +36,9 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
   const update = useUpdateProduct();
   const uploadImages = useUploadProductImages();
   const { data: brandsResponse } = useBrands();
+  const { data: categoriesResponse } = useCategories();
   const brands = brandsResponse?.data || [];
+  const categories = categoriesResponse?.data || [];
 
   const isEditing = !!product;
   const isPending = create.isPending || update.isPending || uploadImages.isPending;
@@ -94,6 +96,11 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
 
     if (!form.brandId) {
       toast.error("Please select a brand");
+      return;
+    }
+
+    if (!form.category) {
+      toast.error("Please select a category");
       return;
     }
 
@@ -183,14 +190,12 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
               <Label>Category</Label>
               <Select value={form.category} onValueChange={(v) => set("category", v)}>
                 <SelectTrigger>
-                  <SelectValue />
+                  <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {(
-                    ["tops", "bottoms", "dresses", "outerwear", "shoes", "bags", "accessories"] as ProductCategory[]
-                  ).map((c) => (
-                    <SelectItem key={c} value={c}>
-                      {c.charAt(0).toUpperCase() + c.slice(1)}
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={category.name}>
+                      {category.name}
                     </SelectItem>
                   ))}
                 </SelectContent>

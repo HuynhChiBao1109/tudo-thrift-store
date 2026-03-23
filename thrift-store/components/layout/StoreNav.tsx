@@ -43,7 +43,7 @@ export function StoreNav() {
                 className="text-xl font-bold text-[#003966] hidden sm:block"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                ReThread
+                Tudo Thrift Store
               </span>
             </Link>
 

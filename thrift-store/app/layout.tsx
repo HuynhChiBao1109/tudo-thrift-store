@@ -1,10 +1,10 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import { Providers } from './providers';
+import type { Metadata } from "next";
+import "./globals.css";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: 'ReThread – Second Hand Clothes',
-  description: 'Sustainable fashion. Pre-loved clothes, new stories.',
+  title: "Tudo Thrift Store – Second Hand Clothes",
+  description: "Sustainable fashion. Pre-loved clothes, new stories.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

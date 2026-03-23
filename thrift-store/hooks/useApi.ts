@@ -5,6 +5,7 @@ import {
   customersApi,
   dashboardApi,
   brandsApi,
+  categoriesApi,
   authApi,
   uploadsApi,
 } from "@/lib/api";
@@ -21,6 +22,7 @@ export const queryKeys = {
   customer: (id: string) => ["customer", id] as const,
   dashboard: () => ["dashboard"] as const,
   brands: () => ["brands"] as const,
+  categories: () => ["categories"] as const,
 };
 
 // ─── Product Hooks ────────────────────────────────────────────────────────────
@@ -53,8 +55,7 @@ export function useCreateProduct() {
 export function useUpdateProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<ProductPayload> }) =>
-      productsApi.update(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Partial<ProductPayload> }) => productsApi.update(id, data),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
       queryClient.invalidateQueries({ queryKey: queryKeys.product(id) });
@@ -92,8 +93,7 @@ export function useOrder(id: string) {
 export function useUpdateOrderStatus() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, status }: { id: string; status: Order["status"] }) =>
-      ordersApi.updateStatus(id, status),
+    mutationFn: ({ id, status }: { id: string; status: Order["status"] }) => ordersApi.updateStatus(id, status),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.orders() });
     },
@@ -116,6 +116,43 @@ export function useBrands() {
   });
 }
 
+export function useCategories() {
+  return useQuery({
+    queryKey: queryKeys.categories(),
+    queryFn: () => categoriesApi.getAll(),
+  });
+}
+
+export function useCreateCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (name: string) => categoriesApi.create(name),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+    },
+  });
+}
+
+export function useUpdateCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, name }: { id: string; name: string }) => categoriesApi.update(id, name),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+    },
+  });
+}
+
+export function useDeleteCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => categoriesApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
+    },
+  });
+}
+
 export function useCreateBrand() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -129,8 +166,7 @@ export function useCreateBrand() {
 export function useUpdateBrand() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, name }: { id: string; name: string }) =>
-      brandsApi.update(id, name),
+    mutationFn: ({ id, name }: { id: string; name: string }) => brandsApi.update(id, name),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.brands() });
     },
@@ -149,13 +185,7 @@ export function useDeleteBrand() {
 
 export function useAdminLogin() {
   return useMutation({
-    mutationFn: ({
-      username,
-      password,
-    }: {
-      username: string;
-      password: string;
-    }) => authApi.login(username, password),
+    mutationFn: ({ username, password }: { username: string; password: string }) => authApi.login(username, password),
   });
 }
 

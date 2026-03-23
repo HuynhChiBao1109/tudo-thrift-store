@@ -36,7 +36,7 @@ func InitPostgres() {
 	global.PostgresDB = db
 	fmt.Println("Connected to PostgreSQL successfully")
 
-	if err := db.AutoMigrate(&model.User{}, &model.Brand{}, &model.Product{}); err != nil {
+	if err := db.AutoMigrate(&model.User{}, &model.Brand{}, &model.Category{}, &model.Product{}); err != nil {
 		fmt.Println("Failed to migrate models:", err)
 		return
 	}

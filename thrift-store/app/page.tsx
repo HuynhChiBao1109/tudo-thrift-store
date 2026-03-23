@@ -10,24 +10,15 @@ export default function HomePage() {
           <div className="w-8 h-8 bg-[#003966] rounded-full flex items-center justify-center">
             <Heart size={14} className="text-white fill-white" />
           </div>
-          <span
-            className="text-xl font-bold text-[#003966]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            ReThread
+          <span className="text-xl font-bold text-[#003966]" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Tudo Thrift Store
           </span>
         </div>
         <nav className="hidden md:flex items-center gap-6 text-sm text-gray-600">
-          <Link
-            href="/store"
-            className="hover:text-[#003966] transition-colors"
-          >
+          <Link href="/store" className="hover:text-[#003966] transition-colors">
             Shop
           </Link>
-          <Link
-            href="/store?featured=true"
-            className="hover:text-[#003966] transition-colors"
-          >
+          <Link href="/store?featured=true" className="hover:text-[#003966] transition-colors">
             Featured
           </Link>
         </nav>
@@ -64,12 +55,11 @@ export default function HomePage() {
               className="text-5xl md:text-6xl font-bold leading-tight mb-6"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              Pre-loved clothes,{" "}
-              <em className="italic text-amber-100">new stories</em>
+              Pre-loved clothes, <em className="italic text-amber-100">new stories</em>
             </h1>
             <p className="text-amber-50/90 text-lg mb-8 leading-relaxed">
-              Discover unique second-hand fashion at unbeatable prices. Give
-              clothes a second life while looking effortlessly stylish.
+              Discover unique second-hand fashion at unbeatable prices. Give clothes a second life while looking
+              effortlessly stylish.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
@@ -93,10 +83,7 @@ export default function HomePage() {
               "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=300&q=80",
               "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=300&q=80",
             ].map((src, i) => (
-              <div
-                key={i}
-                className={`rounded-2xl overflow-hidden ${i === 1 ? "mt-6" : ""} ${i === 2 ? "-mt-6" : ""}`}
-              >
+              <div key={i} className={`rounded-2xl overflow-hidden ${i === 1 ? "mt-6" : ""} ${i === 2 ? "-mt-6" : ""}`}>
                 <img src={src} alt="" className="w-full h-40 object-cover" />
               </div>
             ))}
@@ -128,15 +115,10 @@ export default function HomePage() {
               <div className="w-12 h-12 bg-[#003966]/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <feat.icon size={22} className="text-[#003966]" />
               </div>
-              <h3
-                className="font-bold text-gray-900 mb-2"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
+              <h3 className="font-bold text-gray-900 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
                 {feat.title}
               </h3>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                {feat.desc}
-              </p>
+              <p className="text-gray-500 text-sm leading-relaxed">{feat.desc}</p>
             </div>
           ))}
         </div>
@@ -145,15 +127,10 @@ export default function HomePage() {
       {/* CTA */}
       <section className="bg-amber-50/60 py-16">
         <div className="max-w-2xl mx-auto text-center px-6">
-          <h2
-            className="text-3xl font-bold text-[#003966] mb-4"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h2 className="text-3xl font-bold text-[#003966] mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
             Ready to find your next favourite piece?
           </h2>
-          <p className="text-gray-500 mb-8">
-            New arrivals added every week. Shop before they're gone.
-          </p>
+          <p className="text-gray-500 mb-8">New arrivals added every week. Shop before they're gone.</p>
           <Link
             href="/store"
             className="inline-flex items-center gap-2 bg-[#003966] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#003966]/90 transition-colors text-lg"
@@ -164,7 +141,7 @@ export default function HomePage() {
       </section>
 
       <footer className="border-t border-gray-100 py-8 text-center text-gray-400 text-sm">
-        <p>© 2024 ReThread. Sustainable fashion for everyone.</p>
+        <p>© 2024 Tudo Thrift Store. Sustainable fashion for everyone.</p>
       </footer>
     </div>
   );

@@ -16,6 +16,7 @@ func NewRouter() *Router {
 func (r *Router) InitRoutes(engine *gin.Engine) {
 	authController := controller.NewAuthController()
 	brandController := controller.NewBrandController()
+	categoryController := controller.NewCategoryController()
 	productController := controller.NewProductController()
 	uploadController := controller.NewUploadController()
 
@@ -35,6 +36,17 @@ func (r *Router) InitRoutes(engine *gin.Engine) {
 			adminBrands.POST("", brandController.Create)
 			adminBrands.PUT("/:brandId", brandController.Update)
 			adminBrands.DELETE("/:brandId", brandController.Delete)
+		}
+
+		categories := api.Group("/categories")
+		{
+			categories.GET("", categoryController.GetList)
+			categories.GET("/:categoryId", categoryController.GetDetail)
+
+			adminCategories := categories.Group("", middleware.AuthRequired(), middleware.AdminOnly())
+			adminCategories.POST("", categoryController.Create)
+			adminCategories.PUT("/:categoryId", categoryController.Update)
+			adminCategories.DELETE("/:categoryId", categoryController.Delete)
 		}
 
 		uploads := api.Group("/uploads", middleware.AuthRequired(), middleware.AdminOnly())
