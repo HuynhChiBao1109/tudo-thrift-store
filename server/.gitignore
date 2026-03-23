@@ -40,3 +40,5 @@ dist/
 gin-bin
 
 config/production.yaml
+
+uploads
