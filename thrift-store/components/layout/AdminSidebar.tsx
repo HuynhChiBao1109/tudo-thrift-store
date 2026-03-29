@@ -1,26 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  LayoutDashboard,
-  Package,
-  ShoppingCart,
-  Users,
-  Heart,
-  LogOut,
-  ExternalLink,
-  TrendingUp,
-  Tag,
-  FolderTree,
-} from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, ExternalLink, TrendingUp, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Dashboard", href: "/admin/analytics", icon: LayoutDashboard },
   { label: "Products", href: "/admin/products", icon: Package },
   { label: "Brands", href: "/admin/brands", icon: Tag },
-  { label: "Categories", href: "/admin/categories", icon: FolderTree },
   { label: "Orders", href: "/admin/orders", icon: ShoppingCart },
   { label: "Customers", href: "/admin/customers", icon: Users },
   { label: "Analytics", href: "/admin/analytics", icon: TrendingUp },
@@ -39,21 +28,17 @@ export function AdminSidebar() {
   return (
     <aside className="w-64 bg-[#003966] min-h-screen flex flex-col">
       {/* Logo */}
-      <div className="p-6 border-b border-white/10">
+      <div className="p-6 border-b border-[#dfd2bd]/30">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center">
-            <Heart size={16} className="text-[#003966] fill-[#003966]" />
-          </div>
-          <div>
-            <p
-              className="text-white font-bold text-lg leading-none"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Tudo4Noreason
-            </p>
-            <p className="text-blue-200 text-xs mt-0.5">Admin Panel</p>
-          </div>
+          <Image
+            src="/images/logo.jpg"
+            alt="Tudo4NoReason"
+            width={150}
+            height={56}
+            className="h-12 w-auto object-contain"
+          />
         </div>
+        <p className="text-blue-200 text-xs mt-2">Admin Panel</p>
       </div>
 
       {/* Nav */}
@@ -69,7 +54,7 @@ export function AdminSidebar() {
                 active ? "bg-white text-[#003966]" : "text-blue-100 hover:bg-white/10 hover:text-white",
               )}
             >
-              <item.icon size={18} />
+              <item.icon size={18} className={cn(active ? "text-[#003966]" : "text-[#dfd2bd]")} />
               {item.label}
             </Link>
           );

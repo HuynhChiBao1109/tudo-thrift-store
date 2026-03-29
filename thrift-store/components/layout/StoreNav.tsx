@@ -1,29 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { Flower2 } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
+import { ChevronRight } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
-import { useBrands, useCategories } from "@/hooks/useApi";
+import { useBrands } from "@/hooks/useApi";
 import { CartDrawer } from "@/components/store/CartDrawer";
+import { BRAND_NAME, SHOP_SECTIONS } from "@/lib/storeContent";
 
-interface StoreNavProps {
-  showIcon?: boolean;
-}
-
-export function StoreNav({ showIcon = true }: StoreNavProps) {
+export function StoreNav() {
   const { count } = useCart();
-  const { data: categoriesResponse } = useCategories();
   const { data: brandsResponse } = useBrands();
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
-  const categoryLinks = [
-    { label: "All", href: "/store" },
-    ...(categoriesResponse?.data || []).map((category) => ({
-      label: category.name,
-      href: `/store?category=${encodeURIComponent(category.name)}`,
-    })),
+  const topLinks = [
+    { label: "Áo dài", href: "/store?category=Top&search=áo dài" },
+    { label: "Áo khoác", href: "/store?category=Top&search=áo khoác" },
+  ];
+
+  const bottomLinks = [
+    { label: "Quần dài", href: "/store?category=Bottom&search=quần dài" },
+    { label: "Quần đùi", href: "/store?category=Bottom&search=quần đùi" },
+  ];
+
+  const accessoriesLinks = [
+    { label: "Dây nịt", href: "/store?category=Accessories&search=dây nịt" },
+    { label: "Phụ kiện", href: "/store?category=Accessories&search=phụ kiện" },
   ];
 
   const brandLinks = (brandsResponse?.data || []).map((brand) => ({
@@ -31,87 +35,81 @@ export function StoreNav({ showIcon = true }: StoreNavProps) {
     href: `/store?brandId=${encodeURIComponent(brand.id)}`,
   }));
 
+  const shopHoverGroups = [
+    { label: "Top", href: SHOP_SECTIONS[0]?.href || "/store?category=Top", links: topLinks },
+    { label: "Bottom", href: SHOP_SECTIONS[1]?.href || "/store?category=Bottom", links: bottomLinks },
+    {
+      label: "Accessories",
+      href: SHOP_SECTIONS[2]?.href || "/store?category=Accessories",
+      links: accessoriesLinks,
+    },
+    { label: "Brand", href: "/store", links: brandLinks },
+  ];
+
   return (
     <>
-      <header className="sticky top-0 z-40 bg-[#fffdf8] border-b border-[#dfd2bd] shadow-sm">
+      <header className="sticky top-0 z-40 bg-white border-b border-[#d4d6d9] shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between h-20">
-            <Link href="/" className="flex items-center gap-2.5 shrink-0">
-              {showIcon && (
-                <div className="w-9 h-9 bg-[#003966] rounded-full flex items-center justify-center shadow-sm">
-                  <Flower2 size={15} className="text-white" />
-                </div>
-              )}
-              <span
-                className="text-2xl sm:text-3xl text-[#003966] tracking-wide"
-                style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
-              >
-                Tudo4Noreason
-              </span>
+          <div className="flex items-center justify-between h-28">
+            <Link href="/" className="flex items-center shrink-0">
+              <Image
+                src="/images/logo.jpg"
+                alt={BRAND_NAME}
+                width={280}
+                height={96}
+                className="h-24 w-auto object-contain"
+                priority
+              />
             </Link>
 
-            <nav className="hidden lg:flex items-center gap-7 text-lg text-gray-800">
+            <nav className="hidden lg:flex items-center gap-6 text-sm text-[#111111]">
               <div className="relative group">
-                <button
-                  className="font-semibold hover:text-[#003966] transition-colors tracking-wide"
-                  style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
-                >
-                  SHOP ▼
+                <button className="font-medium hover:text-[#747F86] transition-colors tracking-wide cursor-pointer">
+                  SHOP
                 </button>
 
-                <div className="absolute left-0 top-full mt-2 w-56 rounded-xl border border-[#dfd2bd] bg-white shadow-lg p-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all z-20">
-                  {categoryLinks.map((category) => (
-                    <Link
-                      key={category.href}
-                      href={category.href}
-                      className="block px-3 py-2 rounded-lg text-base text-gray-700 hover:bg-amber-50 hover:text-[#003966]"
-                      style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
-                    >
-                      {category.label}
-                    </Link>
-                  ))}
+                <div className="absolute left-0 top-full pt-2 z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all">
+                  <div className="w-56 rounded-xl border border-[#d4d6d9] bg-white shadow-lg p-2">
+                    {shopHoverGroups.map((group) => (
+                      <div key={group.label} className="relative group/submenu">
+                        <Link
+                          href={group.href}
+                          className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-[#f3f4f5] hover:text-[#747F86]"
+                        >
+                          {group.label}
+                          <ChevronRight size={14} />
+                        </Link>
+
+                        <div className="absolute left-full top-0 ml-1 min-w-52 rounded-xl border border-[#d4d6d9] bg-white shadow-lg p-2 opacity-0 pointer-events-none group-hover/submenu:opacity-100 group-hover/submenu:pointer-events-auto transition-all">
+                          {group.links.length === 0 ? (
+                            <p className="px-3 py-2 text-sm text-gray-400">No items</p>
+                          ) : (
+                            group.links.map((item) => (
+                              <Link
+                                key={`${group.label}-${item.href}`}
+                                href={item.href}
+                                className="block px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-[#f3f4f5] hover:text-[#747F86]"
+                              >
+                                {item.label}
+                              </Link>
+                            ))
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              <div className="relative group">
-                <button
-                  className="font-semibold hover:text-[#003966] transition-colors tracking-wide"
-                  style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
-                >
-                  BRAND ▼
-                </button>
-
-                <div className="absolute left-0 top-full mt-2 w-56 rounded-xl border border-[#dfd2bd] bg-white shadow-lg p-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all z-20 max-h-80 overflow-y-auto">
-                  {brandLinks.length === 0 ? (
-                    <p className="px-3 py-2 text-sm text-gray-400">No brands</p>
-                  ) : (
-                    brandLinks.map((brand) => (
-                      <Link
-                        key={brand.href}
-                        href={brand.href}
-                        className="block px-3 py-2 rounded-lg text-base text-gray-700 hover:bg-amber-50 hover:text-[#003966]"
-                        style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
-                      >
-                        {brand.label}
-                      </Link>
-                    ))
-                  )}
-                </div>
-              </div>
-
-              <Link
-                href="/store/about"
-                className="font-semibold hover:text-[#003966] transition-colors tracking-wide"
-                style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
-              >
+              <Link href="/store/about" className="font-medium hover:text-[#747F86] transition-colors tracking-wide">
                 ABOUT US
               </Link>
 
-              <Link
-                href="/store/contact"
-                className="font-semibold hover:text-[#003966] transition-colors tracking-wide"
-                style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
-              >
+              <Link href="/store#gallery" className="font-medium hover:text-[#747F86] transition-colors tracking-wide">
+                GALLERY
+              </Link>
+
+              <Link href="/store/contact" className="font-medium hover:text-[#747F86] transition-colors tracking-wide">
                 CONTACT US
               </Link>
             </nav>
@@ -119,16 +117,14 @@ export function StoreNav({ showIcon = true }: StoreNavProps) {
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setCartOpen(true)}
-                className="px-3 py-1.5 text-base text-gray-700 hover:text-[#003966] transition-colors tracking-wide"
-                style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
+                className="px-3 py-1.5 text-sm text-gray-700 hover:text-[#747F86] transition-colors tracking-wide"
                 aria-label="Open cart"
               >
                 CART {count > 0 ? `(${count})` : ""}
               </button>
 
               <button
-                className="lg:hidden px-3 py-1.5 text-base text-[#003966] tracking-wide"
-                style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
+                className="lg:hidden px-3 py-1.5 text-sm text-[#747F86] tracking-wide"
                 onClick={() => setMenuOpen(!menuOpen)}
                 aria-label="Toggle menu"
               >
@@ -139,50 +135,66 @@ export function StoreNav({ showIcon = true }: StoreNavProps) {
         </div>
 
         {menuOpen && (
-          <div className="lg:hidden border-t border-[#dfd2bd] bg-[#fffdf8] px-4 py-3">
+          <div className="lg:hidden border-t border-[#d4d6d9] bg-white px-4 py-3">
             <div className="space-y-1">
               <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 px-1 py-1">SHOP</p>
-              {categoryLinks.map((category) => (
-                <Link
-                  key={category.href}
-                  href={category.href}
-                  className="block px-2 py-2 text-base text-gray-700 hover:text-[#003966] hover:bg-amber-50 rounded-md"
-                  style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {category.label}
-                </Link>
+              <Link
+                href="/store"
+                className="block px-2 py-2 text-sm text-gray-700 hover:text-[#747F86] hover:bg-[#f3f4f5] rounded-md"
+                onClick={() => setMenuOpen(false)}
+              >
+                All
+              </Link>
+
+              {shopHoverGroups.map((group) => (
+                <div key={`mobile-${group.label}`} className="py-1">
+                  <Link
+                    href={group.href}
+                    className="block px-2 py-2 text-sm font-medium text-[#111111] hover:text-[#747F86] hover:bg-[#f3f4f5] rounded-md"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {group.label}
+                  </Link>
+
+                  <div className="pl-3 space-y-1 mt-1">
+                    {group.links.length === 0 ? (
+                      <p className="px-2 py-1 text-xs text-gray-400">No items</p>
+                    ) : (
+                      group.links.map((item) => (
+                        <Link
+                          key={`mobile-${group.label}-${item.href}`}
+                          href={item.href}
+                          className="block px-2 py-1.5 text-xs text-gray-600 hover:text-[#747F86] hover:bg-[#f3f4f5] rounded-md"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          {item.label}
+                        </Link>
+                      ))
+                    )}
+                  </div>
+                </div>
               ))}
 
-              <div className="h-px bg-[#efe7d7] my-2" />
+              <div className="h-px bg-[#e9ecef] my-2" />
 
-              <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 px-1 py-1">BRAND</p>
-              {brandLinks.map((brand) => (
-                <Link
-                  key={brand.href}
-                  href={brand.href}
-                  className="block px-2 py-2 text-base text-gray-700 hover:text-[#003966] hover:bg-amber-50 rounded-md"
-                  style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {brand.label}
-                </Link>
-              ))}
-
-              <div className="h-px bg-[#efe7d7] my-2" />
+              <Link
+                href="/store#gallery"
+                className="block px-2 py-2 text-sm text-gray-700 hover:text-[#747F86] hover:bg-[#f3f4f5] rounded-md"
+                onClick={() => setMenuOpen(false)}
+              >
+                GALLERY
+              </Link>
 
               <Link
                 href="/store/contact"
-                className="block px-2 py-2 text-base text-gray-700 hover:text-[#003966] hover:bg-amber-50 rounded-md"
-                style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
+                className="block px-2 py-2 text-sm text-gray-700 hover:text-[#747F86] hover:bg-[#f3f4f5] rounded-md"
                 onClick={() => setMenuOpen(false)}
               >
                 CONTACT US
               </Link>
               <Link
                 href="/store/about"
-                className="block px-2 py-2 text-base text-gray-700 hover:text-[#003966] hover:bg-amber-50 rounded-md"
-                style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
+                className="block px-2 py-2 text-sm text-gray-700 hover:text-[#747F86] hover:bg-[#f3f4f5] rounded-md"
                 onClick={() => setMenuOpen(false)}
               >
                 ABOUT US

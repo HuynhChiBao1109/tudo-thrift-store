@@ -1,14 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  productsApi,
-  ordersApi,
-  customersApi,
-  dashboardApi,
-  brandsApi,
-  categoriesApi,
-  authApi,
-  uploadsApi,
-} from "@/lib/api";
+import { productsApi, ordersApi, customersApi, dashboardApi, brandsApi, authApi, uploadsApi } from "@/lib/api";
 import { Product, ProductFilters, Order, ProductPayload } from "@/types";
 
 // ─── Query Keys ───────────────────────────────────────────────────────────────
@@ -22,7 +13,6 @@ export const queryKeys = {
   customer: (id: string) => ["customer", id] as const,
   dashboard: () => ["dashboard"] as const,
   brands: () => ["brands"] as const,
-  categories: () => ["categories"] as const,
 };
 
 // ─── Product Hooks ────────────────────────────────────────────────────────────
@@ -113,43 +103,6 @@ export function useBrands() {
   return useQuery({
     queryKey: queryKeys.brands(),
     queryFn: () => brandsApi.getAll(),
-  });
-}
-
-export function useCategories() {
-  return useQuery({
-    queryKey: queryKeys.categories(),
-    queryFn: () => categoriesApi.getAll(),
-  });
-}
-
-export function useCreateCategory() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (name: string) => categoriesApi.create(name),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-    },
-  });
-}
-
-export function useUpdateCategory() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, name }: { id: string; name: string }) => categoriesApi.update(id, name),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-    },
-  });
-}
-
-export function useDeleteCategory() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (id: string) => categoriesApi.delete(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.categories() });
-    },
   });
 }
 

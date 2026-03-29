@@ -1,12 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { ShoppingBag, Heart } from "lucide-react";
 import { Product } from "@/types";
-import { formatPrice, getConditionLabel, getConditionColor, calculateDiscount, resolveImageUrl, cn } from "@/lib/utils";
+import { formatPrice, calculateDiscount, resolveImageUrl, cn } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
-import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 
 interface ProductCardProps {
@@ -30,9 +28,9 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
   return (
     <Link href={`/store/products/${product.id}`} className={cn("group block", className)}>
-      <div className="relative overflow-hidden rounded-xl bg-gray-50">
+      <div className="street-card relative overflow-hidden rounded-xl transition-all duration-300 group-hover:-translate-y-0.5">
         {/* Image */}
-        <div className="aspect-[3/4] relative overflow-hidden">
+        <div className="aspect-[3/4] relative overflow-hidden border-b border-[#e9ecef]">
           <img
             src={resolveImageUrl(product.images[0])}
             alt={product.name}
@@ -43,7 +41,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
           {/* Discount badge */}
           {discount > 0 && (
-            <div className="absolute top-3 left-3 bg-[#003966] text-white text-xs font-bold px-2 py-1 rounded-full">
+            <div className="absolute top-3 left-3 bg-[#747F86] text-white text-[10px] font-semibold px-2.5 py-1 rounded-md vintage-header">
               -{discount}%
             </div>
           )}
@@ -54,7 +52,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
               e.preventDefault();
               setWishlisted(!wishlisted);
             }}
-            className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all"
+            className="absolute top-3 right-3 w-9 h-9 bg-white border border-[#d4d6d9] rounded-md flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all"
           >
             <Heart size={14} className={wishlisted ? "fill-red-500 text-red-500" : "text-gray-600"} />
           </button>
@@ -63,9 +61,9 @@ export function ProductCard({ product, className }: ProductCardProps) {
           <button
             onClick={handleAdd}
             className={cn(
-              "absolute bottom-3 left-3 right-3 py-2 rounded-lg text-sm font-medium transition-all duration-300",
+              "absolute bottom-3 left-3 right-3 py-2 rounded-md text-xs font-medium transition-all duration-300 tracking-wide",
               "translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100",
-              added ? "bg-emerald-500 text-white" : "bg-[#003966] text-white hover:bg-[#003966]/90",
+              added ? "bg-emerald-500 text-white" : "bg-[#78511D] text-white hover:bg-[#6d491a]",
             )}
           >
             <span className="flex items-center justify-center gap-2">
@@ -79,21 +77,13 @@ export function ProductCard({ product, className }: ProductCardProps) {
         <div className="p-3">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
-              <p className="text-xs text-gray-400 uppercase tracking-wide truncate">{product.brand}</p>
-              <h3 className="font-medium text-gray-900 text-sm leading-tight mt-0.5 truncate">{product.name}</h3>
+              <p className="text-[10px] text-[#747F86] uppercase tracking-wider truncate">{product.brand}</p>
+              <h3 className="font-semibold text-gray-900 text-sm leading-tight mt-0.5 truncate">{product.name}</h3>
             </div>
-            <span
-              className={cn(
-                "text-[10px] px-2 py-0.5 rounded-full font-medium shrink-0",
-                getConditionColor(product.condition),
-              )}
-            >
-              {getConditionLabel(product.condition)}
-            </span>
           </div>
 
-          <div className="flex items-center gap-2 mt-2">
-            <span className="text-[#003966] font-bold">{formatPrice(product.price)}</span>
+          <div className="flex items-center gap-2 mt-2.5">
+            <span className="text-[#111111] font-bold">{formatPrice(product.price)}</span>
             {(product.sale || 0) > 0 && (
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-100 text-red-600 font-semibold">
                 Sale {product.sale}%
@@ -102,7 +92,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
             {product.originalPrice && product.originalPrice > product.price && (
               <span className="text-gray-400 text-xs line-through">{formatPrice(product.originalPrice)}</span>
             )}
-            <span className="text-gray-400 text-xs ml-auto">Size {product.size}</span>
+            <span className="text-gray-500 text-xs ml-auto">Size {product.size}</span>
           </div>
         </div>
       </div>

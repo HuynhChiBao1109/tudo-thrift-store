@@ -44,14 +44,12 @@ export default function AdminAnalyticsPage() {
     <div className="p-8">
       <div className="mb-8">
         <h1
-          className="text-2xl font-bold text-gray-900"
-          style={{ fontFamily: "'Playfair Display', serif" }}
+          className="vintage-header text-4xl sm:text-5xl font-bold text-[#003966]"
+          style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
         >
           Analytics
         </h1>
-        <p className="text-gray-500 text-sm mt-0.5">
-          Store performance overview
-        </p>
+        <p className="text-gray-500 text-sm mt-0.5">Store performance overview</p>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
@@ -68,10 +66,7 @@ export default function AdminAnalyticsPage() {
                 <BarChart data={stats?.revenueByMonth}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                   <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                  <YAxis
-                    tick={{ fontSize: 12 }}
-                    tickFormatter={(v) => `$${v}`}
-                  />
+                  <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => `$${v}`} />
                   <Tooltip formatter={(v) => [`$${v}`, "Revenue"]} />
                   <Bar dataKey="revenue" fill="#003966" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -124,12 +119,7 @@ export default function AdminAnalyticsPage() {
                 <BarChart data={conditionData} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                   <XAxis type="number" tick={{ fontSize: 12 }} />
-                  <YAxis
-                    dataKey="condition"
-                    type="category"
-                    tick={{ fontSize: 11 }}
-                    width={60}
-                  />
+                  <YAxis dataKey="condition" type="category" tick={{ fontSize: 11 }} width={60} />
                   <Tooltip />
                   <Bar dataKey="count" fill="#3387c7" radius={[0, 4, 4, 0]} />
                 </BarChart>
@@ -142,26 +132,16 @@ export default function AdminAnalyticsPage() {
         {isLoading ? null : (
           <>
             <div className="bg-gradient-to-br from-[#003966] to-[#1f5577] rounded-xl p-6 text-white">
-              <p className="text-blue-200 text-sm font-medium">
-                Avg. Order Value
-              </p>
+              <p className="text-blue-200 text-sm font-medium">Avg. Order Value</p>
               <p className="text-3xl font-bold mt-1">
-                {formatPrice(
-                  (stats?.totalRevenue || 0) / (stats?.totalOrders || 1),
-                )}
+                {formatPrice((stats?.totalRevenue || 0) / (stats?.totalOrders || 1))}
               </p>
-              <p className="text-blue-200 text-xs mt-2">
-                Based on all completed orders
-              </p>
+              <p className="text-blue-200 text-xs mt-2">Based on all completed orders</p>
             </div>
             <div className="bg-white border border-gray-100 rounded-xl p-6">
-              <p className="text-gray-500 text-sm font-medium">
-                Conversion Rate
-              </p>
+              <p className="text-gray-500 text-sm font-medium">Conversion Rate</p>
               <p className="text-3xl font-bold text-gray-900 mt-1">3.2%</p>
-              <p className="text-emerald-500 text-xs font-medium mt-2">
-                ↑ +0.4% from last month
-              </p>
+              <p className="text-emerald-500 text-xs font-medium mt-2">↑ +0.4% from last month</p>
             </div>
           </>
         )}

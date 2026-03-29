@@ -4,25 +4,25 @@
 
 :root {
   --radius: 0.5rem;
-  --background: 38 45% 95%;
-  --foreground: 206 100% 20%;
-  --card: 40 55% 97%;
-  --card-foreground: 206 100% 20%;
-  --popover: 40 55% 97%;
-  --popover-foreground: 206 100% 20%;
-  --primary: 206 100% 20%;
+  --background: 0 0% 100%;
+  --foreground: 0 0% 7%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 7%;
+  --primary: 208 7% 49%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 40 38% 91%;
-  --secondary-foreground: 206 90% 22%;
-  --muted: 42 30% 90%;
-  --muted-foreground: 207 35% 38%;
-  --accent: 44 52% 84%;
-  --accent-foreground: 206 90% 22%;
+  --secondary: 34 61% 29%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 210 12% 95%;
+  --muted-foreground: 208 7% 49%;
+  --accent: 210 10% 93%;
+  --accent-foreground: 34 61% 29%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 210 40% 98%;
-  --border: 35 30% 82%;
-  --input: 35 30% 82%;
-  --ring: 206 100% 20%;
+  --border: 210 10% 84%;
+  --input: 210 10% 84%;
+  --ring: 208 7% 49%;
 }
 
 * {
@@ -32,8 +32,8 @@
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  background-image: radial-gradient(circle at 1px 1px, rgba(0, 57, 102, 0.05) 1px, transparent 0);
-  background-size: 18px 18px;
+  font-size: 14px;
+  letter-spacing: 0.01em;
 }
 
 .bg-background {
@@ -55,13 +55,13 @@ body {
   color: hsl(var(--popover-foreground));
 }
 .bg-primary {
-  background-color: #003966;
+  background-color: #747f86;
 }
 .text-primary {
-  color: #003966;
+  color: #747f86;
 }
 .border-primary {
-  border-color: #003966;
+  border-color: #747f86;
 }
 .bg-secondary {
   background-color: hsl(var(--secondary));
@@ -99,7 +99,26 @@ body {
 
 .vintage-surface {
   background: #ffffff;
-  border: 1px solid #dfd2bd;
+  border: 1px solid #d4d6d9;
+}
+
+.vintage-header {
+  font-family: "Playfair Display", serif;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.street-card {
+  background: #ffffff;
+  border: 1px solid #d4d6d9;
+  box-shadow: 0 6px 16px rgba(17, 17, 17, 0.06);
+}
+
+.street-icon {
+  background-color: #747f86;
+  color: #ffffff;
+  border: 1px solid #d4d6d9;
+  border-radius: 0.5rem;
 }
 
 @layer utilities {

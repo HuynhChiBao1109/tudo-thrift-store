@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useCreateProduct, useUpdateProduct, useBrands, useCategories, useUploadProductImages } from "@/hooks/useApi";
+import { useCreateProduct, useUpdateProduct, useBrands, useUploadProductImages } from "@/hooks/useApi";
 import { Product, ProductPayload } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { resolveImageUrl } from "@/lib/utils";
 import { toast } from "sonner";
+import { PRODUCT_CATEGORY_OPTIONS } from "@/lib/selectOptions";
 
 interface ProductFormProps {
   product?: Product;
@@ -36,9 +37,7 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
   const update = useUpdateProduct();
   const uploadImages = useUploadProductImages();
   const { data: brandsResponse } = useBrands();
-  const { data: categoriesResponse } = useCategories();
   const brands = brandsResponse?.data || [];
-  const categories = categoriesResponse?.data || [];
 
   const isEditing = !!product;
   const isPending = create.isPending || update.isPending || uploadImages.isPending;
@@ -193,9 +192,9 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category.id} value={category.name}>
-                      {category.name}
+                  {PRODUCT_CATEGORY_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

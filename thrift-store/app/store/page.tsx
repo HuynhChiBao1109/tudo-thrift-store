@@ -3,13 +3,15 @@
 import { useState } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useEffect } from "react";
-import { useProducts, useBrands, useCategories } from "@/hooks/useApi";
+import { useProducts, useBrands } from "@/hooks/useApi";
 import { ProductCard } from "@/components/store/ProductCard";
 import { FilterSidebar } from "@/components/store/FilterSidebar";
+import { StoreGallery } from "@/components/store/StoreGallery";
 import { ProductCardSkeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ProductFilters } from "@/types";
+import { SHOP_SECTIONS } from "@/lib/storeContent";
 export default function StorePage() {
   const [filters, setFilters] = useState<ProductFilters>({});
   const [search, setSearch] = useState("");
@@ -28,26 +30,39 @@ export default function StorePage() {
     search: search || undefined,
   });
   const { data: brandsResponse } = useBrands();
-  const { data: categoriesResponse } = useCategories();
   const brands = brandsResponse?.data || [];
-  const categories = categoriesResponse?.data || [];
   const products = data?.data || [];
   const total = data?.total || 0;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-7">
       {/* Page header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-[#003966]" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h1 className="vintage-header text-2xl sm:text-3xl font-semibold text-[#111111]">
           {filters.category
             ? filters.category.charAt(0).toUpperCase() + filters.category.slice(1)
             : filters.featured
               ? "Featured Picks"
               : "All Items"}
         </h1>
-        <p className="text-gray-500 text-sm mt-1">
+        <p className="text-[#747F86] text-xs mt-1">
           {isLoading ? "Loading..." : `${total} item${total !== 1 ? "s" : ""} found`}
         </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {SHOP_SECTIONS.map((section) => (
+            <button
+              key={section.label}
+              onClick={() => setFilters((prev) => ({ ...prev, category: section.label }))}
+              className={`px-3 py-1.5 rounded-md text-xs border transition-colors ${
+                filters.category === section.label
+                  ? "bg-[#747F86] text-white border-[#747F86]"
+                  : "text-[#111111] border-[#d4d6d9] hover:border-[#78511D] hover:text-[#78511D]"
+              }`}
+            >
+              {section.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Search + Sort bar */}
@@ -58,13 +73,13 @@ export default function StorePage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name, brand..."
-            className="pl-9"
+            className="pl-9 h-9 text-sm"
           />
         </div>
 
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className="lg:hidden flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50"
+          className="lg:hidden flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-md text-xs text-gray-600 hover:bg-gray-50"
         >
           <SlidersHorizontal size={16} />
           Filters
@@ -79,7 +94,7 @@ export default function StorePage() {
             }))
           }
         >
-          <SelectTrigger className="w-40">
+          <SelectTrigger className="w-40 h-9 text-sm">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
@@ -93,24 +108,26 @@ export default function StorePage() {
       <div className="flex gap-8">
         {/* Filters - desktop always visible */}
         <div className={`${showFilters ? "block" : "hidden"} lg:block`}>
-          <FilterSidebar filters={filters} onChange={setFilters} brands={brands} categories={categories} />
+          <FilterSidebar filters={filters} onChange={setFilters} brands={brands} />
         </div>
 
         {/* Grid */}
         <div className="flex-1 min-w-0">
+          <StoreGallery id="gallery" title="Shop Gallery" compact />
+
           {isLoading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
               {Array.from({ length: 8 }).map((_, i) => (
                 <ProductCardSkeleton key={i} />
               ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="text-center py-20 text-gray-400">
+            <div className="text-center py-20 text-gray-400 mt-4">
               <p className="text-lg font-medium">No items found</p>
               <p className="text-sm mt-1">Try adjusting your filters</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

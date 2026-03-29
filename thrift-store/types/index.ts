@@ -1,7 +1,7 @@
 export type ProductCondition = "like-new" | "good" | "fair" | "worn";
 export type ProductCategory = string;
 export type OrderStatus = "pending" | "confirmed" | "shipped" | "delivered" | "cancelled";
-export type ProductSize = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "One Size";
+export type ProductSize = "28-29" | "30-31" | "32-33" | "34+";
 
 export interface Product {
   id: string;

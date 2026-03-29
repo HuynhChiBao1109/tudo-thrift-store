@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"net/url"
 	"strings"
 
@@ -52,24 +51,6 @@ func normalizeImagePaths(images []string) []string {
 	return normalized
 }
 
-func ensureCategoryExists(categoryName string) error {
-	trimmed := strings.TrimSpace(categoryName)
-	if trimmed == "" {
-		return errors.New("category is required")
-	}
-
-	var count int64
-	err := global.PostgresDB.Model(&model.Category{}).Where("name = ?", trimmed).Count(&count).Error
-	if err != nil {
-		return err
-	}
-	if count == 0 {
-		return errors.New("category does not exist")
-	}
-
-	return nil
-}
-
 func (ps *ProductService) GetProducts(search, category string, brandID uint) ([]model.Product, error) {
 	query := global.PostgresDB.Model(&model.Product{}).Preload("Brand").Order("products.created_at desc")
 
@@ -103,10 +84,6 @@ func (ps *ProductService) GetProductByID(id uint) (*model.Product, error) {
 }
 
 func (ps *ProductService) CreateProduct(req dto.CreateProductRequest) (*model.Product, error) {
-	if err := ensureCategoryExists(req.Category); err != nil {
-		return nil, err
-	}
-
 	product := model.Product{
 		Name:        req.Name,
 		Description: req.Description,
@@ -147,9 +124,6 @@ func (ps *ProductService) UpdateProduct(id uint, req dto.UpdateProductRequest) (
 		product.Sale = *req.Sale
 	}
 	if req.Category != "" {
-		if err := ensureCategoryExists(req.Category); err != nil {
-			return nil, err
-		}
 		product.Category = req.Category
 	}
 	if req.BrandID > 0 {

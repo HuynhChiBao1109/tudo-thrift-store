@@ -162,9 +162,12 @@ export default function CheckoutPage() {
           Back to store
         </Link>
 
-        <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-12 text-center">
+        <div className="street-card rounded-2xl border-dashed border-gray-200 p-12 text-center">
           <CheckCircle2 size={48} className="mx-auto mb-4 text-gray-300" />
-          <h1 className="text-2xl font-bold text-[#003966] mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h1
+            className="vintage-header text-4xl sm:text-5xl font-bold text-[#003966] mb-2"
+            style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
+          >
             Your cart is empty
           </h1>
           <p className="text-gray-500 mb-6">Add some products before checkout.</p>
@@ -184,7 +187,10 @@ export default function CheckoutPage() {
       </Link>
 
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#003966]" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <h1
+          className="vintage-header text-4xl sm:text-5xl font-bold text-[#003966]"
+          style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
+        >
           Checkout
         </h1>
         <p className="text-gray-500 mt-1">Fill in your delivery info and select COD or QR payment.</p>
@@ -192,10 +198,10 @@ export default function CheckoutPage() {
 
       <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="space-y-6">
-          <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <section className="street-card rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-5">
-              <MapPin size={18} className="text-[#003966]" />
-              <h2 className="text-lg font-semibold text-[#003966]">Shipping information</h2>
+              <MapPin size={20} className="text-[#003966]" />
+              <h2 className="vintage-header text-2xl font-semibold text-[#003966]">Shipping information</h2>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
@@ -275,10 +281,10 @@ export default function CheckoutPage() {
           </section>
 
           {showPayment && (
-            <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <section className="street-card rounded-2xl p-6">
               <div className="flex items-center gap-2 mb-5">
-                <CreditCard size={18} className="text-[#003966]" />
-                <h2 className="text-lg font-semibold text-[#003966]">Payment method</h2>
+                <CreditCard size={20} className="text-[#003966]" />
+                <h2 className="vintage-header text-2xl font-semibold text-[#003966]">Payment method</h2>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">

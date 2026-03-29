@@ -38,7 +38,10 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-[#ffffff] px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl text-[#003966]" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <CardTitle
+            className="vintage-header text-3xl sm:text-4xl text-[#003966]"
+            style={{ fontFamily: "'Bebas Neue', 'Playfair Display', serif" }}
+          >
             Admin Login
           </CardTitle>
           <p className="text-sm text-gray-500">Sign in to access product management</p>
