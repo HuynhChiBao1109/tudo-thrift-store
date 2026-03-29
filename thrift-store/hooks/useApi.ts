@@ -7,6 +7,7 @@ import { Product, ProductFilters, Order, ProductPayload } from "@/types";
 export const queryKeys = {
   products: (filters?: ProductFilters) => ["products", filters] as const,
   product: (id: string) => ["product", id] as const,
+  productSlug: (slug: string) => ["product", "slug", slug] as const,
   orders: () => ["orders"] as const,
   order: (id: string) => ["order", id] as const,
   customers: () => ["customers"] as const,
@@ -29,6 +30,14 @@ export function useProduct(id: string) {
     queryKey: queryKeys.product(id),
     queryFn: () => productsApi.getById(id),
     enabled: !!id,
+  });
+}
+
+export function useProductBySlug(slug: string) {
+  return useQuery({
+    queryKey: queryKeys.productSlug(slug),
+    queryFn: () => productsApi.getBySlug(slug),
+    enabled: !!slug,
   });
 }
 

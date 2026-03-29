@@ -1,6 +1,6 @@
 "use client";
 
-import { useProduct } from "@/hooks/useApi";
+import { useProductBySlug } from "@/hooks/useApi";
 import { useCart } from "@/hooks/useCart";
 import { formatPrice, calculateDiscount, resolveImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -10,8 +10,8 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
-export default function ProductPage({ params }: { params: { id: string } }) {
-  const { data: product, isLoading } = useProduct(params.id);
+export default function ProductPage({ params }: { params: { slug: string } }) {
+  const { data: product, isLoading } = useProductBySlug(params.slug);
   const { addItem } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
 
@@ -117,7 +117,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             </span>
           </div>
 
-          <p className="text-gray-600 leading-relaxed mb-8">{product.description}</p>
+          <p className="text-gray-600 leading-relaxed mb-8 whitespace-pre-wrap">{product.description}</p>
 
           {/* Tags */}
           {product.tags.length > 0 && (
@@ -144,7 +144,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           </Button>
 
           <p className="text-xs text-gray-400 text-center mt-3">
-            Free shipping on orders over $75. Returns within 7 days.
+            Miễn phí vận chuyển cho đơn trên 500.000₫. Đổi trả trong 7 ngày.
           </p>
         </div>
       </div>

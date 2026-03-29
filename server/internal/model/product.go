@@ -5,6 +5,7 @@ import "time"
 type Product struct {
 	ID          uint      `gorm:"primaryKey" json:"id"`
 	Name        string    `gorm:"size:255;not null" json:"name"`
+	Slug        string    `gorm:"size:255;uniqueIndex" json:"slug"`
 	Description string    `gorm:"type:text" json:"description"`
 	Price       float64   `gorm:"not null" json:"price"`
 	Sale        float64   `gorm:"not null;default:0" json:"sale"`

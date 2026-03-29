@@ -349,6 +349,7 @@ interface ServerResponse<T> {
 
 type RawProduct = {
   id: number | string;
+  slug?: string;
   name: string;
   description?: string;
   price: number;
@@ -402,6 +403,7 @@ function mapProduct(raw: RawProduct): Product {
 
   return {
     id: String(raw.id),
+    slug: raw.slug || "",
     name: raw.name,
     description: raw.description || "",
     price: Number(raw.price || 0),
@@ -446,6 +448,11 @@ export const productsApi = {
     const paginated = products.slice(start, start + pageSize);
 
     return { data: paginated, total: data.total, page, pageSize };
+  },
+
+  getBySlug: async (slug: string): Promise<Product> => {
+    const data = await apiRequest<RawProduct>(`/products/slug/${slug}`);
+    return mapProduct(data);
   },
 
   getById: async (id: string): Promise<Product> => {

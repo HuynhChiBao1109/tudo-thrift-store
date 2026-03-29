@@ -40,8 +40,42 @@ func InitPostgres() {
 		return
 	}
 
+	if err := ensureProductSlugColumn(db); err != nil {
+		fmt.Println("Failed to ensure products.slug column:", err)
+		return
+	}
+
 	seedAdminUser()
 
+}
+
+func ensureProductSlugColumn(db *gorm.DB) error {
+	if !db.Migrator().HasColumn(&model.Product{}, "slug") {
+		if err := db.Migrator().AddColumn(&model.Product{}, "Slug"); err != nil {
+			return err
+		}
+	}
+
+	if err := db.Exec(`
+		UPDATE products
+		SET slug = CONCAT(
+			COALESCE(
+				NULLIF(LOWER(TRIM(BOTH '-' FROM REGEXP_REPLACE(COALESCE(name, ''), '[^a-zA-Z0-9]+', '-', 'g'))), ''),
+				'product'
+			),
+			'-',
+			id
+		)
+		WHERE slug IS NULL OR slug = ''
+	`).Error; err != nil {
+		return err
+	}
+
+	if err := db.Exec(`CREATE UNIQUE INDEX IF NOT EXISTS idx_products_slug ON products (slug)`).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func seedAdminUser() {

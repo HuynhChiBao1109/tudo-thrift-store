@@ -58,6 +58,23 @@ func (pc *ProductController) GetDetail(c *gin.Context) {
 	response.SuccessResponse(c, response.StatusOK, product)
 }
 
+func (pc *ProductController) GetDetailBySlug(c *gin.Context) {
+	slug := c.Param("slug")
+	if slug == "" {
+		response.ErrorResponse(c, response.StatusBadRequest, nil)
+		return
+	}
+
+	productService := service.NewProductService()
+	product, err := productService.GetProductBySlug(slug)
+	if err != nil {
+		response.ErrorResponse(c, response.StatusNotFound, nil)
+		return
+	}
+
+	response.SuccessResponse(c, response.StatusOK, product)
+}
+
 func (pc *ProductController) Create(c *gin.Context) {
 	var req dto.CreateProductRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -66,7 +83,7 @@ func (pc *ProductController) Create(c *gin.Context) {
 	}
 
 	productService := service.NewProductService()
-	product, err := productService.CreateProduct(req)
+	product, err := productService.Create(req)
 	if err != nil {
 		response.ErrorResponse(c, response.StatusBadRequest, nil)
 		return
@@ -89,7 +106,7 @@ func (pc *ProductController) Update(c *gin.Context) {
 	}
 
 	productService := service.NewProductService()
-	product, err := productService.UpdateProduct(uint(id), req)
+	product, err := productService.Update(uint(id), req)
 	if err != nil {
 		response.ErrorResponse(c, response.StatusBadRequest, nil)
 		return
@@ -106,7 +123,7 @@ func (pc *ProductController) Delete(c *gin.Context) {
 	}
 
 	productService := service.NewProductService()
-	if err := productService.DeleteProduct(uint(id)); err != nil {
+	if err := productService.Delete(uint(id)); err != nil {
 		response.ErrorResponse(c, response.StatusBadRequest, nil)
 		return
 	}

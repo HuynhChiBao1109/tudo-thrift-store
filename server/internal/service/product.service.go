@@ -1,8 +1,10 @@
 package service
 
 import (
+	"fmt"
 	"net/url"
 	"strings"
+	"unicode"
 
 	"server-gin/global"
 	"server-gin/internal/dto"
@@ -51,13 +53,54 @@ func normalizeImagePaths(images []string) []string {
 	return normalized
 }
 
+func slugify(name string) string {
+	lower := strings.ToLower(strings.TrimSpace(name))
+	var b strings.Builder
+	prevHyphen := true
+	for _, r := range lower {
+		if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
+			b.WriteRune(r)
+			prevHyphen = false
+		} else if r >= 'A' && r <= 'Z' {
+			b.WriteRune(unicode.ToLower(r))
+			prevHyphen = false
+		} else if !prevHyphen {
+			b.WriteRune('-')
+			prevHyphen = true
+		}
+	}
+
+	slug := strings.TrimRight(b.String(), "-")
+	if slug == "" {
+		return "product"
+	}
+	return slug
+}
+
+func (ps *ProductService) generateUniqueSlug(base string, excludeID uint) string {
+	candidate := base
+	for i := 2; ; i++ {
+		var count int64
+		q := global.PostgresDB.Model(&model.Product{}).Where("slug = ?", candidate)
+		if excludeID > 0 {
+			q = q.Where("id != ?", excludeID)
+		}
+		q.Count(&count)
+		if count == 0 {
+			return candidate
+		}
+		candidate = fmt.Sprintf("%s-%d", base, i)
+	}
+}
+
 func (ps *ProductService) GetProducts(search, category string, brandID uint) ([]model.Product, error) {
 	query := global.PostgresDB.Model(&model.Product{}).Preload("Brand").Order("products.created_at desc")
 
 	if strings.TrimSpace(search) != "" {
 		searchLike := "%" + strings.TrimSpace(search) + "%"
 		query = query.Joins("LEFT JOIN brands ON brands.id = products.brand_id").Where(
-			"products.name ILIKE ? OR products.description ILIKE ? OR brands.name ILIKE ?",
+			"products.name ILIKE ? OR products.description ILIKE ? OR brands.name ILIKE ? OR products.slug ILIKE ?",
+			searchLike,
 			searchLike,
 			searchLike,
 			searchLike,
@@ -83,9 +126,19 @@ func (ps *ProductService) GetProductByID(id uint) (*model.Product, error) {
 	return &product, nil
 }
 
-func (ps *ProductService) CreateProduct(req dto.CreateProductRequest) (*model.Product, error) {
+func (ps *ProductService) GetProductBySlug(slug string) (*model.Product, error) {
+	var product model.Product
+	if err := global.PostgresDB.Preload("Brand").Where("slug = ?", slug).First(&product).Error; err != nil {
+		return nil, err
+	}
+	return &product, nil
+}
+
+func (ps *ProductService) Create(req dto.CreateProductRequest) (*model.Product, error) {
+	slug := ps.generateUniqueSlug(slugify(req.Name), 0)
 	product := model.Product{
 		Name:        req.Name,
+		Slug:        slug,
 		Description: req.Description,
 		Price:       req.Price,
 		Sale:        req.Sale,
@@ -105,7 +158,7 @@ func (ps *ProductService) CreateProduct(req dto.CreateProductRequest) (*model.Pr
 	return &product, nil
 }
 
-func (ps *ProductService) UpdateProduct(id uint, req dto.UpdateProductRequest) (*model.Product, error) {
+func (ps *ProductService) Update(id uint, req dto.UpdateProductRequest) (*model.Product, error) {
 	product, err := ps.GetProductByID(id)
 	if err != nil {
 		return nil, err
@@ -113,6 +166,7 @@ func (ps *ProductService) UpdateProduct(id uint, req dto.UpdateProductRequest) (
 
 	if req.Name != "" {
 		product.Name = req.Name
+		product.Slug = ps.generateUniqueSlug(slugify(req.Name), product.ID)
 	}
 	if req.Description != "" {
 		product.Description = req.Description
@@ -144,6 +198,6 @@ func (ps *ProductService) UpdateProduct(id uint, req dto.UpdateProductRequest) (
 	return product, nil
 }
 
-func (ps *ProductService) DeleteProduct(id uint) error {
+func (ps *ProductService) Delete(id uint) error {
 	return global.PostgresDB.Delete(&model.Product{}, id).Error
 }

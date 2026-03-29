@@ -5,6 +5,7 @@ export type ProductSize = "28-29" | "30-31" | "32-33" | "34+";
 
 export interface Product {
   id: string;
+  slug?: string;
   name: string;
   description: string;
   price: number;
@@ -39,6 +40,7 @@ export interface Category {
 
 export interface ProductPayload {
   name: string;
+  slug?: string;
   description: string;
   price: number;
   sale: number;

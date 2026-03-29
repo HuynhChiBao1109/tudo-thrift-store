@@ -45,6 +45,7 @@ func (r *Router) InitRoutes(engine *gin.Engine) {
 		products := api.Group("/products")
 		{
 			products.GET("", productController.GetList)
+			products.GET("/slug/:slug", productController.GetDetailBySlug)
 			products.GET("/:productId", productController.GetDetail)
 
 			adminProducts := products.Group("", middleware.AuthRequired(), middleware.AdminOnly())

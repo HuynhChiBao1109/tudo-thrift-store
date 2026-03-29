@@ -27,7 +27,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
   };
 
   return (
-    <Link href={`/store/products/${product.id}`} className={cn("group block", className)}>
+    <Link href={`/store/products/${product.slug || product.id}`} className={cn("group block", className)}>
       <div className="street-card relative overflow-hidden rounded-xl transition-all duration-300 group-hover:-translate-y-0.5">
         {/* Image */}
         <div className="aspect-[3/4] relative overflow-hidden border-b border-[#e9ecef]">

@@ -144,6 +144,19 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
                 placeholder="e.g. Vintage Levi's 501 Jeans"
                 required
               />
+              {form.name && (
+                <p className="text-xs text-gray-400 mt-1">
+                  Slug:{" "}
+                  <span className="font-mono text-gray-500">
+                    {form.name
+                      .toLowerCase()
+                      .trim()
+                      .replace(/[^a-z0-9]+/g, "-")
+                      .replace(/^-|-$/g, "")}
+                  </span>
+                  {isEditing && product?.slug && <span className="ml-2 text-gray-400">(hiện tại: {product.slug})</span>}
+                </p>
+              )}
             </div>
 
             <div>
@@ -163,26 +176,54 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
             </div>
 
             <div>
-              <Label>Price ($)</Label>
-              <Input
-                type="number"
-                min={0}
-                step={0.01}
-                value={form.price}
-                onChange={(e) => set("price", Number(e.target.value))}
-                required
-              />
+              <Label>Giá gốc (VND)</Label>
+              <div className="relative">
+                <Input
+                  type="number"
+                  min={0}
+                  step={1000}
+                  value={form.price}
+                  onChange={(e) => set("price", Number(e.target.value))}
+                  className="pr-10"
+                  placeholder="e.g. 350000"
+                  required
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400 pointer-events-none">
+                  ₫
+                </span>
+              </div>
+              {form.price > 0 && (
+                <p className="text-xs text-gray-400 mt-1">
+                  {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(form.price)}
+                </p>
+              )}
             </div>
 
             <div>
-              <Label>Sale (%)</Label>
-              <Input
-                type="number"
-                min={0}
-                step={0.01}
-                value={form.sale}
-                onChange={(e) => set("sale", Number(e.target.value))}
-              />
+              <Label>Giảm giá (%)</Label>
+              <div className="relative">
+                <Input
+                  type="number"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={form.sale}
+                  onChange={(e) => set("sale", Number(e.target.value))}
+                  className="pr-8"
+                  placeholder="0"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-400 pointer-events-none">
+                  %
+                </span>
+              </div>
+              {form.sale > 0 && form.price > 0 && (
+                <p className="text-xs text-gray-400 mt-1">
+                  Giá sau:{" "}
+                  {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
+                    form.price * (1 - form.sale / 100),
+                  )}
+                </p>
+              )}
             </div>
 
             <div>
@@ -244,10 +285,12 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
               <Textarea
                 value={form.description}
                 onChange={(e) => set("description", e.target.value)}
-                rows={3}
-                placeholder="Describe the item..."
+                rows={6}
+                className="resize-y min-h-[140px]"
+                placeholder="Describe the item... (Enter để xuống hàng)"
                 required
               />
+              <p className="text-xs text-gray-400 mt-1">{form.description.length} ký tự</p>
             </div>
           </div>
 
