@@ -5,7 +5,7 @@ export const PRODUCT_CATEGORY_OPTIONS = [
 ] as const;
 
 export const PRODUCT_SUBCATEGORY_OPTIONS = {
-  Top: ["Áo dài", "Áo khoác"],
-  Bottom: ["Quần dài", "Quần đùi"],
-  Accessories: ["Dây nịt", "Phụ kiện"],
+  Top: ["Tee", "Top"],
+  Bottom: ["Pants", "Shorts"],
+  Accessories: ["Belt", "Accessories"],
 } as const;

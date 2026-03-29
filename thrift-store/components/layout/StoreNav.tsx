@@ -16,18 +16,18 @@ export function StoreNav() {
   const [cartOpen, setCartOpen] = useState(false);
 
   const topLinks = [
-    { label: "Áo dài", href: "/store?category=Top&search=áo dài" },
-    { label: "Áo khoác", href: "/store?category=Top&search=áo khoác" },
+    { label: "Tee", href: "/store?category=Top&search=tee" },
+    { label: "Top", href: "/store?category=Top&search=top" },
   ];
 
   const bottomLinks = [
-    { label: "Quần dài", href: "/store?category=Bottom&search=quần dài" },
-    { label: "Quần đùi", href: "/store?category=Bottom&search=quần đùi" },
+    { label: "Pants", href: "/store?category=Bottom&search=pants" },
+    { label: "Shorts", href: "/store?category=Bottom&search=shorts" },
   ];
 
   const accessoriesLinks = [
-    { label: "Dây nịt", href: "/store?category=Accessories&search=dây nịt" },
-    { label: "Phụ kiện", href: "/store?category=Accessories&search=phụ kiện" },
+    { label: "Belt", href: "/store?category=Accessories&search=belt" },
+    { label: "Accessories", href: "/store?category=Accessories&search=accessories" },
   ];
 
   const brandLinks = (brandsResponse?.data || []).map((brand) => ({
@@ -78,11 +78,14 @@ export function StoreNav() {
 
             <nav className="hidden lg:flex items-center gap-6 text-sm text-[#111111]">
               <div className="relative group">
-                <button className="font-medium hover:text-[#747F86] transition-colors tracking-wide cursor-pointer">
-                  <Link href="/store">SHOP</Link>
-                </button>
+                <Link
+                  href="/store"
+                  className="block py-2 font-medium hover:text-[#747F86] transition-colors tracking-wide cursor-pointer"
+                >
+                  SHOP
+                </Link>
 
-                <div className="absolute left-0 top-full pt-2 z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all">
+                <div className="absolute left-0 top-full -mt-px z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all">
                   <div className="w-56 rounded-xl border border-[#d4d6d9] bg-white shadow-lg p-2">
                     {shopHoverGroups.map((group) => (
                       <div key={group.label} className="relative group/submenu">
@@ -94,7 +97,7 @@ export function StoreNav() {
                           <ChevronRight size={14} />
                         </Link>
 
-                        <div className="absolute left-full top-0 ml-1 min-w-52 rounded-xl border border-[#d4d6d9] bg-white shadow-lg p-2 opacity-0 pointer-events-none group-hover/submenu:opacity-100 group-hover/submenu:pointer-events-auto transition-all">
+                        <div className="absolute left-full top-0 min-w-52 rounded-xl border border-[#d4d6d9] bg-white shadow-lg p-2 opacity-0 pointer-events-none group-hover/submenu:opacity-100 group-hover/submenu:pointer-events-auto transition-all">
                           {group.links.length === 0 ? (
                             <p className="px-3 py-2 text-sm text-gray-400">No items</p>
                           ) : (
