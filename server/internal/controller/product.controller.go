@@ -19,6 +19,30 @@ func NewProductController() *ProductController {
 func (pc *ProductController) GetList(c *gin.Context) {
 	search := c.Query("search")
 	category := c.Query("category")
+	sizeParams := c.QueryArray("size")
+	sizes := make([]int, 0, len(sizeParams))
+	for _, sizeParam := range sizeParams {
+		parsed, err := strconv.Atoi(sizeParam)
+		if err == nil && parsed >= 20 && parsed <= 40 {
+			sizes = append(sizes, parsed)
+		}
+	}
+
+	var minPrice *float64
+	if minPriceParam := c.Query("minPrice"); minPriceParam != "" {
+		parsed, err := strconv.ParseFloat(minPriceParam, 64)
+		if err == nil {
+			minPrice = &parsed
+		}
+	}
+
+	var maxPrice *float64
+	if maxPriceParam := c.Query("maxPrice"); maxPriceParam != "" {
+		parsed, err := strconv.ParseFloat(maxPriceParam, 64)
+		if err == nil {
+			maxPrice = &parsed
+		}
+	}
 
 	var brandID uint
 	if brandIDParam := c.Query("brandId"); brandIDParam != "" {
@@ -29,7 +53,7 @@ func (pc *ProductController) GetList(c *gin.Context) {
 	}
 
 	productService := service.NewProductService()
-	products, err := productService.GetProducts(search, category, brandID)
+	products, err := productService.GetProducts(search, category, brandID, sizes, minPrice, maxPrice)
 	if err != nil {
 		response.ErrorResponse(c, response.StatusServerError, nil)
 		return

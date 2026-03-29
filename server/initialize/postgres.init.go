@@ -45,6 +45,11 @@ func InitPostgres() {
 		return
 	}
 
+	if err := ensureProductSizeColumn(db); err != nil {
+		fmt.Println("Failed to ensure products.size column:", err)
+		return
+	}
+
 	seedAdminUser()
 
 }
@@ -72,6 +77,24 @@ func ensureProductSlugColumn(db *gorm.DB) error {
 	}
 
 	if err := db.Exec(`CREATE UNIQUE INDEX IF NOT EXISTS idx_products_slug ON products (slug)`).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func ensureProductSizeColumn(db *gorm.DB) error {
+	if !db.Migrator().HasColumn(&model.Product{}, "size") {
+		if err := db.Migrator().AddColumn(&model.Product{}, "Size"); err != nil {
+			return err
+		}
+	}
+
+	if err := db.Exec(`
+		UPDATE products
+		SET size = 20
+		WHERE size IS NULL OR size < 20 OR size > 40
+	`).Error; err != nil {
 		return err
 	}
 

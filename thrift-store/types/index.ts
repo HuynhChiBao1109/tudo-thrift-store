@@ -1,7 +1,7 @@
 export type ProductCondition = "like-new" | "good" | "fair" | "worn";
 export type ProductCategory = string;
 export type OrderStatus = "pending" | "confirmed" | "shipped" | "delivered" | "cancelled";
-export type ProductSize = "28-29" | "30-31" | "32-33" | "34+";
+export type ProductSize = number;
 
 export interface Product {
   id: string;
@@ -44,6 +44,7 @@ export interface ProductPayload {
   description: string;
   price: number;
   sale: number;
+  size: ProductSize;
   category: ProductCategory;
   brandId: string;
   images: string[];
@@ -107,7 +108,7 @@ export interface ProductFilters {
   category?: ProductCategory;
   brandId?: string;
   condition?: ProductCondition;
-  size?: ProductSize;
+  size?: ProductSize[];
   minPrice?: number;
   maxPrice?: number;
   search?: string;

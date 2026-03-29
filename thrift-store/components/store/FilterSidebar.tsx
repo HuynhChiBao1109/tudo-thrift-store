@@ -2,7 +2,8 @@
 
 import { Brand, ProductFilters } from "@/types";
 import { cn } from "@/lib/utils";
-import { SHOP_SECTIONS, SIZE_RANGES } from "@/lib/storeContent";
+import { SHOP_SECTIONS } from "@/lib/storeContent";
+import { Input } from "@/components/ui/input";
 
 interface FilterSidebarProps {
   filters: ProductFilters;
@@ -19,9 +20,37 @@ export function FilterSidebar({ filters, onChange, brands }: FilterSidebarProps)
     });
   };
 
+  const sizeOptions = Array.from({ length: 21 }, (_, index) => index + 20);
+
+  const toggleSize = (size: number) => {
+    const currentSizes = filters.size || [];
+    const nextSizes = currentSizes.includes(size)
+      ? currentSizes.filter((item) => item !== size)
+      : [...currentSizes, size].sort((a, b) => a - b);
+
+    onChange({
+      ...filters,
+      size: nextSizes.length > 0 ? nextSizes : undefined,
+      page: 1,
+    });
+  };
+
+  const updatePrice = (key: "minPrice" | "maxPrice", value: string) => {
+    onChange({
+      ...filters,
+      [key]: value === "" ? undefined : Number(value),
+      page: 1,
+    });
+  };
+
   const reset = () => onChange({});
 
-  const hasFilters = filters.category || filters.brandId || filters.size || filters.minPrice || filters.maxPrice;
+  const hasFilters =
+    filters.category ||
+    filters.brandId ||
+    (filters.size && filters.size.length > 0) ||
+    typeof filters.minPrice === "number" ||
+    typeof filters.maxPrice === "number";
 
   return (
     <aside className="w-52 shrink-0 text-sm">
@@ -74,16 +103,16 @@ export function FilterSidebar({ filters, onChange, brands }: FilterSidebarProps)
         </div>
       </div>
 
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Size</h4>
-        <div className="grid grid-cols-2 gap-1">
-          {SIZE_RANGES.map((size) => (
+        <div className="grid grid-cols-3 gap-1">
+          {sizeOptions.map((size) => (
             <button
               key={size}
-              onClick={() => toggle("size", size as ProductFilters["size"])}
+              onClick={() => toggleSize(size)}
               className={cn(
                 "px-2 py-1.5 rounded-md text-xs font-medium border transition-colors",
-                filters.size === size
+                filters.size?.includes(size)
                   ? "bg-[#747F86] text-white border-[#747F86]"
                   : "text-gray-700 border-gray-300 hover:border-[#78511D] hover:text-[#78511D]",
               )}
@@ -92,37 +121,33 @@ export function FilterSidebar({ filters, onChange, brands }: FilterSidebarProps)
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
 
       <div className="mb-6">
         <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Price</h4>
-        <div className="space-y-1">
-          {[
-            { label: "Under $30", min: 0, max: 30 },
-            { label: "$30 - $60", min: 30, max: 60 },
-            { label: "$60 - $100", min: 60, max: 100 },
-            { label: "Over $100", min: 100, max: 99999 },
-          ].map((range) => (
-            <button
-              key={range.label}
-              onClick={() =>
-                onChange({
-                  ...filters,
-                  minPrice: filters.minPrice === range.min ? undefined : range.min,
-                  maxPrice: filters.maxPrice === range.max ? undefined : range.max,
-                  page: 1,
-                })
-              }
-              className={cn(
-                "w-full text-left px-2 py-1.5 rounded-md text-sm transition-colors",
-                filters.minPrice === range.min && filters.maxPrice === range.max
-                  ? "bg-[#747F86] text-white font-medium"
-                  : "text-gray-700 hover:bg-[#f3f4f5]",
-              )}
-            >
-              {range.label}
-            </button>
-          ))}
+        <div className="space-y-2">
+          <div>
+            <label className="text-[11px] text-gray-500 mb-1 block">From</label>
+            <Input
+              type="number"
+              min={0}
+              value={filters.minPrice ?? ""}
+              onChange={(e) => updatePrice("minPrice", e.target.value)}
+              placeholder="Ví dụ: 100000"
+              className="h-9 text-sm"
+            />
+          </div>
+          <div>
+            <label className="text-[11px] text-gray-500 mb-1 block">To</label>
+            <Input
+              type="number"
+              min={0}
+              value={filters.maxPrice ?? ""}
+              onChange={(e) => updatePrice("maxPrice", e.target.value)}
+              placeholder="Ví dụ: 500000"
+              className="h-9 text-sm"
+            />
+          </div>
         </div>
       </div>
     </aside>

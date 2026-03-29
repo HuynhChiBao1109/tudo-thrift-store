@@ -93,7 +93,7 @@ func (ps *ProductService) generateUniqueSlug(base string, excludeID uint) string
 	}
 }
 
-func (ps *ProductService) GetProducts(search, category string, brandID uint) ([]model.Product, error) {
+func (ps *ProductService) GetProducts(search, category string, brandID uint, sizes []int, minPrice, maxPrice *float64) ([]model.Product, error) {
 	query := global.PostgresDB.Model(&model.Product{}).Preload("Brand").Order("products.created_at desc")
 
 	if strings.TrimSpace(search) != "" {
@@ -111,6 +111,15 @@ func (ps *ProductService) GetProducts(search, category string, brandID uint) ([]
 	}
 	if brandID > 0 {
 		query = query.Where("products.brand_id = ?", brandID)
+	}
+	if len(sizes) > 0 {
+		query = query.Where("products.size IN ?", sizes)
+	}
+	if minPrice != nil {
+		query = query.Where("products.price >= ?", *minPrice)
+	}
+	if maxPrice != nil {
+		query = query.Where("products.price <= ?", *maxPrice)
 	}
 
 	var products []model.Product
@@ -142,6 +151,7 @@ func (ps *ProductService) Create(req dto.CreateProductRequest) (*model.Product, 
 		Description: req.Description,
 		Price:       req.Price,
 		Sale:        req.Sale,
+		Size:        req.Size,
 		Category:    req.Category,
 		BrandID:     req.BrandID,
 		Images:      normalizeImagePaths(req.Images),
@@ -176,6 +186,9 @@ func (ps *ProductService) Update(id uint, req dto.UpdateProductRequest) (*model.
 	}
 	if req.Sale != nil && *req.Sale >= 0 {
 		product.Sale = *req.Sale
+	}
+	if req.Size != nil && *req.Size >= 20 && *req.Size <= 40 {
+		product.Size = *req.Size
 	}
 	if req.Category != "" {
 		product.Category = req.Category

@@ -354,6 +354,7 @@ type RawProduct = {
   description?: string;
   price: number;
   sale?: number;
+  size?: number;
   category: string;
   brandId?: number | string;
   brand?: { id?: number | string; name?: string } | string;
@@ -413,7 +414,7 @@ function mapProduct(raw: RawProduct): Product {
     brandId: String(mappedBrandId),
     brand: mappedBrandName,
     condition: "good",
-    size: "M",
+    size: Number(raw.size || 20),
     images: raw.images && raw.images.length > 0 ? raw.images : [DEFAULT_PRODUCT_IMAGE],
     stock: 1,
     featured: false,
@@ -431,6 +432,9 @@ export const productsApi = {
     if (filters?.search) query.set("search", filters.search);
     if (filters?.category) query.set("category", filters.category);
     if (filters?.brandId) query.set("brandId", filters.brandId);
+    filters?.size?.forEach((size) => query.append("size", String(size)));
+    if (typeof filters?.minPrice === "number") query.set("minPrice", String(filters.minPrice));
+    if (typeof filters?.maxPrice === "number") query.set("maxPrice", String(filters.maxPrice));
 
     const data = await apiRequest<{ items: RawProduct[]; total: number }>(`/products?${query.toString()}`);
     let products = data.items.map(mapProduct);
@@ -468,6 +472,7 @@ export const productsApi = {
         description: data.description,
         price: data.price,
         sale: data.sale,
+        size: data.size,
         category: data.category,
         brandId: Number(data.brandId),
         images: data.images,
@@ -484,6 +489,7 @@ export const productsApi = {
         ...(data.description ? { description: data.description } : {}),
         ...(typeof data.price === "number" ? { price: data.price } : {}),
         ...(typeof data.sale === "number" ? { sale: data.sale } : {}),
+        ...(typeof data.size === "number" ? { size: data.size } : {}),
         ...(data.category ? { category: data.category } : {}),
         ...(data.brandId ? { brandId: Number(data.brandId) } : {}),
         ...(Array.isArray(data.images) ? { images: data.images } : {}),

@@ -24,6 +24,7 @@ const defaultForm = {
   description: "",
   price: 0,
   sale: 0,
+  size: 20,
   category: "",
   brandId: "",
   images: [] as string[],
@@ -51,6 +52,7 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
         description: product.description,
         price: product.price,
         sale: product.sale || 0,
+        size: product.size || 20,
         category: product.category,
         brandId: product.brandId || "",
         images: product.images || [],
@@ -63,6 +65,17 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
   }, [product, open]);
 
   const set = (key: string, value: unknown) => setForm((prev) => ({ ...prev, [key]: value }));
+
+  const handleNumberChange = (key: "price" | "sale" | "size") => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    set(key, value === "" ? 0 : Number(value));
+  };
+
+  const handleReplaceZeroOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (/^\d$/.test(e.key) && e.currentTarget.value === "0") {
+      e.currentTarget.select();
+    }
+  };
 
   const handleUploadImages = async () => {
     if (selectedFiles.length === 0) {
@@ -103,11 +116,17 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
       return;
     }
 
+    if (!Number.isInteger(form.size) || form.size < 20 || form.size > 40) {
+      toast.error("Size must be a number from 20 to 40");
+      return;
+    }
+
     const payload: ProductPayload = {
       name: form.name,
       description: form.description,
       price: form.price,
       sale: form.sale,
+      size: form.size,
       category: form.category,
       brandId: form.brandId,
       images: form.images,
@@ -183,7 +202,8 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
                   min={0}
                   step={1000}
                   value={form.price}
-                  onChange={(e) => set("price", Number(e.target.value))}
+                  onChange={handleNumberChange("price")}
+                  onKeyDown={handleReplaceZeroOnKeyDown}
                   className="pr-10"
                   placeholder="e.g. 350000"
                   required
@@ -208,7 +228,8 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
                   max={100}
                   step={1}
                   value={form.sale}
-                  onChange={(e) => set("sale", Number(e.target.value))}
+                  onChange={handleNumberChange("sale")}
+                  onKeyDown={handleReplaceZeroOnKeyDown}
                   className="pr-8"
                   placeholder="0"
                 />
@@ -224,6 +245,21 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
                   )}
                 </p>
               )}
+            </div>
+
+            <div>
+              <Label>Size (20-40)</Label>
+              <Input
+                type="number"
+                min={20}
+                max={40}
+                step={1}
+                value={form.size}
+                onChange={handleNumberChange("size")}
+                placeholder="e.g. 30"
+                required
+              />
+              <p className="text-xs text-gray-400 mt-1">Chỉ nhập số từ 20 đến 40</p>
             </div>
 
             <div>

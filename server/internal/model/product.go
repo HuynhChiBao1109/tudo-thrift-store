@@ -9,6 +9,7 @@ type Product struct {
 	Description string    `gorm:"type:text" json:"description"`
 	Price       float64   `gorm:"not null" json:"price"`
 	Sale        float64   `gorm:"not null;default:0" json:"sale"`
+	Size        int       `gorm:"not null;default:20" json:"size"`
 	Category    string    `gorm:"size:80;index;not null" json:"category"`
 	BrandID     uint      `gorm:"index;not null" json:"brandId"`
 	Brand       Brand     `gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;" json:"brand"`
