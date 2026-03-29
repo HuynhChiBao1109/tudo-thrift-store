@@ -3,11 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ShoppingCart } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { useBrands } from "@/hooks/useApi";
 import { CartDrawer } from "@/components/store/CartDrawer";
-import { BRAND_NAME, SHOP_SECTIONS } from "@/lib/storeContent";
+import { BRAND_NAME, BRAND_TAGLINE, SHOP_SECTIONS } from "@/lib/storeContent";
 
 export function StoreNav() {
   const { count } = useCart();
@@ -51,7 +51,7 @@ export function StoreNav() {
       <header className="sticky top-0 z-40 bg-white border-b border-[#d4d6d9] shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-28">
-            <Link href="/" className="flex items-center shrink-0">
+            <Link href="/" className="flex items-center gap-3 shrink-0">
               <Image
                 src="/images/logo.jpg"
                 alt={BRAND_NAME}
@@ -60,12 +60,26 @@ export function StoreNav() {
                 className="h-24 w-auto object-contain"
                 priority
               />
+              <div className="hidden sm:flex flex-col leading-none">
+                <span
+                  className="text-2xl tracking-widest text-[#07385a] uppercase"
+                  style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.12em" }}
+                >
+                  {BRAND_NAME}
+                </span>
+                <span
+                  className="text-xs tracking-[0.3em] uppercase text-[#747F86] mt-0.5"
+                  style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 300 }}
+                >
+                  {BRAND_TAGLINE}
+                </span>
+              </div>
             </Link>
 
             <nav className="hidden lg:flex items-center gap-6 text-sm text-[#111111]">
               <div className="relative group">
                 <button className="font-medium hover:text-[#747F86] transition-colors tracking-wide cursor-pointer">
-                  SHOP
+                  <Link href="/store">SHOP</Link>
                 </button>
 
                 <div className="absolute left-0 top-full pt-2 z-20 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all">
@@ -101,12 +115,12 @@ export function StoreNav() {
                 </div>
               </div>
 
-              <Link href="/store/about" className="font-medium hover:text-[#747F86] transition-colors tracking-wide">
-                ABOUT US
-              </Link>
-
               <Link href="/store#gallery" className="font-medium hover:text-[#747F86] transition-colors tracking-wide">
                 GALLERY
+              </Link>
+
+              <Link href="/store/about" className="font-medium hover:text-[#747F86] transition-colors tracking-wide">
+                ABOUT US
               </Link>
 
               <Link href="/store/contact" className="font-medium hover:text-[#747F86] transition-colors tracking-wide">
@@ -117,10 +131,15 @@ export function StoreNav() {
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setCartOpen(true)}
-                className="px-3 py-1.5 text-sm text-gray-700 hover:text-[#747F86] transition-colors tracking-wide"
+                className="relative p-2 text-[#111111] hover:text-[#747F86] transition-colors"
                 aria-label="Open cart"
               >
-                CART {count > 0 ? `(${count})` : ""}
+                <ShoppingCart size={24} />
+                {count > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 leading-none">
+                    {count > 99 ? "99+" : count}
+                  </span>
+                )}
               </button>
 
               <button

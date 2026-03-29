@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { X, ShoppingBag, Minus, Plus, Trash2 } from "lucide-react";
+import { X, ShoppingBag, Minus, Plus, Trash2, ShoppingCart } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { formatPrice, resolveImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -34,7 +34,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <div className="flex items-center gap-2">
-            <ShoppingBag size={20} className="text-[#003966]" />
+            <ShoppingCart size={20} className="text-[#003966]" />
             <h2 className="font-bold text-[#003966] text-lg" style={{ fontFamily: "'Playfair Display', serif" }}>
               Your Bag {count > 0 && <span className="text-base font-normal">({count})</span>}
             </h2>

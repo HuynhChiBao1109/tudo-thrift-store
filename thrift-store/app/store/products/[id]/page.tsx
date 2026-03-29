@@ -4,7 +4,7 @@ import { useProduct } from "@/hooks/useApi";
 import { useCart } from "@/hooks/useCart";
 import { formatPrice, calculateDiscount, resolveImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag, ArrowLeft, Tag, Ruler, Star } from "lucide-react";
+import { ArrowLeft, Tag, Ruler, Star, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -139,7 +139,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           )}
 
           <Button onClick={handleAdd} disabled={product.stock === 0} className="w-full h-12 text-base">
-            <ShoppingBag size={18} className="mr-2" />
+            <ShoppingCart size={18} className="mr-2" />
             {product.stock === 0 ? "Out of Stock" : "Add to Bag"}
           </Button>
 

@@ -654,3 +654,32 @@ export const dashboardApi = {
     };
   },
 };
+
+// ─── Cart API (requires backend /api/v1/cart endpoints + auth token) ─────────
+// When the user is NOT logged in, useCart falls back to localStorage only.
+// When logged in, these calls are made fire-and-forget alongside localStorage.
+
+export const cartApi = {
+  /** Add or update an item in the server-side cart. */
+  addItem: (productId: string, quantity: number): Promise<void> =>
+    apiRequest<void>("/v1/cart/items", {
+      method: "POST",
+      body: JSON.stringify({ productId, quantity }),
+    }),
+
+  /** Remove an item from the server-side cart. */
+  removeItem: (productId: string): Promise<void> =>
+    apiRequest<void>(`/v1/cart/items/${productId}`, {
+      method: "DELETE",
+    }),
+
+  /** Clear the entire server-side cart. */
+  clear: (): Promise<void> =>
+    apiRequest<void>("/v1/cart", {
+      method: "DELETE",
+    }),
+
+  /** Fetch the current server-side cart (e.g. for merging after login). */
+  getItems: (): Promise<{ productId: string; quantity: number }[]> =>
+    apiRequest<{ productId: string; quantity: number }[]>("/v1/cart"),
+};
