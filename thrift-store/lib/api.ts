@@ -467,6 +467,10 @@ async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T
 function mapProduct(raw: RawProduct): Product {
   const mappedBrandId = raw.brandId ?? (typeof raw.brand === "object" ? raw.brand?.id : undefined) ?? "";
   const mappedBrandName = typeof raw.brand === "string" ? raw.brand : raw.brand?.name || "Unknown";
+  const normalizedStatus = String(raw.status || "available")
+    .trim()
+    .toLowerCase();
+  const normalizedCategory = String(raw.category || "tops").trim();
 
   return {
     id: String(raw.id),
@@ -476,8 +480,10 @@ function mapProduct(raw: RawProduct): Product {
     price: Number(raw.price || 0),
     sale: Number(raw.sale || 0),
     originalPrice: undefined,
-    status: raw.status || "available",
-    category: (raw.category as Product["category"]) || "tops",
+    status: (["available", "pending", "paid", "out_of_stock"].includes(normalizedStatus)
+      ? normalizedStatus
+      : "available") as Product["status"],
+    category: normalizedCategory || "tops",
     brandId: String(mappedBrandId),
     brand: mappedBrandName,
     condition: "good",

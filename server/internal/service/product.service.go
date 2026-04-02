@@ -107,7 +107,8 @@ func (ps *ProductService) GetProducts(search, category string, brandID uint, siz
 		)
 	}
 	if strings.TrimSpace(category) != "" {
-		query = query.Where("products.category = ?", category)
+		normalizedCategory := strings.ToLower(strings.TrimSpace(category))
+		query = query.Where("LOWER(TRIM(products.category)) = ?", normalizedCategory)
 	}
 	if brandID > 0 {
 		query = query.Where("products.brand_id = ?", brandID)

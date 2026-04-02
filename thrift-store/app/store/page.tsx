@@ -31,8 +31,8 @@ export default function StorePage() {
   });
   const { data: brandsResponse } = useBrands();
   const brands = brandsResponse?.data || [];
-  const products = (data?.data || []).filter((product) => product.status === "available");
-  const total = data?.total || 0;
+  const products = data?.data || [];
+  const total = products.length;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-7">
