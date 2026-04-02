@@ -17,7 +17,7 @@ export default function AboutPage() {
           About Us
         </div>
 
-        <h1 className="vintage-header text-2xl sm:text-3xl font-semibold text-[#111111] mb-2">{BRAND_NAME}</h1>
+        <h1 className="brand-font text-2xl sm:text-3xl text-[#111111] mb-2">{BRAND_NAME}</h1>
         <p className="text-sm text-[#78511D] mb-4">{BRAND_TAGLINE}</p>
 
         <p className="text-gray-600 text-sm leading-relaxed mb-4">

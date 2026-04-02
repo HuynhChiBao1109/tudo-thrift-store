@@ -25,6 +25,7 @@ const defaultForm = {
   price: 0,
   sale: 0,
   size: 20,
+  status: "available" as Product["status"],
   category: "",
   brandId: "",
   images: [] as string[],
@@ -53,6 +54,7 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
         price: product.price,
         sale: product.sale || 0,
         size: product.size || 20,
+        status: product.status || "available",
         category: product.category,
         brandId: product.brandId || "",
         images: product.images || [],
@@ -127,6 +129,7 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
       price: form.price,
       sale: form.sale,
       size: form.size,
+      status: form.status,
       category: form.category,
       brandId: form.brandId,
       images: form.images,
@@ -260,6 +263,24 @@ export function ProductForm({ product, open, onClose }: ProductFormProps) {
                 required
               />
               <p className="text-xs text-gray-400 mt-1">Chỉ nhập số từ 20 đến 40</p>
+            </div>
+
+            <div>
+              <Label>Status</Label>
+              <Select
+                value={form.status}
+                onValueChange={(v) => set("status", v as "available" | "pending" | "paid" | "out_of_stock")}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="available">available</SelectItem>
+                  <SelectItem value="pending">pending</SelectItem>
+                  <SelectItem value="paid">paid</SelectItem>
+                  <SelectItem value="out_of_stock">out_of_stock</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div>

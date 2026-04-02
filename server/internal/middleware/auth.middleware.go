@@ -38,6 +38,30 @@ func AuthRequired() gin.HandlerFunc {
 	}
 }
 
+func AuthOptional() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		header := c.GetHeader("Authorization")
+		if header == "" {
+			c.Next()
+			return
+		}
+
+		parts := strings.SplitN(header, " ", 2)
+		if len(parts) != 2 || !strings.EqualFold(parts[0], "Bearer") {
+			c.Next()
+			return
+		}
+
+		claims, err := utils.ParseToken(parts[1])
+		if err == nil {
+			c.Set("userId", claims.UserID)
+			c.Set("role", claims.Role)
+		}
+
+		c.Next()
+	}
+}
+
 func AdminOnly() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		role, ok := c.Get("role")

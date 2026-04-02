@@ -11,7 +11,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-gray-600">
             <div>
-              <p className="vintage-header text-base text-[#111111]">{BRAND_NAME}</p>
+              <p className="brand-font text-base text-[#111111]">{BRAND_NAME}</p>
               <p className="text-xs text-[#78511D] mt-1">{BRAND_TAGLINE}</p>
 
               <div className="mt-4 space-y-3 text-sm">

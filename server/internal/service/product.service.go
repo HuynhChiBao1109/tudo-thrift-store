@@ -152,9 +152,13 @@ func (ps *ProductService) Create(req dto.CreateProductRequest) (*model.Product, 
 		Price:       req.Price,
 		Sale:        req.Sale,
 		Size:        req.Size,
+		Status:      "available",
 		Category:    req.Category,
 		BrandID:     req.BrandID,
 		Images:      normalizeImagePaths(req.Images),
+	}
+	if strings.TrimSpace(req.Status) != "" {
+		product.Status = strings.TrimSpace(req.Status)
 	}
 
 	if err := global.PostgresDB.Create(&product).Error; err != nil {
@@ -189,6 +193,9 @@ func (ps *ProductService) Update(id uint, req dto.UpdateProductRequest) (*model.
 	}
 	if req.Size != nil && *req.Size >= 20 && *req.Size <= 40 {
 		product.Size = *req.Size
+	}
+	if strings.TrimSpace(req.Status) != "" {
+		product.Status = strings.TrimSpace(req.Status)
 	}
 	if req.Category != "" {
 		product.Category = req.Category

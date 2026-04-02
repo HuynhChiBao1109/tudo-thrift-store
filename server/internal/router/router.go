@@ -17,6 +17,7 @@ func (r *Router) InitRoutes(engine *gin.Engine) {
 	authController := controller.NewAuthController()
 	brandController := controller.NewBrandController()
 	productController := controller.NewProductController()
+	orderController := controller.NewOrderController()
 	uploadController := controller.NewUploadController()
 
 	api := engine.Group("/api")
@@ -24,6 +25,7 @@ func (r *Router) InitRoutes(engine *gin.Engine) {
 		auth := api.Group("/auth")
 		{
 			auth.POST("/login", authController.Login)
+			auth.GET("/me", middleware.AuthRequired(), authController.Me)
 		}
 
 		brands := api.Group("/brands")
@@ -52,6 +54,17 @@ func (r *Router) InitRoutes(engine *gin.Engine) {
 			adminProducts.POST("", productController.Create)
 			adminProducts.PUT("/:productId", productController.Update)
 			adminProducts.DELETE("/:productId", productController.Delete)
+		}
+
+		orders := api.Group("/orders")
+		{
+			orders.POST("", middleware.AuthOptional(), orderController.Create)
+			orders.GET("/:orderId", orderController.GetDetail)
+			orders.PATCH("/:orderId/qr-paid", orderController.ConfirmQRPayment)
+
+			adminOrders := orders.Group("", middleware.AuthRequired(), middleware.AdminOnly())
+			adminOrders.GET("", orderController.GetList)
+			adminOrders.PATCH("/:orderId/status", orderController.UpdateStatus)
 		}
 	}
 }

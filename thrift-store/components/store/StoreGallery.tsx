@@ -11,7 +11,7 @@ export function StoreGallery({ title = "Gallery", compact = false, id }: StoreGa
     <section id={id} className={compact ? "mt-8" : "mt-10"}>
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-base font-semibold text-[#111111]">{title}</h2>
-        <span className="text-xs text-[#747F86]">Tudo4NoReason</span>
+        <span className="brand-font text-xs text-[#747F86]">Tudo4NoReason</span>
       </div>
 
       <div className={compact ? "grid grid-cols-3 gap-2" : "grid grid-cols-1 md:grid-cols-3 gap-3"}>

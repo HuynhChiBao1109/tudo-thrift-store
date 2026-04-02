@@ -31,7 +31,7 @@ export default function StorePage() {
   });
   const { data: brandsResponse } = useBrands();
   const brands = brandsResponse?.data || [];
-  const products = data?.data || [];
+  const products = (data?.data || []).filter((product) => product.status === "available");
   const total = data?.total || 0;
 
   return (

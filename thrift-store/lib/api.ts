@@ -8,6 +8,8 @@ import {
   Brand,
   ProductPayload,
   AuthUser,
+  CheckoutPayload,
+  CheckoutOrder,
 } from "@/types";
 
 // ─── Mock Data ───────────────────────────────────────────────────────────────
@@ -20,9 +22,10 @@ export const mockProducts: Product[] = [
       "Classic Levi's 501 straight-leg jeans in excellent condition. Faded wash gives a perfectly worn-in look.",
     price: 45,
     originalPrice: 150,
+    status: "available",
     category: "bottoms",
     condition: "good",
-    size: "M",
+    size: 30,
     brand: "Levi's",
     images: [
       "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80",
@@ -40,9 +43,10 @@ export const mockProducts: Product[] = [
     description: "Beautiful floral print midi dress. Perfect for summer occasions. Light and airy fabric.",
     price: 28,
     originalPrice: 89,
+    status: "available",
     category: "dresses",
     condition: "like-new",
-    size: "S",
+    size: 28,
     brand: "Zara",
     images: ["https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=80"],
     stock: 1,
@@ -57,9 +61,10 @@ export const mockProducts: Product[] = [
     description: "Chic oversized blazer in deep navy. Perfect for layering. Minimal wear, excellent quality.",
     price: 65,
     originalPrice: 220,
+    status: "available",
     category: "outerwear",
     condition: "good",
-    size: "L",
+    size: 32,
     brand: "H&M Studio",
     images: ["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80"],
     stock: 1,
@@ -74,9 +79,10 @@ export const mockProducts: Product[] = [
     description: "Classic white Nike Air Force 1s. Some minor scuffs but overall great condition.",
     price: 55,
     originalPrice: 110,
+    status: "available",
     category: "shoes",
     condition: "good",
-    size: "M",
+    size: 30,
     brand: "Nike",
     images: ["https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80"],
     stock: 2,
@@ -91,9 +97,10 @@ export const mockProducts: Product[] = [
     description: "Luxurious cashmere sweater in camel color. Barely worn. Incredibly soft.",
     price: 80,
     originalPrice: 340,
+    status: "available",
     category: "tops",
     condition: "like-new",
-    size: "M",
+    size: 30,
     brand: "Everlane",
     images: ["https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&q=80"],
     stock: 1,
@@ -108,9 +115,10 @@ export const mockProducts: Product[] = [
     description: "Authentic vintage The Cure band tee. Minor fading adds to the authentic vintage feel.",
     price: 35,
     originalPrice: 0,
+    status: "available",
     category: "tops",
     condition: "fair",
-    size: "L",
+    size: 32,
     brand: "Vintage",
     images: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80"],
     stock: 1,
@@ -125,9 +133,10 @@ export const mockProducts: Product[] = [
     description: "Genuine leather crossbody bag. Minimal signs of use. Adjustable strap.",
     price: 42,
     originalPrice: 180,
+    status: "available",
     category: "bags",
     condition: "good",
-    size: "One Size",
+    size: 20,
     brand: "Coach",
     images: ["https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80"],
     stock: 1,
@@ -142,9 +151,10 @@ export const mockProducts: Product[] = [
     description: "Elegant silk slip dress in champagne. Perfect for special occasions.",
     price: 50,
     originalPrice: 195,
+    status: "available",
     category: "dresses",
     condition: "like-new",
-    size: "XS",
+    size: 26,
     brand: "ASOS",
     images: ["https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&q=80"],
     stock: 1,
@@ -159,9 +169,10 @@ export const mockProducts: Product[] = [
     description: "Timeless camel trench coat. Classic silhouette, excellent condition.",
     price: 95,
     originalPrice: 380,
+    status: "available",
     category: "outerwear",
     condition: "good",
-    size: "S",
+    size: 28,
     brand: "Burberry",
     images: ["https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600&q=80"],
     stock: 1,
@@ -176,9 +187,10 @@ export const mockProducts: Product[] = [
     description: "Trendy high-rise mom jeans in light wash. Super comfortable and stylish.",
     price: 32,
     originalPrice: 79,
+    status: "available",
     category: "bottoms",
     condition: "good",
-    size: "S",
+    size: 28,
     brand: "Topshop",
     images: ["https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600&q=80"],
     stock: 3,
@@ -193,9 +205,10 @@ export const mockProducts: Product[] = [
     description: "Bold statement gold chain necklace. Perfect for layering or wearing solo.",
     price: 18,
     originalPrice: 45,
+    status: "available",
     category: "accessories",
     condition: "like-new",
-    size: "One Size",
+    size: 20,
     brand: "Unknown",
     images: ["https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80"],
     stock: 1,
@@ -210,9 +223,10 @@ export const mockProducts: Product[] = [
     description: "Cute cropped denim jacket. Great for spring and autumn layering.",
     price: 38,
     originalPrice: 95,
+    status: "available",
     category: "outerwear",
     condition: "good",
-    size: "M",
+    size: 30,
     brand: "Mango",
     images: ["https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?w=600&q=80"],
     stock: 1,
@@ -280,7 +294,10 @@ export const mockOrders: Order[] = [
       { product: mockProducts[4], quantity: 1, price: 80 },
     ],
     status: "delivered",
+    paymentMethod: "cod",
     total: 125,
+    fullName: mockCustomers[0].name,
+    phone: mockCustomers[0].phone || "",
     shippingAddress: "123 Main St, New York, NY 10001",
     createdAt: "2024-02-01T10:00:00Z",
     updatedAt: "2024-02-05T10:00:00Z",
@@ -290,8 +307,11 @@ export const mockOrders: Order[] = [
     customerId: "c2",
     customer: mockCustomers[1],
     items: [{ product: mockProducts[1], quantity: 1, price: 28 }],
-    status: "shipped",
+    status: "shipping",
+    paymentMethod: "qr",
     total: 28,
+    fullName: mockCustomers[1].name,
+    phone: mockCustomers[1].phone || "",
     shippingAddress: "456 Oak Ave, Los Angeles, CA 90001",
     createdAt: "2024-02-10T10:00:00Z",
     updatedAt: "2024-02-12T10:00:00Z",
@@ -305,7 +325,10 @@ export const mockOrders: Order[] = [
       { product: mockProducts[6], quantity: 1, price: 42 },
     ],
     status: "confirmed",
+    paymentMethod: "qr",
     total: 107,
+    fullName: mockCustomers[2].name,
+    phone: mockCustomers[2].phone || "",
     shippingAddress: "789 Pine St, Chicago, IL 60601",
     createdAt: "2024-03-01T10:00:00Z",
     updatedAt: "2024-03-01T10:00:00Z",
@@ -315,8 +338,11 @@ export const mockOrders: Order[] = [
     customerId: "c4",
     customer: mockCustomers[3],
     items: [{ product: mockProducts[7], quantity: 1, price: 50 }],
-    status: "pending",
+    status: "wait_confirm",
+    paymentMethod: "cod",
     total: 50,
+    fullName: mockCustomers[3].name,
+    phone: mockCustomers[3].phone || "",
     shippingAddress: "321 Elm Rd, Houston, TX 77001",
     createdAt: "2024-03-10T10:00:00Z",
     updatedAt: "2024-03-10T10:00:00Z",
@@ -327,7 +353,10 @@ export const mockOrders: Order[] = [
     customer: mockCustomers[4],
     items: [{ product: mockProducts[8], quantity: 1, price: 95 }],
     status: "delivered",
+    paymentMethod: "cod",
     total: 95,
+    fullName: mockCustomers[4].name,
+    phone: mockCustomers[4].phone || "",
     shippingAddress: "654 Maple Dr, Phoenix, AZ 85001",
     createdAt: "2024-03-15T10:00:00Z",
     updatedAt: "2024-03-18T10:00:00Z",
@@ -347,6 +376,15 @@ interface ServerResponse<T> {
   data: T;
 }
 
+type RawUser = {
+  id?: number | string;
+  username?: string;
+  fullName?: string;
+  phone?: string;
+  address?: string;
+  createdAt?: string;
+};
+
 type RawProduct = {
   id: number | string;
   slug?: string;
@@ -355,10 +393,38 @@ type RawProduct = {
   price: number;
   sale?: number;
   size?: number;
+  status?: "available" | "pending" | "paid" | "out_of_stock";
   category: string;
   brandId?: number | string;
   brand?: { id?: number | string; name?: string } | string;
   images?: string[];
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+type RawOrderDetail = {
+  id: number | string;
+  productId: number | string;
+  product?: RawProduct;
+  quantity: number;
+  price: number;
+  subtotal: number;
+};
+
+type RawOrder = {
+  id: number | string;
+  userId?: number | string;
+  user?: RawUser;
+  fullName: string;
+  phone: string;
+  address: string;
+  note?: string;
+  paymentMethod: "cod" | "qr";
+  status: Order["status"];
+  shippingFee: number;
+  subtotal: number;
+  total: number;
+  details: RawOrderDetail[];
   createdAt?: string;
   updatedAt?: string;
 };
@@ -410,6 +476,7 @@ function mapProduct(raw: RawProduct): Product {
     price: Number(raw.price || 0),
     sale: Number(raw.sale || 0),
     originalPrice: undefined,
+    status: raw.status || "available",
     category: (raw.category as Product["category"]) || "tops",
     brandId: String(mappedBrandId),
     brand: mappedBrandName,
@@ -419,6 +486,104 @@ function mapProduct(raw: RawProduct): Product {
     stock: 1,
     featured: false,
     tags: [],
+    createdAt: raw.createdAt || new Date().toISOString(),
+    updatedAt: raw.updatedAt || new Date().toISOString(),
+  };
+}
+
+function mapOrderDetailProduct(detail: RawOrderDetail): Product {
+  if (detail.product) {
+    return mapProduct(detail.product);
+  }
+
+  return {
+    id: String(detail.productId),
+    slug: "",
+    name: "Unavailable product",
+    description: "",
+    price: Number(detail.price || 0),
+    sale: 0,
+    originalPrice: undefined,
+    status: "pending",
+    category: "unknown",
+    brandId: "",
+    brand: "Unknown",
+    condition: "good",
+    size: 20,
+    images: [DEFAULT_PRODUCT_IMAGE],
+    stock: 1,
+    featured: false,
+    tags: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+function normalizeOrderStatus(status: string): Order["status"] {
+  switch (status) {
+    case "pending":
+      return "wait_confirm";
+    case "shipped":
+      return "shipping";
+    default:
+      return status as Order["status"];
+  }
+}
+
+function mapCheckoutOrder(raw: RawOrder): CheckoutOrder {
+  return {
+    id: String(raw.id),
+    fullName: raw.fullName,
+    phone: raw.phone,
+    address: raw.address,
+    note: raw.note || "",
+    paymentMethod: raw.paymentMethod,
+    status: normalizeOrderStatus(raw.status),
+    shippingFee: Number(raw.shippingFee || 0),
+    subtotal: Number(raw.subtotal || 0),
+    total: Number(raw.total || 0),
+    details: (raw.details || []).map((detail) => ({
+      id: String(detail.id),
+      productId: String(detail.productId),
+      quantity: Number(detail.quantity || 0),
+      price: Number(detail.price || 0),
+      subtotal: Number(detail.subtotal || 0),
+      product: mapOrderDetailProduct(detail),
+    })),
+    createdAt: raw.createdAt || new Date().toISOString(),
+    updatedAt: raw.updatedAt || new Date().toISOString(),
+  };
+}
+
+function mapOrder(raw: RawOrder): Order {
+  const customerName = raw.user?.fullName || raw.fullName || raw.user?.username || "Guest";
+  const customerId = raw.user?.id ?? raw.userId;
+
+  return {
+    id: String(raw.id),
+    customerId: customerId ? String(customerId) : undefined,
+    customer: {
+      id: customerId ? String(customerId) : `guest-${raw.id}`,
+      name: customerName,
+      email: raw.user?.username || undefined,
+      phone: raw.phone || raw.user?.phone,
+      address: raw.address || raw.user?.address,
+      totalOrders: 0,
+      totalSpent: 0,
+      createdAt: raw.user?.createdAt || raw.createdAt || new Date().toISOString(),
+    },
+    items: (raw.details || []).map((detail) => ({
+      product: mapOrderDetailProduct(detail),
+      quantity: Number(detail.quantity || 0),
+      price: Number(detail.price || 0),
+    })),
+    status: normalizeOrderStatus(raw.status),
+    paymentMethod: raw.paymentMethod,
+    total: Number(raw.total || 0),
+    fullName: raw.fullName,
+    phone: raw.phone,
+    shippingAddress: raw.address,
+    notes: raw.note || "",
     createdAt: raw.createdAt || new Date().toISOString(),
     updatedAt: raw.updatedAt || new Date().toISOString(),
   };
@@ -473,6 +638,7 @@ export const productsApi = {
         price: data.price,
         sale: data.sale,
         size: data.size,
+        status: data.status,
         category: data.category,
         brandId: Number(data.brandId),
         images: data.images,
@@ -490,6 +656,7 @@ export const productsApi = {
         ...(typeof data.price === "number" ? { price: data.price } : {}),
         ...(typeof data.sale === "number" ? { sale: data.sale } : {}),
         ...(typeof data.size === "number" ? { size: data.size } : {}),
+        ...(data.status ? { status: data.status } : {}),
         ...(data.category ? { category: data.category } : {}),
         ...(data.brandId ? { brandId: Number(data.brandId) } : {}),
         ...(Array.isArray(data.images) ? { images: data.images } : {}),
@@ -591,33 +758,60 @@ export const authApi = {
     });
     return data;
   },
+
+  me: async (): Promise<AuthUser> => {
+    return apiRequest<AuthUser>("/auth/me");
+  },
+};
+
+export const checkoutApi = {
+  createOrder: async (payload: CheckoutPayload): Promise<CheckoutOrder> => {
+    const data = await apiRequest<RawOrder>("/orders", {
+      method: "POST",
+      body: JSON.stringify({
+        ...payload,
+        items: payload.items.map((item) => ({
+          productId: Number(item.productId),
+          quantity: item.quantity,
+        })),
+      }),
+    });
+    return mapCheckoutOrder(data);
+  },
+
+  getOrderById: async (id: string): Promise<CheckoutOrder> => {
+    const data = await apiRequest<RawOrder>(`/orders/${id}`);
+    return mapCheckoutOrder(data);
+  },
+
+  confirmQrPayment: async (id: string): Promise<CheckoutOrder> => {
+    const data = await apiRequest<RawOrder>(`/orders/${id}/qr-paid`, {
+      method: "PATCH",
+    });
+    return mapCheckoutOrder(data);
+  },
 };
 
 // ─── Orders API ───────────────────────────────────────────────────────────────
 
 export const ordersApi = {
   getAll: async (): Promise<ApiResponse<Order[]>> => {
-    await delay(600);
-    return { data: [...mockOrders], total: mockOrders.length };
+    const data = await apiRequest<RawOrder[]>("/orders");
+    const mapped = data.map(mapOrder);
+    return { data: mapped, total: mapped.length };
   },
 
   getById: async (id: string): Promise<Order> => {
-    await delay(400);
-    const order = mockOrders.find((o) => o.id === id);
-    if (!order) throw new Error("Order not found");
-    return order;
+    const data = await apiRequest<RawOrder>(`/orders/${id}`);
+    return mapOrder(data);
   },
 
   updateStatus: async (id: string, status: Order["status"]): Promise<Order> => {
-    await delay(500);
-    const idx = mockOrders.findIndex((o) => o.id === id);
-    if (idx === -1) throw new Error("Order not found");
-    mockOrders[idx] = {
-      ...mockOrders[idx],
-      status,
-      updatedAt: new Date().toISOString(),
-    };
-    return mockOrders[idx];
+    const data = await apiRequest<RawOrder>(`/orders/${id}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
+    return mapOrder(data);
   },
 };
 

@@ -3,29 +3,86 @@ import { BRAND_NAME, BRAND_TAGLINE, LANDING_HERO } from "@/lib/storeContent";
 import { Facebook, Instagram, Mail, MapPin, MessageCircle, Music2, Phone } from "lucide-react";
 
 export default function HomePage() {
+  const heroCards = [
+    {
+      image: LANDING_HERO.images[0],
+      alt: "Tudo4NoReason hero look",
+      eyebrow: LANDING_HERO.badge,
+      title: "Vintage denim",
+      subtitle: "Curated thrift pieces with washed tones, old-school attitude and everyday wearability.",
+      meta: "Drop 04 · Tudo Archive",
+      large: true,
+      align: "bottom-left",
+    },
+    {
+      image: LANDING_HERO.images[1],
+      alt: "Tudo4NoReason second look",
+      eyebrow: "Street vintage",
+      title: "Soft fade",
+      subtitle: "Easy layers, worn textures and a quiet retro mood.",
+      meta: "Selected pieces",
+      large: false,
+      align: "top-left",
+    },
+    {
+      image: LANDING_HERO.images[2],
+      alt: "Tudo4NoReason third look",
+      eyebrow: LANDING_HERO.saleText,
+      title: "No reason needed",
+      subtitle: "Handpicked one-off finds for people who dress by feeling.",
+      meta: "Limited stock",
+      large: false,
+      align: "bottom-left",
+    },
+  ] as const;
+
   return (
     <div className="min-h-screen bg-white">
       <StoreNav />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* Hero images */}
         <section>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="rounded-2xl overflow-hidden bg-gray-100 md:col-span-2">
-              <img src={LANDING_HERO.images[0]} alt="Hero" className="w-full h-[320px] sm:h-[480px] object-cover" />
-            </div>
+            <article className="vintage-hero-card md:col-span-2 h-[340px] sm:h-[520px]">
+              <img src={heroCards[0].image} alt={heroCards[0].alt} className="vintage-hero-image" />
+              <div className="vintage-hero-overlay" />
+              <div className="vintage-hero-noise" />
+              <div className="vintage-hero-content vintage-hero-content--bottom">
+                <span className="vintage-hero-eyebrow">{heroCards[0].eyebrow}</span>
+                <h1 className="vintage-hero-title text-4xl sm:text-6xl max-w-md">{heroCards[0].title}</h1>
+                <p className="vintage-hero-subtitle max-w-md">{heroCards[0].subtitle}</p>
+                <div className="vintage-hero-meta">{heroCards[0].meta}</div>
+              </div>
+            </article>
+
             <div className="grid grid-rows-2 gap-3">
-              <div className="rounded-2xl overflow-hidden bg-gray-100">
-                <img src={LANDING_HERO.images[1]} alt="Look 2" className="w-full h-[155px] sm:h-[234px] object-cover" />
-              </div>
-              <div className="rounded-2xl overflow-hidden bg-gray-100">
-                <img src={LANDING_HERO.images[2]} alt="Look 3" className="w-full h-[155px] sm:h-[234px] object-cover" />
-              </div>
+              <article className="vintage-hero-card h-[170px] sm:h-[252px]">
+                <img src={heroCards[1].image} alt={heroCards[1].alt} className="vintage-hero-image" />
+                <div className="vintage-hero-overlay vintage-hero-overlay--light" />
+                <div className="vintage-hero-noise" />
+                <div className="vintage-hero-content vintage-hero-content--top">
+                  <span className="vintage-hero-eyebrow">{heroCards[1].eyebrow}</span>
+                  <h2 className="vintage-hero-title text-2xl sm:text-3xl">{heroCards[1].title}</h2>
+                  <p className="vintage-hero-subtitle text-xs sm:text-sm max-w-[16rem]">{heroCards[1].subtitle}</p>
+                  <div className="vintage-hero-meta">{heroCards[1].meta}</div>
+                </div>
+              </article>
+
+              <article className="vintage-hero-card h-[170px] sm:h-[252px]">
+                <img src={heroCards[2].image} alt={heroCards[2].alt} className="vintage-hero-image" />
+                <div className="vintage-hero-overlay" />
+                <div className="vintage-hero-noise" />
+                <div className="vintage-hero-content vintage-hero-content--bottom">
+                  <span className="vintage-hero-eyebrow">{heroCards[2].eyebrow}</span>
+                  <h2 className="vintage-hero-title text-2xl sm:text-3xl">{heroCards[2].title}</h2>
+                  <p className="vintage-hero-subtitle text-xs sm:text-sm max-w-[16rem]">{heroCards[2].subtitle}</p>
+                  <div className="vintage-hero-meta">{heroCards[2].meta}</div>
+                </div>
+              </article>
             </div>
           </div>
         </section>
 
-        {/* Intro text */}
         <section className="mt-10 sm:mt-14 max-w-2xl">
           <div className="flex flex-wrap gap-2 mb-4">
             <span className="inline-flex items-center rounded-full bg-[#747F86]/15 text-[#747F86] px-3 py-1 text-xs font-medium">
@@ -76,7 +133,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-gray-600">
             <div>
-              <p className="vintage-header text-base text-[#111111]">{BRAND_NAME}</p>
+              <p className="brand-font text-base text-[#111111]">{BRAND_NAME}</p>
               <p className="text-xs text-[#78511D] mt-1">{BRAND_TAGLINE}</p>
 
               <div className="mt-4 space-y-3 text-sm">

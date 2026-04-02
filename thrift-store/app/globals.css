@@ -108,6 +108,111 @@ body {
   text-transform: uppercase;
 }
 
+.brand-font {
+  font-family: "Dela Gothic One", sans-serif;
+}
+
+.vintage-hero-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(120, 81, 29, 0.14);
+  background: #d8d2c7;
+  box-shadow: 0 20px 40px rgba(17, 17, 17, 0.12);
+}
+
+.vintage-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(0.24) saturate(0.82) contrast(0.92) brightness(0.84);
+  transform: scale(1.01);
+}
+
+.vintage-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(17, 17, 17, 0.14) 0%, rgba(17, 17, 17, 0.05) 28%, rgba(17, 17, 17, 0.62) 100%),
+    linear-gradient(90deg, rgba(120, 81, 29, 0.24) 0%, rgba(0, 0, 0, 0) 45%);
+}
+
+.vintage-hero-overlay--light {
+  background:
+    linear-gradient(180deg, rgba(17, 17, 17, 0.48) 0%, rgba(17, 17, 17, 0.12) 45%, rgba(17, 17, 17, 0.34) 100%),
+    linear-gradient(90deg, rgba(116, 127, 134, 0.2) 0%, rgba(0, 0, 0, 0) 55%);
+}
+
+.vintage-hero-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  mix-blend-mode: soft-light;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.4) 0 1px, transparent 1px),
+    radial-gradient(circle at 80% 35%, rgba(255, 255, 255, 0.3) 0 1px, transparent 1px),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.28) 0 1px, transparent 1px);
+  background-size:
+    18px 18px,
+    22px 22px,
+    26px 26px;
+}
+
+.vintage-hero-content {
+  position: absolute;
+  inset-inline: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  color: #fff8ef;
+}
+
+.vintage-hero-content--top {
+  top: 0;
+}
+
+.vintage-hero-content--bottom {
+  bottom: 0;
+}
+
+.vintage-hero-eyebrow {
+  width: fit-content;
+  border: 1px solid rgba(255, 248, 239, 0.3);
+  background: rgba(17, 17, 17, 0.22);
+  backdrop-filter: blur(4px);
+  padding: 0.35rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.vintage-hero-title {
+  font-family: "Playfair Display", serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 0.95;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.25);
+}
+
+.vintage-hero-subtitle {
+  color: rgba(255, 248, 239, 0.9);
+  line-height: 1.5;
+  max-width: 28rem;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.22);
+}
+
+.vintage-hero-meta {
+  width: fit-content;
+  margin-top: 0.2rem;
+  color: #f3dfc4;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
 .street-card {
   background: #ffffff;
   border: 1px solid #d4d6d9;

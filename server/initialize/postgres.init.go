@@ -35,7 +35,7 @@ func InitPostgres() {
 	global.PostgresDB = db
 	fmt.Println("Connected to PostgreSQL successfully")
 
-	if err := db.AutoMigrate(&model.User{}, &model.Brand{}, &model.Product{}); err != nil {
+	if err := db.AutoMigrate(&model.User{}, &model.Brand{}, &model.Product{}, &model.Order{}, &model.OrderDetail{}); err != nil {
 		fmt.Println("Failed to migrate models:", err)
 		return
 	}
@@ -47,6 +47,11 @@ func InitPostgres() {
 
 	if err := ensureProductSizeColumn(db); err != nil {
 		fmt.Println("Failed to ensure products.size column:", err)
+		return
+	}
+
+	if err := ensureProductStatusColumn(db); err != nil {
+		fmt.Println("Failed to ensure products.status column:", err)
 		return
 	}
 
@@ -94,6 +99,24 @@ func ensureProductSizeColumn(db *gorm.DB) error {
 		UPDATE products
 		SET size = 20
 		WHERE size IS NULL OR size < 20 OR size > 40
+	`).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func ensureProductStatusColumn(db *gorm.DB) error {
+	if !db.Migrator().HasColumn(&model.Product{}, "status") {
+		if err := db.Migrator().AddColumn(&model.Product{}, "Status"); err != nil {
+			return err
+		}
+	}
+
+	if err := db.Exec(`
+		UPDATE products
+		SET status = 'available'
+		WHERE status IS NULL OR status = ''
 	`).Error; err != nil {
 		return err
 	}

@@ -33,6 +33,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   if (!product) return <div className="p-6">Product not found</div>;
 
   const discount = calculateDiscount(product.price, product.originalPrice || 0);
+  const isPurchasable = product.status === "available" && product.stock > 0;
 
   const handleAdd = () => {
     addItem(product);
@@ -131,16 +132,20 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           )}
 
           {/* Stock */}
-          {product.stock === 1 && (
+          {product.status !== "available" && (
+            <p className="text-sm font-medium mb-4 text-red-600">Product status: {product.status}</p>
+          )}
+
+          {product.stock === 1 && product.status === "available" && (
             <p className="text-amber-600 text-sm font-medium mb-4 flex items-center gap-1.5">
               <Star size={14} className="fill-amber-500 text-amber-500" />
               Only 1 left in stock!
             </p>
           )}
 
-          <Button onClick={handleAdd} disabled={product.stock === 0} className="w-full h-12 text-base">
+          <Button onClick={handleAdd} disabled={!isPurchasable} className="w-full h-12 text-base">
             <ShoppingCart size={18} className="mr-2" />
-            {product.stock === 0 ? "Out of Stock" : "Add to Bag"}
+            {!isPurchasable ? "Not Available" : "Add to Bag"}
           </Button>
 
           <p className="text-xs text-gray-400 text-center mt-3">
