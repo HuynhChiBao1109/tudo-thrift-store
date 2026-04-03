@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { X, ShoppingBag, Minus, Plus, Trash2, ShoppingCart } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
-import { formatPrice, resolveImageUrl } from "@/lib/utils";
+import { formatPrice, getDiscountedPrice, resolveImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 interface CartDrawerProps {
@@ -76,7 +76,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-[#003966] text-sm">
-                        {formatPrice(item.product.price * item.quantity)}
+                        {formatPrice(getDiscountedPrice(item.product.price, item.product.sale || 0) * item.quantity)}
                       </span>
                       <button
                         onClick={() => removeItem(item.product.id)}

@@ -1,16 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import { useProducts, useDeleteProduct } from "@/hooks/useApi";
-import { Product } from "@/types";
+import { useProducts, useDeleteProduct, useUpdateProduct } from "@/hooks/useApi";
+import { Product, ProductStatus } from "@/types";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Search, Edit2, Trash2, Star } from "lucide-react";
-import { formatPrice, getConditionLabel, getConditionColor, resolveImageUrl, cn } from "@/lib/utils";
+import {
+  formatPrice,
+  getConditionLabel,
+  getConditionColor,
+  getStatusColor,
+  getStatusLabel,
+  resolveImageUrl,
+  cn,
+} from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
+
+const productStatusOptions: Array<{ value: ProductStatus; label: string }> = [
+  { value: "available", label: "Available" },
+  { value: "pending", label: "Pending" },
+  { value: "paid", label: "Paid" },
+  { value: "out_of_stock", label: "Out of stock" },
+];
 
 export default function AdminProductsPage() {
   const [search, setSearch] = useState("");
@@ -20,6 +36,7 @@ export default function AdminProductsPage() {
   const { data, isLoading } = useProducts({ search: search || undefined });
   const products = data?.data || [];
   const deleteProduct = useDeleteProduct();
+  const updateProduct = useUpdateProduct();
 
   const handleEdit = (product: Product) => {
     setEditProduct(product);
@@ -39,6 +56,20 @@ export default function AdminProductsPage() {
   const handleClose = () => {
     setFormOpen(false);
     setEditProduct(undefined);
+  };
+
+  const handleStatusChange = async (product: Product, status: ProductStatus) => {
+    if (product.status === status) return;
+
+    try {
+      await updateProduct.mutateAsync({
+        id: product.id,
+        data: { status },
+      });
+      toast.success("Product status updated");
+    } catch {
+      toast.error("Failed to update product status");
+    }
   };
 
   return (
@@ -84,6 +115,7 @@ export default function AdminProductsPage() {
                   <th className="px-6 py-3 font-medium">Product</th>
                   <th className="px-6 py-3 font-medium">Category</th>
                   <th className="px-6 py-3 font-medium">Condition</th>
+                  <th className="px-6 py-3 font-medium">Status</th>
                   <th className="px-6 py-3 font-medium">Size</th>
                   <th className="px-6 py-3 font-medium">Price</th>
                   <th className="px-6 py-3 font-medium">Sale</th>
@@ -120,6 +152,28 @@ export default function AdminProductsPage() {
                       >
                         {getConditionLabel(product.condition)}
                       </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <Select
+                        value={product.status}
+                        onValueChange={(value) => handleStatusChange(product, value as ProductStatus)}
+                      >
+                        <SelectTrigger
+                          className={cn(
+                            "h-8 w-36 border-0 rounded-full px-3 text-xs font-medium shadow-none",
+                            getStatusColor(product.status),
+                          )}
+                        >
+                          <SelectValue>{getStatusLabel(product.status)}</SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                          {productStatusOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value} className="text-xs">
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </td>
                     <td className="px-6 py-4 text-gray-600">{product.size}</td>
                     <td className="px-6 py-4 font-semibold text-[#003966]">{formatPrice(product.price)}</td>

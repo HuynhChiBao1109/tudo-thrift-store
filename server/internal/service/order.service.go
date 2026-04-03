@@ -174,13 +174,18 @@ func (os *OrderService) CreateOrder(req dto.CreateOrderRequest, userID *uint) (*
 				return errors.New("one or more products are not available")
 			}
 
-			lineSubtotal := product.Price * float64(item.Quantity)
+			unitPrice := product.Price
+			if product.Sale > 0 && product.Sale < 100 {
+				unitPrice = product.Price * (1 - product.Sale/100)
+			}
+
+			lineSubtotal := unitPrice * float64(item.Quantity)
 			subtotal += lineSubtotal
 
 			details = append(details, model.OrderDetail{
 				ProductID: item.ProductID,
 				Quantity:  item.Quantity,
-				Price:     product.Price,
+				Price:     unitPrice,
 				Subtotal:  lineSubtotal,
 			})
 		}

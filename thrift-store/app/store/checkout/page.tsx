@@ -6,7 +6,7 @@ import { ArrowLeft, Banknote, CheckCircle2, CreditCard, MapPin, QrCode, RefreshC
 import { toast } from "sonner";
 import { useCart } from "@/hooks/useCart";
 import { authApi, checkoutApi } from "@/lib/api";
-import { formatPrice, resolveImageUrl, cn } from "@/lib/utils";
+import { formatPrice, getDiscountedPrice, resolveImageUrl, cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,9 +27,10 @@ type District = {
 type PaymentMethod = "cod" | "qr";
 
 const SHIPPING_FEE = 30000;
-const VIETQR_BANK_BIN = "970422";
-const VIETQR_ACCOUNT_NO = "123456789";
-const VIETQR_ACCOUNT_NAME = "Tudo4Noreason";
+const VIETQR_BANK_BIN = "970418";
+const VIETQR_ACCOUNT_NO = "8867541401";
+const VIETQR_ACCOUNT_NAME = "NGO THANH HUNG";
+const VIETQR_TEMPLATE = "oPiMCnH";
 const CHECKOUT_ORDER_STORAGE_KEY = "checkout_order_id";
 
 const ORDER_STATUS_LABELS: Record<CheckoutOrder["status"], string> = {
@@ -51,6 +52,12 @@ const ORDER_STATUS_STYLES: Record<CheckoutOrder["status"], string> = {
 function buildOrderCode(orderId: string) {
   const numeric = orderId.replace(/\D/g, "") || orderId;
   return `TUDO-${numeric.padStart(6, "0").slice(-6)}`;
+}
+
+function buildQrAddInfo(productIds: string[]) {
+  const normalizedIds = productIds.map((id) => String(id).trim()).filter(Boolean);
+  if (normalizedIds.length === 0) return "product";
+  return normalizedIds.join("-");
 }
 
 export default function CheckoutPage() {
@@ -76,19 +83,21 @@ export default function CheckoutPage() {
   const [confirmingQr, setConfirmingQr] = useState(false);
 
   const grandTotal = total + (items.length > 0 ? SHIPPING_FEE : 0);
-  const orderCode = useMemo(() => `TUDO-${Date.now().toString().slice(-8)}`, []);
   const activeTotal = createdOrder?.total ?? grandTotal;
-  const activeOrderCode = createdOrder ? buildOrderCode(createdOrder.id) : orderCode;
+  const activeProductIds = createdOrder
+    ? createdOrder.details.map((detail) => detail.productId)
+    : items.map((item) => item.product.id);
+  const activeAddInfo = useMemo(() => buildQrAddInfo(activeProductIds), [activeProductIds]);
 
   const qrImageUrl = useMemo(() => {
     const params = new URLSearchParams({
-      amount: String(activeTotal),
-      addInfo: activeOrderCode,
+      amount: String(Math.round(activeTotal)),
+      addInfo: activeAddInfo,
       accountName: VIETQR_ACCOUNT_NAME,
     });
 
-    return `https://img.vietqr.io/image/${VIETQR_BANK_BIN}-${VIETQR_ACCOUNT_NO}-compact2.png?${params.toString()}`;
-  }, [activeOrderCode, activeTotal]);
+    return `https://api.vietqr.io/image/${VIETQR_BANK_BIN}-${VIETQR_ACCOUNT_NO}-${VIETQR_TEMPLATE}.jpg?${params.toString()}`;
+  }, [activeAddInfo, activeTotal]);
 
   useEffect(() => {
     const loadProvinces = async () => {
@@ -336,8 +345,7 @@ export default function CheckoutPage() {
                         <span className="font-medium text-gray-900">Số tiền:</span> {formatPrice(createdOrder.total)}
                       </p>
                       <p>
-                        <span className="font-medium text-gray-900">Nội dung chuyển khoản:</span>{" "}
-                        {buildOrderCode(createdOrder.id)}
+                        <span className="font-medium text-gray-900">Nội dung chuyển khoản:</span> {activeAddInfo}
                       </p>
                       <p>
                         <span className="font-medium text-gray-900">Tài khoản:</span> {VIETQR_ACCOUNT_NO}
@@ -353,7 +361,7 @@ export default function CheckoutPage() {
                       )}
                       {createdOrder.status === "confirmed" && (
                         <p className="rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-blue-700">
-                          Đơn đã được xác nhận. Sau khi chuyển khoản, bấm nút xác nhận thanh toán bên dưới.
+                          Đơn đã được xác nhận. Quét QR theo mã sản phẩm, sau đó bấm nút xác nhận thanh toán bên dưới.
                         </p>
                       )}
                       {createdOrder.status === "shipping" && (
@@ -610,7 +618,9 @@ export default function CheckoutPage() {
                     <QrCode size={20} className="text-[#003966]" />
                     <span className="font-semibold text-gray-900">QR Payment</span>
                   </div>
-                  <p className="text-sm text-gray-500">Scan VietQR and transfer the exact order amount.</p>
+                  <p className="text-sm text-gray-500">
+                    Tạo thanh toán để lấy mã QR theo id sản phẩm và tổng tiền sau giảm giá.
+                  </p>
                 </button>
               </div>
 
@@ -625,34 +635,21 @@ export default function CheckoutPage() {
                 </div>
               ) : (
                 <div className="mt-5 rounded-2xl border border-gray-100 bg-gray-50 p-5">
-                  <div className="grid gap-5 md:grid-cols-[220px_1fr] md:items-center">
-                    <div className="mx-auto w-full max-w-[220px] rounded-2xl bg-white p-3 shadow-sm">
-                      <img src={qrImageUrl} alt="VietQR payment" className="w-full rounded-xl" />
+                  <div className="space-y-3 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-[#003966] font-semibold">
+                      <Smartphone size={16} /> Tạo thanh toán QR
                     </div>
-
-                    <div className="space-y-2 text-sm text-gray-600">
-                      <div className="flex items-center gap-2 text-[#003966] font-semibold">
-                        <Smartphone size={16} /> Scan QR to pay
-                      </div>
-                      <p>
-                        <span className="font-medium text-gray-900">Bank BIN:</span> {VIETQR_BANK_BIN}
-                      </p>
-                      <p>
-                        <span className="font-medium text-gray-900">Account:</span> {VIETQR_ACCOUNT_NO}
-                      </p>
-                      <p>
-                        <span className="font-medium text-gray-900">Account name:</span> {VIETQR_ACCOUNT_NAME}
-                      </p>
-                      <p>
-                        <span className="font-medium text-gray-900">Amount:</span> {formatPrice(grandTotal)}
-                      </p>
-                      <p>
-                        <span className="font-medium text-gray-900">Transfer content:</span> {orderCode}
-                      </p>
-                      <p className="text-xs text-gray-500 pt-2">
-                        Use this as a demo QR flow until payment gateway integration is added.
-                      </p>
-                    </div>
+                    <p>
+                      Sau khi bấm nút tạo đơn QR, hệ thống sẽ gọi API thanh toán và hiển thị mã QR theo format VietQR
+                      mới.
+                    </p>
+                    <p>
+                      <span className="font-medium text-gray-900">Amount:</span> {formatPrice(grandTotal)}
+                    </p>
+                    <p>
+                      <span className="font-medium text-gray-900">AddInfo:</span>{" "}
+                      {buildQrAddInfo(items.map((item) => item.product.id))}
+                    </p>
                   </div>
                 </div>
               )}
@@ -684,7 +681,7 @@ export default function CheckoutPage() {
                   <p className="font-medium text-sm text-gray-900 truncate">{item.product.name}</p>
                   <p className="text-xs text-gray-500 mt-1">Qty: {item.quantity}</p>
                   <p className="text-sm font-semibold text-[#003966] mt-2">
-                    {formatPrice(item.product.price * item.quantity)}
+                    {formatPrice(getDiscountedPrice(item.product.price, item.product.sale || 0) * item.quantity)}
                   </p>
                 </div>
               </div>

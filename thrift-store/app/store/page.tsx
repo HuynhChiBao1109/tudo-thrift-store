@@ -38,17 +38,17 @@ export default function StorePage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-7">
       {/* Page header */}
       <div className="mb-6">
-        <h1 className="vintage-header text-2xl sm:text-3xl font-semibold text-[#111111]">
+        {/* <h1 className="vintage-header text-2xl sm:text-3xl font-semibold text-[#111111]">
           {filters.category
             ? filters.category.charAt(0).toUpperCase() + filters.category.slice(1)
             : filters.featured
               ? "Featured Picks"
               : "All Items"}
-        </h1>
-        <p className="text-[#747F86] text-xs mt-1">
+        </h1> */}
+        {/* <p className="text-[#747F86] text-xs mt-1">
           {isLoading ? "Loading..." : `${total} item${total !== 1 ? "s" : ""} found`}
-        </p>
-        <div className="mt-3 flex flex-wrap gap-2">
+        </p> */}
+        {/* <div className="mt-3 flex flex-wrap gap-2">
           {SHOP_SECTIONS.map((section) => (
             <button
               key={section.label}
@@ -62,7 +62,7 @@ export default function StorePage() {
               {section.label}
             </button>
           ))}
-        </div>
+        </div> */}
       </div>
 
       {/* Search + Sort bar */}

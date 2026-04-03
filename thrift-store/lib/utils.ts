@@ -43,6 +43,9 @@ export function getConditionColor(condition: string): string {
 
 export function getStatusColor(status: string): string {
   const colors: Record<string, string> = {
+    available: "bg-emerald-100 text-emerald-700",
+    paid: "bg-blue-100 text-blue-700",
+    out_of_stock: "bg-red-100 text-red-700",
     pending: "bg-amber-100 text-amber-700",
     wait_confirm: "bg-amber-100 text-amber-700",
     confirmed: "bg-blue-100 text-blue-700",
@@ -54,9 +57,30 @@ export function getStatusColor(status: string): string {
   return colors[status] || "bg-gray-100 text-gray-700";
 }
 
+export function getStatusLabel(status: string): string {
+  const labels: Record<string, string> = {
+    available: "Available",
+    pending: "Pending",
+    paid: "Paid",
+    out_of_stock: "Out of stock",
+    wait_confirm: "Wait confirm",
+    confirmed: "Confirmed",
+    shipping: "Shipping",
+    delivered: "Delivered",
+    cancelled: "Cancelled",
+  };
+
+  return labels[status] || status;
+}
+
 export function calculateDiscount(price: number, originalPrice: number): number {
   if (!originalPrice || originalPrice <= price) return 0;
   return Math.round(((originalPrice - price) / originalPrice) * 100);
+}
+
+export function getDiscountedPrice(price: number, sale = 0): number {
+  if (!sale || sale <= 0) return price;
+  return price * (1 - sale / 100);
 }
 
 export function resolveImageUrl(path: string): string {

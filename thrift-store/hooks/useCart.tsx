@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
 import { CartItem, Product } from "@/types";
 import { cartApi } from "@/lib/api";
+import { getDiscountedPrice } from "@/lib/utils";
 
 const CART_STORAGE_KEY = "tudo_cart";
 
@@ -113,7 +114,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const total = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
+  const total = items.reduce(
+    (sum, i) => sum + getDiscountedPrice(i.product.price, i.product.sale || 0) * i.quantity,
+    0,
+  );
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
 
   return (

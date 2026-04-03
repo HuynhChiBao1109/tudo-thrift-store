@@ -62,7 +62,7 @@ export function StoreNav() {
               />
               <div className="hidden sm:flex flex-col leading-none">
                 <span
-                  className="brand-font text-2xl tracking-widest text-[#07385a] uppercase"
+                  className="brand-font text-2xl tracking-widest text-[#111111]"
                   style={{ letterSpacing: "0.08em" }}
                 >
                   {BRAND_NAME}
